@@ -1,4 +1,4 @@
-var keyboards = 21;
+var keyboards = 15;
 
 	/* ADD KEYBOARDS TO CANVAS */
 
