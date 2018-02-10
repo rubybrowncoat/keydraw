@@ -136,7 +136,7 @@ export default {
     keyOperation(evt) {
       evt.preventDefault()
 
-      switch (evt.which) {
+      switch (evt.key) {
         case 37: { // LEFT ARROW
           if (this.keyboardLeft > 0) {
             Vue.set(this.keyboardPosition, 0, this.keyboardLeft - 1)
