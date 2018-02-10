@@ -8,8 +8,8 @@
     <div class="keyboard" v-show="properties.shown" :style="{
         transform: `translate3d(+${2.2 * keyboardLeft}vw, +${2.2 * keyboardTop}vw, 0)`,
       }">
-      <div v-for="{ key, value } in keyboard" :key="key" :class="[ `key-${value}` ]">
-        <span>{{ value }}</span>
+      <div v-for="{ code, key } in keyboard" :key="code" :class="[ `key-${code}` ]">
+        <span>{{ key }}</span>
       </div>
     </div>
   </div>
@@ -137,39 +137,39 @@ export default {
       evt.preventDefault()
 
       switch (evt.key) {
-        case 37: { // LEFT ARROW
+        case 'ArrowLeft': { // LEFT ARROW
           if (this.keyboardLeft > 0) {
             Vue.set(this.keyboardPosition, 0, this.keyboardLeft - 1)
           }
           break
         }
-        case 38: { // TOP ARROW
+        case 'ArrowUp': { // UP ARROW
           if (this.keyboardTop > 0) {
             Vue.set(this.keyboardPosition, 1, this.keyboardTop - 1)
           }
           break
         }
-        case 39: { // RIGHT ARROW
+        case 'ArrowRight': { // RIGHT ARROW
           if (this.keyboardLeft < this.size - this.keyboardWidth) {
             Vue.set(this.keyboardPosition, 0, this.keyboardLeft + 1)
           }
           break
         }
-        case 40: { // DOWN ARROW
+        case 'ArrowDown': { // DOWN ARROW
           if (this.keyboardTop < this.size - ~~( this.keyboard.length / this.keyboardWidth )) {
             Vue.set(this.keyboardPosition, 1, this.keyboardTop + 1)
           }
           break
         }
-        case 17: { // CTRL
+        case 'Control': { // CTRL
           this.properties.shown = !this.properties.shown
           break
         }
-        case 32: { // SPACE
+        case ' ': { // SPACE
           this.initGrid()
         }
         default: {
-          const keyboardIndex = _findIndex(keyboard, ['key', evt.which])
+          const keyboardIndex = _findIndex(keyboard, ['key', evt.key])
 
           if (keyboardIndex > -1) {
             this.toggleGrid(keyboardIndex)
