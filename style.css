@@ -1,0 +1,118 @@
+body {
+
+	background-color: #3838a7;
+	font-family: 'VT323';
+
+}
+
+#canvas {
+
+	width: 70vw;
+	margin: 40px auto;
+	//border: 1px solid #f00;
+
+}
+
+#instructions {
+
+	width: 70vw;
+	margin: 40px auto;
+	color: #fff;
+	font-size: 1.5vw;
+
+}
+
+#instructions span {
+
+	margin-right: 40px;
+
+}
+
+#instructions span#copy {
+
+	float: right;
+
+}
+
+#instructions a {
+
+	text-decoration: none;
+	color: #fff;
+
+}
+
+#instructions a:hover {
+
+	color: #5050C6;
+}
+
+.keyboard {
+
+	display:inline-block;
+
+}
+
+.show .key {
+
+	border: 1px solid #5050C6;
+	
+}
+
+.keyboard.active {
+
+	//background-color: rgba(65, 65, 165, 0);
+	//transition: background-color 0.8s ease-in;
+
+} 
+
+.show .keyboard.active {
+
+	background-color: #4141A5;
+	opacity: 1;
+	transition: opacity 0s ease-in;
+
+}
+
+.key {
+
+	display: inline-block;
+	width: 2.33vw;
+	height: 2.33vw;
+	padding: 5px;
+	margin-left: -1px;
+	margin-top: -1px;
+	box-sizing: border-box;
+	vertical-align:top;
+
+	opacity: 1 !important;
+
+}
+
+.key span {
+
+	display: none;
+
+}
+
+
+.show .active span {
+
+	font-size: 1vw;
+	display: inline;
+	color: #5050C6;
+	margin: 0 !important;
+	padding: 0 !important;
+
+}
+
+
+.key-81.align { margin-left: 20px; }
+.key-65.align { margin-left: 40px; }
+.key-90.align { margin-left: 60px; }
+
+.key.on {
+
+	background-color: #fff;
+
+
+}
