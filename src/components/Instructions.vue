@@ -31,6 +31,7 @@
 
     &.copyright {
       float: right;
+      margin-right: 0px;
     }
   }
 

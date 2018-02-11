@@ -1,7 +1,7 @@
 <template>
   <div id="base-canvas" :class="[ 'canvas-element', properties.shown ? '' : 'hide' ]">
     <div class="grid">
-      <template v-for="i in size">
+      <template v-for="i in gridHeight">
         <div v-for="j in size" :key="((i-1)*30)+(j-1)" :class="[ 'key-piece', `${((i-1)*30)+(j-1)}`, grid[i-1][j-1] ? 'active' : '' ]" />
       </template>
     </div>
@@ -96,6 +96,8 @@ export default {
     size: 30,
     grid: [],
 
+    gridHeight: 28,
+
     keyboard,
     keyboardWidth: 10,
     keyboardPosition: [0, 0],
@@ -158,7 +160,7 @@ export default {
           break
         }
         case 'ArrowDown': { // DOWN ARROW
-          if (this.keyboardTop < this.size - keyboardHeight) {
+          if (this.keyboardTop < this.gridHeight - keyboardHeight) {
             Vue.set(this.keyboardPosition, 1, this.keyboardTop + keyboardHeight)
           }
           break
@@ -189,4 +191,5 @@ export default {
     window.removeEventListener('keydown', this.keyOperation)
   }
 }
+
 </script>
