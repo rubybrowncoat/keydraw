@@ -136,28 +136,30 @@ export default {
     keyOperation(evt) {
       evt.preventDefault()
 
+      const keyboardHeight = ~~( this.keyboard.length / this.keyboardWidth )
+
       switch (evt.key) {
         case 'ArrowLeft': { // LEFT ARROW
           if (this.keyboardLeft > 0) {
-            Vue.set(this.keyboardPosition, 0, this.keyboardLeft - 1)
+            Vue.set(this.keyboardPosition, 0, this.keyboardLeft - this.keyboardWidth)
           }
           break
         }
         case 'ArrowUp': { // UP ARROW
           if (this.keyboardTop > 0) {
-            Vue.set(this.keyboardPosition, 1, this.keyboardTop - 1)
+            Vue.set(this.keyboardPosition, 1, this.keyboardTop - keyboardHeight)
           }
           break
         }
         case 'ArrowRight': { // RIGHT ARROW
           if (this.keyboardLeft < this.size - this.keyboardWidth) {
-            Vue.set(this.keyboardPosition, 0, this.keyboardLeft + 1)
+            Vue.set(this.keyboardPosition, 0, this.keyboardLeft + this.keyboardWidth)
           }
           break
         }
         case 'ArrowDown': { // DOWN ARROW
-          if (this.keyboardTop < this.size - ~~( this.keyboard.length / this.keyboardWidth )) {
-            Vue.set(this.keyboardPosition, 1, this.keyboardTop + 1)
+          if (this.keyboardTop < this.size - keyboardHeight) {
+            Vue.set(this.keyboardPosition, 1, this.keyboardTop + keyboardHeight)
           }
           break
         }
