@@ -1,34 +1,34 @@
 export default [
   {
     name: 'white',
-    hex: '#fff',
+    hex: '#FFFFFF',
   },
   {
     name: 'black',
-    hex: '#000',
+    hex: '#000000',
   },
   {
     name: 'red',
-    hex: '#f00',
+    hex: '#F82121',
   },
   {
     name: 'blue',
-    hex: '#00f',
+    hex: '#3232D7',
   },
   {
     name: 'green',
-    hex: '#0f0',
+    hex: '#38D238',
   },
   {
     name: 'cyan',
-    hex: '#0ff',
+    hex: '#34E8E8',
   },
   {
     name: 'yellow',
-    hex: '#ff0',
+    hex: '#F8E71C',
   },
   {
     name: 'fuchsia',
-    hex: '#f0f',
+    hex: '#C345C3',
   },
 ]

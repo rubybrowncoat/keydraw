@@ -28,7 +28,7 @@
 }
 
 .grid {
-  border: 1px solid #5050C6;
+  border: 1px solid #555;
   border-top-width: 0;
   border-left-width: 0;
 
@@ -48,7 +48,7 @@
   width: calc(2.2vw * 10);
   top: 0;
 
-  background-color: rgba(65, 65, 165, 0.5);
+  background-color: rgba(255, 255, 255, 0.02);
   opacity: 1;
   transition: opacity 0s ease-in;
 }
@@ -59,7 +59,7 @@
 
   opacity: 1 !important;
 
-  border: 1px solid #5050C6;
+  border: 1px solid #555;
   border-right-width: 0;
   border-bottom-width: 0;
 
@@ -70,7 +70,7 @@
   span {
     font-size: 1vw;
     display: inline;
-    color: #5050C6;
+    color: rgba(255, 255, 255, 0.2);
     margin: 0 !important;
     padding: 0 !important;
   }
