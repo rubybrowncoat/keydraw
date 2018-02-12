@@ -6,8 +6,14 @@
   "repository": "git@github.com:manfroze/keydraw.git",
   "author": "Manfredi Pumo <manfroze@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "dev": "poi dev",
+    "build": "poi build",
+    "deploy": "npm run build && gh-pages -d dist"
+  },
   "devDependencies": {
     "eslint": "^4.17.0",
+    "gh-pages": "^1.1.0",
     "node-sass": "^4.7.2",
     "offline-plugin": "^4.9.0",
     "poi": "^9.6.13",
