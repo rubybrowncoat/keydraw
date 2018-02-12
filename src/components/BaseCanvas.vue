@@ -141,7 +141,7 @@ export default {
       const newRow = this.grid[gridTop]
       
       if (!newRow[gridLeft]) { newRow[gridLeft] = this.currentColor }
-        else if (newRow[gridLeft] != this.currentColor) { newRow[gridLeft] = this.currentColor } else {newRow[gridLeft] = !newRow[gridLeft]}
+        else if (newRow[gridLeft] != this.currentColor) { newRow[gridLeft] = this.currentColor } else {newRow[gridLeft] = false}
 
           Vue.set(this.grid, gridTop, newRow)
         console.log(newRow)
