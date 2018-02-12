@@ -107,6 +107,7 @@ export default {
   }),
   computed: {
     ...mapGetters('color', ['currentHex']),
+    ...mapGetters('theme', ['currentTheme']),
 
     keyboardLeft() {
       return this.keyboardPosition[0]
@@ -117,6 +118,7 @@ export default {
   },
   methods: {
     ...mapActions('color', ['nextColor']),
+    ...mapActions('theme', ['nextTheme']),
 
     initGrid() {
       let grid = []
@@ -184,6 +186,11 @@ export default {
         }
         case 'Shift': { // SHIFT
           this.nextColor()
+          break
+        }
+        case 'Alt': { // ALT
+          this.nextTheme()
+          console.log(currentTheme);
           break
         }
         default: {
