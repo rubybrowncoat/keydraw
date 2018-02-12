@@ -4,6 +4,7 @@
     <span>ARROWS: MOVE</span>
     <span>CTRL: SHOW/HIDE</span>
     <span>SPACE: CLEAR</span>
+    <span>SHIFT: COLOR</span>
     <span class="copyright">
       &copy; 2018 <a href="http://pumo.mp">pumo.mp</a>
     </span>
