@@ -29,6 +29,6 @@ export default [
   },
   {
     name: 'fuchsia',
-    hex: '#C345C3',
+    hex: '#ff4cdb',
   },
 ]

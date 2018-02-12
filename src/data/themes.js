@@ -1,8 +1,8 @@
 export default [
   {
-    name: 'paper',
+    name: 'dark',
   },
   {
-    name: 'dark',
+    name: 'paper',
   },
 ]

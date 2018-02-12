@@ -23,8 +23,7 @@
 
   transform: translateX(-50%);
 
-  color: #fff;
-  font-size: 1.5vw;
+
 
   margin-bottom: 80px;
 
@@ -36,16 +35,16 @@
       float: right;
       margin-right: 0px;
     }
-  }
-
-  a {
-    text-decoration: none;
-    color: #fff;
-
-    &:hover {
-      color: #5050c6;
+    .paper & {
+      color: #000;
+      font-size: 1.2vw;
+    }
+    .dark & {
+      color: #fff;
+      font-size: 1.5vw;
     }
   }
+
 }
 </style>
 

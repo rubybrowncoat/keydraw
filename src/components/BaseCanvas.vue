@@ -28,7 +28,8 @@
 }
 
 .grid {
-  border: 1px solid #555;
+  border-width: 1px;
+  border-style: solid;
   border-top-width: 0;
   border-left-width: 0;
 
@@ -36,6 +37,13 @@
   flex-wrap: wrap;
   flex-direction: row;
 
+  .dark & {
+   border-color: #555;
+
+  }
+  .paper & {
+   border-color: #ddd;
+  }
   .hide & {
     border-width: 0;
   }
@@ -44,24 +52,28 @@
 .keyboard {
   position: absolute;
   display: inline-block;
-
   width: calc(2.2vw * 10);
   top: 0;
-
-  background-color: rgba(255, 255, 255, 0.02);
   opacity: 1;
   transition: opacity 0s ease-in;
+
+  .dark & {
+  background-color: rgba(255, 255, 255, 0.05);
+  }
+  .paper & {
+  background-color: rgba(0, 0, 0, 0.05);
+  }
+
 }
 
 [class*='key-'] {
   display: inline-block;
   vertical-align: top;
-
-  opacity: 1 !important;
-
-  border: 1px solid #555;
-  border-right-width: 0;
+  border-width: 1px;
+  border-style: solid;
   border-bottom-width: 0;
+  border-right-width: 0;
+  opacity: 1 !important;
 
   width: 2.2vw;
   height: 2.2vw;
@@ -75,6 +87,14 @@
     padding: 0 !important;
   }
 
+
+  .dark & {
+   border-color: #555;
+
+  }
+  .paper & {
+   border-color: #ddd;
+  }
   .hide & {
     border-width: 0px;
   }
@@ -190,7 +210,6 @@ export default {
         }
         case 'Alt': { // ALT
           this.nextTheme()
-          console.log(currentTheme);
           break
         }
         default: {
