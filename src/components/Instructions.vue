@@ -7,6 +7,7 @@
     <span>ARROWS: MOVE</span>
     <span>CTRL: SHOW/HIDE</span>
     <span>SPACE: CLEAR</span>
+    <span>ALT: THEME</span>
     <span>SHIFT: <span :style="{ color: currentHex }" >COLOR</span></span>
 
   </div>
@@ -28,7 +29,7 @@
   margin-bottom: 80px;
 
   span {
-    margin-right: 30px;
+    margin-right: 25px;
     text-transform: uppercase;
 
     &.copyright {
@@ -37,7 +38,7 @@
     }
     .paper & {
       color: #000;
-      font-size: 1.2vw;
+      font-size: 1.1vw;
     }
     .dark & {
       color: #fff;
