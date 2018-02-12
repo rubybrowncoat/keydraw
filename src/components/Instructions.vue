@@ -1,13 +1,15 @@
 <template>
   <div class="instructions-container">
+    <span class="copyright">
+      &copy; 2018 <a href="http://pumo.mp">pumo.mp</a>
+    </span>
     <span>KEYS: TOGGLE</span>
     <span>ARROWS: MOVE</span>
     <span>CTRL: SHOW/HIDE</span>
     <span>SPACE: CLEAR</span>
+    <br>
     <span>SHIFT: COLOR</span>
-    <span class="copyright">
-      &copy; 2018 <a href="http://pumo.mp">pumo.mp</a>
-    </span>
+    <span>CURRENT: {{ currentName }}</span>
   </div>
 </template>
 
@@ -29,6 +31,7 @@
 
   span {
     margin-right: 40px;
+    text-transform: uppercase;
 
     &.copyright {
       float: right;
@@ -46,3 +49,13 @@
   }
 }
 </style>
+
+<script>
+import { mapGetters } from 'vuex'
+
+export default {
+  computed: {
+    ...mapGetters('color', ['currentName']),
+  }
+}
+</script>
