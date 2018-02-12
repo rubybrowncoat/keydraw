@@ -4,7 +4,7 @@ import VueBootstrap from 'bootstrap-vue'
 import VueRouter from 'vue-router'
 
 import routes from './routes'
-// import store from './store'
+import store from './store'
 
 import PrincipalLayout from './layouts/Principal'
 
@@ -22,5 +22,5 @@ new Vue({
   el: '#app',
   render: h => h(PrincipalLayout),
   router,
-  // store,
+  store,
 })

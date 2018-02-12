@@ -2,7 +2,7 @@
   <div id="base-canvas" :class="[ 'canvas-element', properties.shown ? '' : 'hide' ]">
     <div class="grid">
       <template v-for="i in gridHeight">
-        <div v-for="j in size" :key="((i-1)*30)+(j-1)" :class="[ 'key-piece', `${((i-1)*30)+(j-1)}`, grid[i-1][j-1] ]" />
+        <div v-for="j in size" :key="((i-1)*30)+(j-1)" :class="[ 'key-piece', `${((i-1)*30)+(j-1)}` ]" :style="{ backgroundColor: grid[i-1][j-1] || 'transparent' }" />
       </template>
     </div>
     <div class="keyboard" v-show="properties.shown" :style="{
@@ -75,13 +75,6 @@
     padding: 0 !important;
   }
 
-  &.white { background-color: #fff; }
-  &.black { background-color: #000; }
-  &.red { background-color: #f00; }
-  &.blue { background-color: #00f; }
-  &.green { background-color: #0f0; }
-  &.yellow { background-color: #ff0; }
-
   .hide & {
     border-width: 0px;
   }
@@ -90,6 +83,9 @@
 
 <script>
 import Vue from 'vue'
+
+import { mapGetters, mapActions } from 'vuex'
+
 import keyboard from '../data/keyboard'
 
 import { findIndex as _findIndex } from 'lodash'
@@ -98,11 +94,6 @@ export default {
   data: () => ({
     size: 30,
     grid: [],
-
-    colors: ['white', 'black', 'red', 'blue', 'green', 'yellow'],
-
-    currentColorIndex: 0,
-    currentColor: 'white',
 
     gridHeight: 20,
 
@@ -115,6 +106,8 @@ export default {
     },
   }),
   computed: {
+    ...mapGetters('color', ['currentHex']),
+
     keyboardLeft() {
       return this.keyboardPosition[0]
     },
@@ -123,6 +116,8 @@ export default {
     }
   },
   methods: {
+    ...mapActions('color', ['nextColor']),
+
     initGrid() {
       let grid = []
 
@@ -132,27 +127,29 @@ export default {
 
       this.grid = grid
     },
-
     toggleGrid(keyboardIndex) {
-
       const gridLeft = this.keyboardLeft + ( keyboardIndex % this.keyboardWidth )
       const gridTop = this.keyboardTop + ~~( keyboardIndex / this.keyboardWidth )
 
       const newRow = this.grid[gridTop]
-      
-      if (!newRow[gridLeft]) { newRow[gridLeft] = this.currentColor }
-        else if (newRow[gridLeft] != this.currentColor) { newRow[gridLeft] = this.currentColor } else {newRow[gridLeft] = false}
 
-          Vue.set(this.grid, gridTop, newRow)
-        console.log(newRow)
-      },
+      if (!newRow[gridLeft]) {
+        newRow[gridLeft] = this.currentHex
+      } else if (newRow[gridLeft] != this.currentHex) {
+        newRow[gridLeft] = this.currentHex
+      } else {
+        newRow[gridLeft] = false
+      }
 
-      keyOperation(evt) {
-        evt.preventDefault()
+      Vue.set(this.grid, gridTop, newRow)
+    },
 
-        const keyboardHeight = ~~( this.keyboard.length / this.keyboardWidth )
+    keyOperation(evt) {
+      evt.preventDefault()
 
-        switch (evt.key) {
+      const keyboardHeight = ~~( this.keyboard.length / this.keyboardWidth )
+
+      switch (evt.key) {
         case 'ArrowLeft': { // LEFT ARROW
           if (this.keyboardLeft > 0) {
             Vue.set(this.keyboardPosition, 0, this.keyboardLeft - this.keyboardWidth)
@@ -186,13 +183,8 @@ export default {
           break
         }
         case 'Shift': { // SHIFT
-          if (this.currentColorIndex < this.colors.length - 1) {
-            this.currentColorIndex++;
-          } else { this.currentColorIndex = 0 }
-          this.currentColor = this.colors[this.currentColorIndex]
-
-          console.log(this.currentColor)
-
+          this.nextColor()
+          break
         }
         default: {
           const keyboardIndex = _findIndex(keyboard, ['key', evt.key])
