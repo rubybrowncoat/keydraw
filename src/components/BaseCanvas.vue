@@ -70,7 +70,7 @@
   span {
     font-size: 1vw;
     display: inline;
-    color: rgba(255, 255, 255, 0.2);
+    color: #555;
     margin: 0 !important;
     padding: 0 !important;
   }
