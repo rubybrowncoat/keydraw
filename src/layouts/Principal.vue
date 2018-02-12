@@ -4,7 +4,7 @@
 
 <style lang="scss">
 html, body {
-  background-color: #3838a7;
+  background-color: #444;
   font-family: 'VT323';
 }
 

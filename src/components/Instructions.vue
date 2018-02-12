@@ -7,9 +7,8 @@
     <span>ARROWS: MOVE</span>
     <span>CTRL: SHOW/HIDE</span>
     <span>SPACE: CLEAR</span>
-    <br>
-    <span>SHIFT: COLOR</span>
-    <span>CURRENT: {{ currentName }}</span>
+    <span>SHIFT: <span :style="{ color: currentHex }" >COLOR</span></span>
+
   </div>
 </template>
 
@@ -30,7 +29,7 @@
   margin-bottom: 80px;
 
   span {
-    margin-right: 40px;
+    margin-right: 30px;
     text-transform: uppercase;
 
     &.copyright {
@@ -55,7 +54,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   computed: {
-    ...mapGetters('color', ['currentName']),
+    ...mapGetters('color', ['currentName', 'currentHex']),
   }
 }
 </script>
