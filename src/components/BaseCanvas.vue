@@ -18,12 +18,8 @@
 <style lang="scss" scoped>
 .canvas-element {
   position: relative;
-
-  //width: calc(66vw + 1px);
-
   top: 40px;
   left: 50%;
-
   transform: translateX(-50%);
 }
 
@@ -115,9 +111,8 @@ export default {
     grid: [],
     keySize: 2.5,
     keyboardWidth: 9,
-    keyboardHeight: 4,
     blockWidth: 3,
-    blockHeight: 6,
+    blockHeight: 5,
     keyboard,
     keyboardPosition: [0, 0],
 
@@ -133,7 +128,7 @@ export default {
       return this.keyboardWidth * this.blockWidth
     },
     gridHeight: function () {
-      return this.keyboardHeight * this.blockHeight
+      return ( this.keyboard.length / this.keyboardWidth ) * this.blockHeight
     },
     keyboardLeft() {
       return this.keyboardPosition[0]
