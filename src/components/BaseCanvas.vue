@@ -55,13 +55,16 @@
   width: calc(2.2vw * 10);
   top: 0;
   opacity: 1;
-  transition: opacity 0s ease-in;
 
   .dark & {
   background-color: rgba(255, 255, 255, 0.05);
   }
   .paper & {
   background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  & [class*='key-'] {
+    border-width: 0px;
   }
 
 }
@@ -78,6 +81,7 @@
   width: 2.2vw;
   height: 2.2vw;
   padding: 5px;
+  margin: 0;
 
   span {
     font-size: 1vw;
