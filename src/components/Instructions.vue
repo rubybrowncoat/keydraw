@@ -7,6 +7,7 @@
     <span>ARROWS: MOVE</span>
     <span>CTRL: SHOW/HIDE</span>
     <span>SPACE: CLEAR</span>
+    <span>ALT: THEME</span>
     <span>SHIFT: <span :style="{ color: currentHex }" >COLOR</span></span>
 
   </div>
@@ -23,29 +24,28 @@
 
   transform: translateX(-50%);
 
-  color: #fff;
-  font-size: 1.5vw;
+
 
   margin-bottom: 80px;
 
   span {
-    margin-right: 30px;
+    margin-right: 25px;
     text-transform: uppercase;
 
     &.copyright {
       float: right;
       margin-right: 0px;
     }
-  }
-
-  a {
-    text-decoration: none;
-    color: #fff;
-
-    &:hover {
-      color: #5050c6;
+    .paper & {
+      color: #000;
+      font-size: 1.1vw;
+    }
+    .dark & {
+      color: #fff;
+      font-size: 1.5vw;
     }
   }
+
 }
 </style>
 

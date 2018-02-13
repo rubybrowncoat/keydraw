@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
 
 import colorModule from './vuex/modules/color'
+import themeModule from './vuex/modules/theme'
 
 Vue.use(Vuex)
 
@@ -11,12 +12,14 @@ const vuexSorage = new VuexPersistence({
 
   reducer: state => ({
     color: state.color,
+    theme: state.theme,
   }),
 })
 
 const store = new Vuex.Store({
   modules: {
     color: colorModule,
+    theme: themeModule,
   },
 
   plugins: [
