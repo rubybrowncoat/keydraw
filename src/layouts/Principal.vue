@@ -18,7 +18,7 @@ html {
 
 	margin: 0;
 	padding: 0;
-	height: 100vh;
+	height: 200vh;
 
 	&.dark {
 		color: #FFFFFF;
