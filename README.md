@@ -2,7 +2,7 @@
 
 a thing to draw with keypresses lol
 
-![keydraw](https://i.imgur.com/dtP9UAM.jpg)
+![keydraw](https://i.imgur.com/n3q4kDC.jpg)
 
 ## Prerequisite Instructions
 
