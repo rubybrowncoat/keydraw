@@ -17,7 +17,7 @@
 .instructions-container {
   position: relative;
   width: calc(66vw + 1px);
-  top: 80px;
+  top: 40px;
   left: 50%;
   transform: translateX(-50%);
 

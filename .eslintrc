@@ -1,0 +1,21 @@
+{
+  "extends": [
+    "prettier",
+    "plugin:vue/recommended"
+  ],
+  "plugins": [
+    "prettier",
+    "vue"
+  ],
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "rules": {
+    "no-invalid-this": 0,
+    "require-jsdoc": 0
+  }
+}
