@@ -1,13 +1,8 @@
 <template>
-  <div
-    id="base-canvas"
-    :class="[ 'canvas-element', properties.shown ? '' : 'hide' ]"
-    :style="{
-      width: `calc(${keySize * gridWidth}vw + 1px)`,
-      height: `calc(${keySize * gridHeight}vw + 1px)`,
-    }"
-  >
-    <div class="grid">
+  <div class="base-canvas" :class="{
+    hide: !properties.shown,
+  }">
+    <div class="grid" v-if="false">
       <template v-for="i in gridHeight">
         <div
           v-for="j in gridWidth"
@@ -22,53 +17,83 @@
       </template>
     </div>
     <div
-      class="keyboard"
-      v-show="properties.shown"
+      class="display-grid"
       :style="{
-        transform: `translate3d(+${keySize * keyboardLeft}vw, +${keySize * keyboardTop}vw, 0)`,
-        width: `${keySize * keyboardWidth}vw`
+        backgroundSize: `${keySize}px ${keySize}px`,
+        width: `${gridWidth * keySize}px`,
+        height: `${gridHeight * keySize}px`,
       }"
     >
       <div
-        v-for="{ code, key } in keyboard"
-        :key="code"
-        :class="[ `key-${code}` ]"
-        :style="{ width: `${keySize}vw`, height: `${keySize}vw`}"
+        v-for="(active, key) in actives"
+        class="active-key"
+        :key="key"
+        :style="{
+          backgroundColor: active.status || 'transparent',
+          top: `${active.top * keySize}px`,
+          left: `${active.left * keySize}px`,
+          width: `${keySize}px`,
+          height: `${keySize}px`,
+        }"
+      />
+      <div
+        class="keyboard"
+        v-show="properties.shown"
+        :style="{
+          transform: `translate3d(+${keySize * keyboardLeft}px, +${keySize * keyboardTop}px, 0)`,
+          width: `${keySize * keyboardWidth}px`
+        }"
       >
-        <span>{{ key }}</span>
+        <div
+          v-for="{ code, key } in keyboard"
+          :key="code"
+          :class="[ `key-${code}` ]"
+          :style="{ width: `${keySize}px`, height: `${keySize}px`}"
+        >
+          <span>{{ key }}</span>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.canvas-element {
+.base-canvas {
   position: relative;
-  left: 50%;
-  transform: translateX(-50%);
 
   margin-top: 60px;
   margin-bottom: 40px;
 }
 
-.grid {
+.display-grid {
+  position: relative;
+
+  left: 50%;
+  transform: translateX(-50%);
+
   border-width: 1px;
   border-style: solid;
-  border-top-width: 0;
-  border-left-width: 0;
-
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
+  border-top: 0;
+  border-left: 0;
 
   .dark & {
+    background-image: linear-gradient(to right, #555 1px, transparent 1px), linear-gradient(to bottom, #555 1px, transparent 1px);
     border-color: #555;
   }
+
   .paper & {
+    background-image: linear-gradient(to right, #ddd 1px, transparent 1px), linear-gradient(to bottom, #ddd 1px, transparent 1px);
     border-color: #ddd;
   }
+
   .hide & {
     border-width: 0;
+    background: transparent;
+  }
+
+  .active-key {
+    position: absolute;
+    z-index: -1;
   }
 }
 
@@ -76,17 +101,13 @@
   position: absolute;
   display: inline-block;
   top: 0;
-  opacity: 1;
 
   .dark & {
     background-color: rgba(255, 255, 255, 0.05);
   }
+
   .paper & {
     background-color: rgba(0, 0, 0, 0.05);
-  }
-
-  & [class*='key-'] {
-    border-width: 0px;
   }
 }
 
@@ -136,7 +157,7 @@ export default {
     grid: [],
     gridSize: [3, 4],
 
-    keySize: 2.5,
+    keySize: 30,
     keyboardWidth: 9,
 
     keyboard,
@@ -149,6 +170,7 @@ export default {
   computed: {
     ...mapGetters('color', ['currentHex']),
     ...mapGetters('theme', ['currentTheme']),
+    ...mapGetters('grid', ['actives']),
 
     keyboardHeight() {
       return ~~( this.keyboard.length / this.keyboardWidth )
@@ -171,31 +193,16 @@ export default {
   methods: {
     ...mapActions('color', ['nextColor']),
     ...mapActions('theme', ['nextTheme']),
+    ...mapActions('grid', ['clearActives', 'toggleActive']),
 
-    initGrid() {
-      let grid = []
-
-      for (var idx = 0; idx < this.gridHeight; idx += 1) {
-        grid[idx] = new Array(this.gridWidth)
-      }
-
-      this.grid = grid
-    },
     toggleGrid(keyboardIndex) {
       const gridLeft = this.keyboardLeft + keyboardIndex % this.keyboardWidth
       const gridTop = this.keyboardTop + ~~(keyboardIndex / this.keyboardWidth)
 
-      const newRow = this.grid[gridTop]
-
-      if (!newRow[gridLeft]) {
-        newRow[gridLeft] = this.currentHex
-      } else if (newRow[gridLeft] != this.currentHex) {
-        newRow[gridLeft] = this.currentHex
-      } else {
-        newRow[gridLeft] = false
-      }
-
-      Vue.set(this.grid, gridTop, newRow)
+      this.toggleActive({
+        position: `${gridLeft}x${gridTop}`,
+        color: this.currentHex
+      })
     },
 
     keyOperation(evt) {
@@ -237,7 +244,7 @@ export default {
         }
         case ' ': {
           // SPACE
-          this.initGrid()
+          this.clearActives()
           break
         }
         case 'Shift': {
@@ -261,8 +268,6 @@ export default {
     },
   },
   beforeMount() {
-    this.initGrid()
-
     window.addEventListener('keydown', this.keyOperation)
   },
   beforeDestroy() {
