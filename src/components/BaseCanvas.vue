@@ -19,6 +19,7 @@
     <div
       class="display-grid"
       :style="{
+        backgroundSize: `${keySize}px ${keySize}px`,
         width: `${gridWidth * keySize}px`,
         height: `${gridHeight * keySize}px`,
       }"
@@ -66,7 +67,6 @@
 
 .display-grid {
   position: relative;
-  background-size: 20px 20px;
 
   left: 50%;
   transform: translateX(-50%);
@@ -157,7 +157,7 @@ export default {
     grid: [],
     gridSize: [3, 4],
 
-    keySize: 20,
+    keySize: 30,
     keyboardWidth: 9,
 
     keyboard,
