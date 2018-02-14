@@ -60,7 +60,7 @@
 .base-canvas {
   position: relative;
 
-  margin-top: 80px;
+  margin-top: 60px;
   margin-bottom: 40px;
 }
 
@@ -155,7 +155,7 @@ import { findIndex as _findIndex } from 'lodash'
 export default {
   data: () => ({
     grid: [],
-    gridSize: [4, 8],
+    gridSize: [3, 4],
 
     keySize: 20,
     keyboardWidth: 9,
