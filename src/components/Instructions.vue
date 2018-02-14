@@ -16,17 +16,10 @@
 <style lang="scss" scoped>
 .instructions-container {
   position: relative;
-
   width: calc(66vw + 1px);
-
   top: 80px;
   left: 50%;
-
   transform: translateX(-50%);
-
-
-
-  margin-bottom: 80px;
 
   span {
     margin-right: 25px;

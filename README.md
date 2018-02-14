@@ -2,6 +2,8 @@
 
 a thing to draw with keypresses lol
 
+![keydraw](https://i.imgur.com/n3q4kDC.jpg)
+
 ## Prerequisite Instructions
 
 - Have either `yarn` or `npm`

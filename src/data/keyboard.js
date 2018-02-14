@@ -8,7 +8,7 @@ export default [
   { code: 55, key: '7' },
   { code: 56, key: '8' },
   { code: 57, key: '9' },
-  { code: 48, key: '0' },
+
   { code: 81, key: 'q' },
   { code: 87, key: 'w' },
   { code: 69, key: 'e' },
@@ -18,7 +18,7 @@ export default [
   { code: 85, key: 'u' },
   { code: 73, key: 'i' },
   { code: 79, key: 'o' },
-  { code: 80, key: 'p' },
+
   { code: 65, key: 'a' },
   { code: 83, key: 's' },
   { code: 68, key: 'd' },
@@ -28,7 +28,7 @@ export default [
   { code: 74, key: 'j' },
   { code: 75, key: 'k' },
   { code: 76, key: 'l' },
-  { code: 186, key: 'ò' },
+
   { code: 90, key: 'z' },
   { code: 88, key: 'x' },
   { code: 67, key: 'c' },
@@ -38,5 +38,5 @@ export default [
   { code: 77, key: 'm' },
   { code: 188, key: ',' },
   { code: 190, key: '.' },
-  { code: 189, key: '-' },
+
 ]

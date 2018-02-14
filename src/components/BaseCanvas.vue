@@ -1,14 +1,14 @@
 <template>
-  <div id="base-canvas" :class="[ 'canvas-element', properties.shown ? '' : 'hide' ]">
+  <div id="base-canvas" :class="[ 'canvas-element', properties.shown ? '' : 'hide' ]" :style="{ width: `calc(${keySize * gridWidth}vw + 1px)`}">
     <div class="grid">
       <template v-for="i in gridHeight">
-        <div v-for="j in size" :key="((i-1)*30)+(j-1)" :class="[ 'key-piece', `${((i-1)*30)+(j-1)}` ]" :style="{ backgroundColor: grid[i-1][j-1] || 'transparent' }" />
+        <div v-for="j in gridWidth" :key="((i-1)*30)+(j-1)" :class="[ 'key-piece', `${((i-1)*30)+(j-1)}` ]" :style="{ backgroundColor: grid[i-1][j-1] || 'transparent', width: `${keySize}vw`, height: `${keySize}vw` }" />
       </template>
     </div>
     <div class="keyboard" v-show="properties.shown" :style="{
-      transform: `translate3d(+${2.2 * keyboardLeft}vw, +${2.2 * keyboardTop}vw, 0)`,
+      transform: `translate3d(+${keySize * keyboardLeft}vw, +${keySize * keyboardTop}vw, 0)`, width: `${keySize * keyboardWidth}vw`
     }">
-    <div v-for="{ code, key } in keyboard" :key="code" :class="[ `key-${code}` ]">
+    <div v-for="{ code, key } in keyboard" :key="code" :class="[ `key-${code}` ]" :style="{ width: `${keySize}vw`, height: `${keySize}vw`}">
       <span>{{ key }}</span>
     </div>
   </div>
@@ -18,12 +18,8 @@
 <style lang="scss" scoped>
 .canvas-element {
   position: relative;
-
-  width: calc(66vw + 1px);
-
   top: 40px;
   left: 50%;
-
   transform: translateX(-50%);
 }
 
@@ -39,7 +35,6 @@
 
   .dark & {
    border-color: #555;
-
   }
   .paper & {
    border-color: #ddd;
@@ -52,16 +47,18 @@
 .keyboard {
   position: absolute;
   display: inline-block;
-  width: calc(2.2vw * 10);
   top: 0;
   opacity: 1;
-  transition: opacity 0s ease-in;
 
   .dark & {
   background-color: rgba(255, 255, 255, 0.05);
   }
   .paper & {
   background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  & [class*='key-'] {
+    border-width: 0px;
   }
 
 }
@@ -75,9 +72,8 @@
   border-right-width: 0;
   opacity: 1 !important;
 
-  width: 2.2vw;
-  height: 2.2vw;
   padding: 5px;
+  margin: 0;
 
   span {
     font-size: 1vw;
@@ -112,13 +108,12 @@ import { findIndex as _findIndex } from 'lodash'
 
 export default {
   data: () => ({
-    size: 30,
     grid: [],
-
-    gridHeight: 20,
-
+    keySize: 2.5,
+    keyboardWidth: 9,
+    blockWidth: 3,
+    blockHeight: 5,
     keyboard,
-    keyboardWidth: 10,
     keyboardPosition: [0, 0],
 
     properties: {
@@ -129,6 +124,12 @@ export default {
     ...mapGetters('color', ['currentHex']),
     ...mapGetters('theme', ['currentTheme']),
 
+    gridWidth: function () {
+      return this.keyboardWidth * this.blockWidth
+    },
+    gridHeight: function () {
+      return ( this.keyboard.length / this.keyboardWidth ) * this.blockHeight
+    },
     keyboardLeft() {
       return this.keyboardPosition[0]
     },
@@ -143,8 +144,8 @@ export default {
     initGrid() {
       let grid = []
 
-      for (var idx = 0; idx < this.size; idx += 1) {
-        grid[idx] = new Array(this.size);
+      for (var idx = 0; idx < this.gridWidth; idx += 1) {
+        grid[idx] = new Array(this.gridWidth);
       }
 
       this.grid = grid
@@ -185,7 +186,7 @@ export default {
           break
         }
         case 'ArrowRight': { // RIGHT ARROW
-          if (this.keyboardLeft < this.size - this.keyboardWidth) {
+          if (this.keyboardLeft < this.gridWidth - this.keyboardWidth) {
             Vue.set(this.keyboardPosition, 0, this.keyboardLeft + this.keyboardWidth)
           }
           break
