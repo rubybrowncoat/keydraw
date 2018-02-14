@@ -1,5 +1,5 @@
 {
-  "name": "Keydraw",
+  "name": "keydraw",
   "version": "1.0.0",
   "description": "a thing to draw with keypresses lol",
   "main": "src/index.js",
@@ -13,6 +13,9 @@
   },
   "devDependencies": {
     "eslint": "^4.17.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-prettier": "^2.6.0",
+    "eslint-plugin-vue": "^4.2.2",
     "gh-pages": "^1.1.0",
     "node-sass": "^4.7.2",
     "offline-plugin": "^4.9.0",
