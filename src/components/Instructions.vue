@@ -10,6 +10,7 @@
       <span class="menuItem">SPACE: CLEAR</span>
       <span class="menuItem">ALT: THEME</span>
       <span class="menuItem">SHIFT: <span :style="{ color: currentHex }" >COLOR</span></span>
+      <span class="menuItem">ENTER: GO TO <em>ARTEFACT</em></span>
     </div>
     <span class="copyright">
       &copy; 2018 <a href="http://pumo.mp">pumo.mp</a>
@@ -70,7 +71,7 @@
       text-decoration: none;
     }
   }
-  
+
 }
 
 </style>
