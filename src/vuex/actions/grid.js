@@ -6,12 +6,16 @@ export default {
     if (!currentPosition) {
       commit('addActive', payload)
     } else if (currentPosition.status !== color) {
-      commit('addActive', payload)
+      commit('replaceActive', payload)
     } else {
       commit('removeActive', position)
     }
   },
   clearActives({ commit }) {
     commit('clearActives')
+  },
+
+  setActives({ commit }, payload) {
+    console.log(payload)
   }
 }
