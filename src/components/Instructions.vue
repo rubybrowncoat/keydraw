@@ -1,17 +1,23 @@
 <template>
-  <div class="instructions-container">
+  <div class="instructions-container" :class="{
+    hide: inactive,
+  }">
     <span class="name">
       Keydraw
     </span>
-    <div class="menu">
+    <div class="menu active" v-show="!inactive">
+      <span class="menuItem">SHIFT: <span :style="{ color: currentHex }" >COLOR</span></span>
       <span class="menuItem">KEYS: TOGGLE</span>
       <span class="menuItem">ARROWS: MOVE</span>
-      <span class="menuItem">CTRL: SHOW/HIDE</span>
       <span class="menuItem">SPACE: CLEAR</span>
       <span class="menuItem">ALT: THEME</span>
-      <span class="menuItem">SHIFT: <span :style="{ color: currentHex }" >COLOR</span></span>
-      <span class="menuItem">ENTER: GO TO <em>ARTEFACT</em></span>
+
+      <span class="menuItem">CTRL: PREVIEW</span>
+      <span class="menuItem">ENTER: <em>ARTEFACT</em></span>
     </div>
+      <div class="menu inactive" v-show="inactive">
+      <span class="menuItem">BACKSPACE: EDIT</span>
+      </div>
     <span class="copyright">
       &copy; 2018 <a href="http://pumo.mp">pumo.mp</a>
     </span>
@@ -28,10 +34,8 @@
   transform: translateX(-50%);
   vertical-align: middle;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   text-transform: uppercase;
-  //border-bottom: 1px solid #555;
-  //padding-bottom: 20px;
 
   & .name {
     float: left;
@@ -80,6 +84,9 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  props: [
+    'inactive',
+  ],
   computed: {
     ...mapGetters('color', ['currentName', 'currentHex']),
   }

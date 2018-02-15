@@ -256,9 +256,6 @@ export default {
             const exportString = `${this.exportTheme};${this.exportActives}`
             const routeParam = LZString.compressToEncodedURIComponent(exportString)
 
-            console.log(exportString)
-            console.log(routeParam)
-
             this.$router.push(`/export/${routeParam}`)
             break
           }

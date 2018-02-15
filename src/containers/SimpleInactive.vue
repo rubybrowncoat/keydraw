@@ -1,6 +1,6 @@
 <template>
   <div id="wrapper" :class="currentTheme">
-    <inactive-instructions />
+    <instructions :inactive="true" />
     <base-canvas :inactive="true" />
   </div>
 </template>
@@ -40,12 +40,12 @@ import { mapGetters, mapActions } from 'vuex'
 
 import LZString from 'lz-string'
 
-import InactiveInstructions from '../components/InactiveInstructions'
+import Instructions from '../components/Instructions'
 import BaseCanvas from '../components/BaseCanvas'
 
 export default {
   components: {
-    'inactive-instructions': InactiveInstructions,
+    'instructions': Instructions,
     'base-canvas': BaseCanvas,
   },
   computed: {
