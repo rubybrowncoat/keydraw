@@ -1,3 +1,7 @@
+import { reduce as _reduce } from 'lodash'
+
+import colors from '../../data/colors'
+
 export default {
   toggleActive({ state, commit }, payload) {
     const { position, color } = payload
@@ -16,6 +20,27 @@ export default {
   },
 
   setActives({ commit }, payload) {
-    console.log(payload)
+    const newActives = _reduce(payload.split('/'), (result, compressedActive) => {
+      const [ position, colorIndex ] = compressedActive.split('-')
+      const [ left, top ] = position.split('x')
+
+      const colorHex = colors[colorIndex].hex
+
+      console.log({
+        position, colorIndex, top, left, colorHex, result,
+      })
+
+      result[position] = {
+        top,
+        left,
+        status: colorHex,
+      }
+
+      return result
+    }, {})
+
+    commit('setActives', newActives)
+
+    console.log(newActives)
   }
 }

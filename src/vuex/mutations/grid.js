@@ -27,6 +27,10 @@ export default {
   removeActive(state, position) {
     Vue.delete(state.actives, position)
   },
+
+  setActives(state, newActives) {
+    state.actives = newActives
+  },
   clearActives(state) {
     state.actives = {}
   }
