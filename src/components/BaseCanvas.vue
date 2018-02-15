@@ -1,21 +1,7 @@
 <template>
   <div class="base-canvas" :class="{
-    hide: !properties.shown,
+    hide: !properties.shown || inactive,
   }">
-    <div class="grid" v-if="false">
-      <template v-for="i in gridHeight">
-        <div
-          v-for="j in gridWidth"
-          :key="((i-1)*gridWidth)+(j-1)"
-          :class="[ 'key-piece', `${((i-1)*gridWidth)+(j-1)}` ]"
-          :style="{
-            backgroundColor: grid[i-1][j-1] || 'transparent',
-            width: `${keySize}vw`,
-            height: `${keySize}vw`
-          }"
-        />
-      </template>
-    </div>
     <div
       class="display-grid"
       :style="{
@@ -26,6 +12,7 @@
     >
       <div
         v-for="(active, key) in actives"
+        v-if="active.top < gridHeight && active.left < gridWidth"
         class="active-key"
         :key="key"
         :style="{
@@ -38,7 +25,7 @@
       />
       <div
         class="keyboard"
-        v-show="properties.shown"
+        v-show="properties.shown && !inactive"
         :style="{
           transform: `translate3d(+${keySize * keyboardLeft}px, +${keySize * keyboardTop}px, 0)`,
           width: `${keySize * keyboardWidth}px`
@@ -146,13 +133,17 @@
 <script>
 import Vue from 'vue'
 
-import { mapGetters, mapActions } from 'vuex'
+import LZString from 'lz-string'
+
+import { mapGetters, mapActions, mapState } from 'vuex'
+import { findIndex as _findIndex } from 'lodash'
 
 import keyboard from '../data/keyboard'
 
-import { findIndex as _findIndex } from 'lodash'
-
 export default {
+  props: [
+    'inactive',
+  ],
   data: () => ({
     grid: [],
     gridSize: [3, 4],
@@ -169,8 +160,10 @@ export default {
   }),
   computed: {
     ...mapGetters('color', ['currentHex']),
-    ...mapGetters('theme', ['currentTheme']),
-    ...mapGetters('grid', ['actives']),
+    ...mapGetters('theme', ['currentTheme', 'exportTheme']),
+    ...mapGetters('grid', ['exportActives']),
+
+    ...mapState('grid', ['actives']),
 
     keyboardHeight() {
       return ~~( this.keyboard.length / this.keyboardWidth )
@@ -206,62 +199,78 @@ export default {
     },
 
     keyOperation(evt) {
-      evt.preventDefault()
+      if (!this.inactive) {
+        evt.preventDefault()
 
-      switch (evt.key) {
-        case 'ArrowLeft': {
-          // LEFT ARROW
-          if (this.keyboardLeft > 0) {
-            Vue.set(this.keyboardPosition, 0, this.keyboardLeft - this.keyboardWidth)
+        switch (evt.key) {
+          case 'ArrowLeft': {
+            // LEFT ARROW
+            if (this.properties.shown && this.keyboardLeft > 0) {
+              Vue.set(this.keyboardPosition, 0, this.keyboardLeft - this.keyboardWidth)
+            }
+            break
           }
-          break
-        }
-        case 'ArrowUp': {
-          // UP ARROW
-          if (this.keyboardTop > 0) {
-            Vue.set(this.keyboardPosition, 1, this.keyboardTop - this.keyboardHeight)
+          case 'ArrowUp': {
+            // UP ARROW
+            if (this.properties.shown && this.keyboardTop > 0) {
+              Vue.set(this.keyboardPosition, 1, this.keyboardTop - this.keyboardHeight)
+            }
+            break
           }
-          break
-        }
-        case 'ArrowRight': {
-          // RIGHT ARROW
-          if (this.keyboardLeft < this.gridWidth - this.keyboardWidth) {
-            Vue.set(this.keyboardPosition, 0, this.keyboardLeft + this.keyboardWidth)
+          case 'ArrowRight': {
+            // RIGHT ARROW
+            if (this.properties.shown && this.keyboardLeft < this.gridWidth - this.keyboardWidth) {
+              Vue.set(this.keyboardPosition, 0, this.keyboardLeft + this.keyboardWidth)
+            }
+            break
           }
-          break
-        }
-        case 'ArrowDown': {
-          // DOWN ARROW
-          if (this.keyboardTop < this.gridHeight - this.keyboardHeight) {
-            Vue.set(this.keyboardPosition, 1, this.keyboardTop + this.keyboardHeight)
+          case 'ArrowDown': {
+            // DOWN ARROW
+            if (this.properties.shown && this.keyboardTop < this.gridHeight - this.keyboardHeight) {
+              Vue.set(this.keyboardPosition, 1, this.keyboardTop + this.keyboardHeight)
+            }
+            break
           }
-          break
-        }
-        case 'Control': {
-          // CTRL
-          this.properties.shown = !this.properties.shown
-          break
-        }
-        case ' ': {
-          // SPACE
-          this.clearActives()
-          break
-        }
-        case 'Shift': {
-          // SHIFT
-          this.nextColor()
-          break
-        }
-        case 'Alt': {
-          // ALT
-          this.nextTheme()
-          break
-        }
-        default: {
-          const keyboardIndex = _findIndex(keyboard, ['key', evt.key])
+          case 'Control': {
+            // CTRL
+            this.properties.shown = !this.properties.shown
+            break
+          }
+          case ' ': {
+            // SPACE
+            this.clearActives()
+            break
+          }
+          case 'Shift': {
+            // SHIFT
+            this.nextColor()
+            break
+          }
+          case 'Alt': {
+            // ALT
+            this.nextTheme()
+            break
+          }
+          case 'Enter': {
+            // ENTER
+            const exportString = `${this.exportTheme};${this.exportActives}`
+            const routeParam = LZString.compressToEncodedURIComponent(exportString)
 
-          if (keyboardIndex > -1) {
-            this.toggleGrid(keyboardIndex)
+            console.log(exportString)
+            console.log(routeParam)
+
+            this.$router.push(`/export/${routeParam}`)
+            break
+          }
+          default: {
+            // KEYS
+            if (this.properties.shown) {
+              const keyboardIndex = _findIndex(keyboard, ['key', evt.key])
+
+              if (keyboardIndex > -1) {
+                this.toggleGrid(keyboardIndex)
+              }
+            }
           }
         }
       }
