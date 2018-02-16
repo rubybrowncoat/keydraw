@@ -11,3 +11,5 @@ const vuexSorage = new VuexPersistence({
 })
 
 export const plugins = [vuexSorage.plugin]
+
+export const strict = false

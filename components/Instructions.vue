@@ -6,22 +6,21 @@
       Keydraw
     </span>
     <div class="menu active" v-show="!inactive">
-      <span class="menuItem">SHIFT: <span :style="{ color: currentHex }" >COLOR</span></span>
-      <span class="menuItem">KEYS: TOGGLE</span>
-      <span class="menuItem">ARROWS: MOVE</span>
-      <span class="menuItem">SPACE: CLEAR</span>
-      <span class="menuItem">ALT: THEME</span>
+      <span class="menuItem"><span class="label">ARROWS</span>MOVE</span>
+      <span class="menuItem"><span class="label">SPACE</span><span :style="{ color: currentHex }" >COLOR</span></span>
+      <span class="menuItem"><span class="label">KEYS</span>TOGGLE</span>
 
-      <span class="menuItem">CTRL: PREVIEW</span>
-      <span class="menuItem">ENTER: <em>ARTEFACT</em></span>
+      <span class="menuItem"><span class="label">⌫</span>CLEAR</span>
+      <!-- <span class="menuItem"><span class="label">O</span>THEME</span> -->
+      <!--<span class="menuItem">P: PREVIEW</span>-->
+      <span class="menuItem"><span class="label">⮐</span><em>ARTEFACT</em></span>
     </div>
-      <div class="menu inactive" v-show="inactive">
-      <span class="menuItem">BACKSPACE: EDIT</span>
-      </div>
+    <div class="menu inactive" v-show="inactive">
+      <span class="menuItem"><span class="label">⌫</span>EDIT</span>
+    </div>
     <span class="copyright">
       &copy; 2018 <a href="http://pumo.mp">pumo.mp</a>
     </span>
-
   </div>
 </template>
 
@@ -53,7 +52,17 @@
   }
   & .menu {
     & .menuItem {
-      margin-right: 20px;
+      margin-right: 12px;
+
+      & .label {
+        font-size: 15px;
+        border: 1px solid #fff;
+        padding: 5px 8px;
+        margin-right: 10px;
+        border-radius: 5px;
+        background-color: #555;
+
+      }
     }
   }
   & .copyright {

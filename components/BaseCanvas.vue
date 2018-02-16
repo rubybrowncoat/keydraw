@@ -1,6 +1,6 @@
 <template>
   <div class="base-canvas" :class="{
-    hide: !properties.shown || inactive,
+    hide: hidden,
   }">
     <div
       class="display-grid"
@@ -25,7 +25,8 @@
       />
       <div
         class="keyboard"
-        v-show="properties.shown && !inactive"
+        v-if="keyboardLeft !== undefined && keyboardTop !== undefined"
+        v-show="!hidden"
         :style="{
           transform: `translate3d(+${keySize * keyboardLeft}px, +${keySize * keyboardTop}px, 0)`,
           width: `${keySize * keyboardWidth}px`
@@ -48,7 +49,7 @@
 .base-canvas {
   position: relative;
 
-  margin-top: 60px;
+  margin-top: 50px;
   margin-bottom: 40px;
 }
 
@@ -131,153 +132,33 @@
 </style>
 
 <script>
-import Vue from 'vue'
 
-import LZString from 'lz-string'
-
-import { mapGetters, mapActions, mapState } from 'vuex'
-import { findIndex as _findIndex } from 'lodash'
+import { mapState, mapGetters } from 'vuex'
 
 import keyboard from '../data/keyboard'
 
 export default {
   props: [
-    'inactive',
+    'hidden',
+
+    'keySize',
+
+    'keyboardLeft',
+    'keyboardTop',
   ],
   data: () => ({
-    grid: [],
-    gridSize: [3, 4],
-
-    keySize: 30,
-    keyboardWidth: 9,
-
     keyboard,
-    keyboardPosition: [0, 0],
-
-    properties: {
-      shown: true,
-    },
   }),
   computed: {
-    ...mapGetters('color', ['currentHex']),
-    ...mapGetters('theme', ['currentTheme', 'exportTheme']),
-    ...mapGetters('grid', ['exportActives']),
+    ...mapGetters('grid', [
+      'keyboardWidth',
+      'keyboardHeight',
 
-    ...mapState('grid', ['actives']),
+      'gridWidth',
+      'gridHeight',
 
-    keyboardHeight() {
-      return ~~( this.keyboard.length / this.keyboardWidth )
-    },
-
-    gridWidth() {
-      return this.keyboardWidth * this.gridSize[0]
-    },
-    gridHeight() {
-      return this.keyboardHeight * this.gridSize[1]
-    },
-
-    keyboardLeft() {
-      return this.keyboardPosition[0]
-    },
-    keyboardTop() {
-      return this.keyboardPosition[1]
-    },
-  },
-  methods: {
-    ...mapActions('color', ['nextColor']),
-    ...mapActions('theme', ['nextTheme']),
-    ...mapActions('grid', ['clearActives', 'toggleActive']),
-
-    toggleGrid(keyboardIndex) {
-      const gridLeft = this.keyboardLeft + keyboardIndex % this.keyboardWidth
-      const gridTop = this.keyboardTop + ~~(keyboardIndex / this.keyboardWidth)
-
-      this.toggleActive({
-        position: `${gridLeft}x${gridTop}`,
-        color: this.currentHex
-      })
-    },
-
-    keyOperation(evt) {
-      if (!this.inactive) {
-        evt.preventDefault()
-
-        switch (evt.key) {
-          case 'ArrowLeft': {
-            // LEFT ARROW
-            if (this.properties.shown && this.keyboardLeft > 0) {
-              Vue.set(this.keyboardPosition, 0, this.keyboardLeft - this.keyboardWidth)
-            }
-            break
-          }
-          case 'ArrowUp': {
-            // UP ARROW
-            if (this.properties.shown && this.keyboardTop > 0) {
-              Vue.set(this.keyboardPosition, 1, this.keyboardTop - this.keyboardHeight)
-            }
-            break
-          }
-          case 'ArrowRight': {
-            // RIGHT ARROW
-            if (this.properties.shown && this.keyboardLeft < this.gridWidth - this.keyboardWidth) {
-              Vue.set(this.keyboardPosition, 0, this.keyboardLeft + this.keyboardWidth)
-            }
-            break
-          }
-          case 'ArrowDown': {
-            // DOWN ARROW
-            if (this.properties.shown && this.keyboardTop < this.gridHeight - this.keyboardHeight) {
-              Vue.set(this.keyboardPosition, 1, this.keyboardTop + this.keyboardHeight)
-            }
-            break
-          }
-          case 'Control': {
-            // CTRL
-            this.properties.shown = !this.properties.shown
-            break
-          }
-          case ' ': {
-            // SPACE
-            this.clearActives()
-            break
-          }
-          case 'Shift': {
-            // SHIFT
-            this.nextColor()
-            break
-          }
-          case 'Alt': {
-            // ALT
-            this.nextTheme()
-            break
-          }
-          case 'Enter': {
-            // ENTER
-            const exportString = `${this.exportTheme};${this.exportActives}`
-            const routeParam = LZString.compressToEncodedURIComponent(exportString)
-
-            this.$router.push(`/artefact/${routeParam}`)
-            break
-          }
-          default: {
-            // KEYS
-            if (this.properties.shown) {
-              const keyboardIndex = _findIndex(keyboard, ['key', evt.key])
-
-              if (keyboardIndex > -1) {
-                this.toggleGrid(keyboardIndex)
-              }
-            }
-          }
-        }
-      }
-    },
-  },
-  beforeMount() {
-    window.addEventListener('keydown', this.keyOperation)
-  },
-  beforeDestroy() {
-    window.removeEventListener('keydown', this.keyOperation)
+      'actives',
+    ]),
   },
 }
 </script>

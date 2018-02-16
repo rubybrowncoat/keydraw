@@ -2,7 +2,11 @@
   <div class="wrapper" :class="currentTheme">
     <div class="content">
       <instructions :inactive="true" />
-      <base-canvas :inactive="true" />
+      <base-canvas
+        :keySize="keySize"
+
+        :hidden="true"
+      />
     </div>
   </div>
 </template>
@@ -17,6 +21,11 @@ import BaseCanvas from '../../components/BaseCanvas'
 
 export default {
   transition: 'slide-left',
+  data: () => ({
+    keySize: 30,
+
+    hidden: false,
+  }),
   components: {
     'instructions': Instructions,
     'base-canvas': BaseCanvas,
@@ -26,7 +35,7 @@ export default {
   },
   methods: {
     ...mapActions('theme', ['setTheme']),
-    ...mapActions('grid', ['setActives']),
+    ...mapActions('grid', ['setSize', 'setActives']),
 
     keyOperation(evt) {
       evt.preventDefault()
@@ -46,15 +55,17 @@ export default {
   beforeDestroy() {
     window.removeEventListener('keydown', this.keyOperation)
   },
-  created() {
+  mounted() {
     const { magic } = this.$route.params
     const exportString = LZString.decompressFromEncodedURIComponent(magic)
-    const [ themeExport, activesExport ] = exportString.split(';')
+    const [ themeExport, sizeExport, activesExport ] = exportString.split(';')
 
     const [ , theme ] = themeExport.split('#')
+    const [ , size ] = sizeExport.split('#')
     const [ , actives ] = activesExport.split('#')
 
     this.setTheme(theme)
+    this.setSize(size)
     this.setActives(actives)
   },
 }
