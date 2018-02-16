@@ -1,13 +1,4 @@
 export default [
-  { code: 49, key: '1' },
-  { code: 50, key: '2' },
-  { code: 51, key: '3' },
-  { code: 52, key: '4' },
-  { code: 53, key: '5' },
-  { code: 54, key: '6' },
-  { code: 55, key: '7' },
-  { code: 56, key: '8' },
-  { code: 57, key: '9' },
 
   { code: 81, key: 'q' },
   { code: 87, key: 'w' },
@@ -16,8 +7,6 @@ export default [
   { code: 84, key: 't' },
   { code: 89, key: 'y' },
   { code: 85, key: 'u' },
-  { code: 73, key: 'i' },
-  { code: 79, key: 'o' },
 
   { code: 65, key: 'a' },
   { code: 83, key: 's' },
@@ -26,8 +15,6 @@ export default [
   { code: 71, key: 'g' },
   { code: 72, key: 'h' },
   { code: 74, key: 'j' },
-  { code: 75, key: 'k' },
-  { code: 76, key: 'l' },
 
   { code: 90, key: 'z' },
   { code: 88, key: 'x' },
@@ -36,7 +23,5 @@ export default [
   { code: 66, key: 'b' },
   { code: 78, key: 'n' },
   { code: 77, key: 'm' },
-  { code: 188, key: ',' },
-  { code: 190, key: '.' },
 
 ]

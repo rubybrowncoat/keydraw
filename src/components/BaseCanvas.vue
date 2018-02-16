@@ -48,7 +48,7 @@
 .base-canvas {
   position: relative;
 
-  margin-top: 60px;
+  margin-top: 50px;
   margin-bottom: 40px;
 }
 
@@ -146,10 +146,10 @@ export default {
   ],
   data: () => ({
     grid: [],
-    gridSize: [3, 4],
+    gridSize: [5, 7],
 
     keySize: 30,
-    keyboardWidth: 9,
+    keyboardWidth: 7,
 
     keyboard,
     keyboardPosition: [0, 0],
@@ -231,23 +231,23 @@ export default {
             }
             break
           }
-          case 'Control': {
-            // CTRL
+          case 'p': {
+            // p
             this.properties.shown = !this.properties.shown
+            break
+          }
+          case 'k': {
+            // k
+            this.clearActives()
             break
           }
           case ' ': {
             // SPACE
-            this.clearActives()
-            break
-          }
-          case 'Shift': {
-            // SHIFT
             this.nextColor()
             break
           }
-          case 'Alt': {
-            // ALT
+          case 'o': {
+            // o
             this.nextTheme()
             break
           }
