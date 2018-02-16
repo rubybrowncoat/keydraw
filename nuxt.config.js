@@ -10,5 +10,9 @@ module.exports = {
     '~/assets/main.scss'
   ],
 
+  modules: [
+    '@nuxtjs/webpackmonitor',
+  ],
+
   ...routerBase,
 }
