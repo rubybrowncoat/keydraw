@@ -10,13 +10,13 @@
     <span class="menuItem"><span class="label">SPACE</span><span :style="{ color: currentHex }" >COLOR</span></span>
     <span class="menuItem"><span class="label">KEYS</span>TOGGLE</span>
 
-    <span class="menuItem"><span class="label">K</span>CLEAR</span>
-    <span class="menuItem"><span class="label">O</span>THEME</span>
+    <span class="menuItem"><span class="label">⌫</span>CLEAR</span>
+    <!--<span class="menuItem"><span class="label">O</span>THEME</span>-->
     <!--<span class="menuItem">P: PREVIEW</span>-->
-    <span class="menuItem"><span class="label">ENTER</span><em>ARTEFACT</em></span>
+    <span class="menuItem"><span class="label">⮐</span><em>ARTEFACT</em></span>
   </div>
   <div class="menu inactive" v-show="inactive">
-    <span class="menuItem">BACKSPACE: EDIT</span>
+    <span class="menuItem"><span class="label">BACKSPACE</span>EDIT</span>
   </div>
   <span class="copyright">
     &copy; 2018 <a href="http://pumo.mp">pumo.mp</a>

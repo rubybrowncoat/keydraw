@@ -236,7 +236,7 @@ export default {
             this.properties.shown = !this.properties.shown
             break
           }
-          case 'k': {
+          case 'Backspace': {
             // k
             this.clearActives()
             break
@@ -255,6 +255,8 @@ export default {
             // ENTER
             const exportString = `${this.exportTheme};${this.exportActives}`
             const routeParam = LZString.compressToEncodedURIComponent(exportString)
+
+            console.log(exportString)
 
             this.$router.push(`/export/${routeParam}`)
             break
