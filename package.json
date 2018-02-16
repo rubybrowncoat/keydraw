@@ -10,7 +10,7 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "generate": "nuxt generate",
-    "deploy": "cross-env DEPLOY_ENV=GH_PAGES npm run generate && push-dir --dir=dist --branch=gh-pages --cleanup"
+    "deploy": "cross-env DEPLOY_ENV='GH_PAGES' NODE_ENV='production' npm run generate && push-dir --dir=dist --branch=gh-pages --cleanup"
   },
   "devDependencies": {
     "@nuxtjs/webpackmonitor": "^0.1.0",
