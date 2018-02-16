@@ -27,7 +27,9 @@
 <style lang="scss" scoped>
 .instructions-container {
   position: relative;
-  width: 80%;
+  width: 100%;
+  max-width: 1300px;
+  padding: 0 20px;
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
@@ -40,6 +42,7 @@
     float: left;
     padding: 3px 7px;
     margin-top: -3px;
+    height: 30px;
     .dark & {
       background-color: #fff;
       color: #444444;
@@ -52,8 +55,9 @@
   }
   & .menu {
     & .menuItem {
+      display: inline-block;
       margin-right: 12px;
-
+      margin-bottom: 15px;
       & .label {
         font-size: 15px;
         border: 1px solid #fff;
@@ -63,14 +67,16 @@
         background-color: #555;
 
       }
+      margin-left: 15px;
+      white-space: nowrap;
     }
   }
   & .copyright {
-    float: right;
+    margin-left: 15px;
   }
   .paper & {
     color: #000;
-    font-size: calc(10px + 0.3vw);
+    font-size: 12px;
     & a {
       color: #000;
       text-decoration: none;
@@ -78,7 +84,7 @@
   }
   .dark & {
     color: #fff;
-    font-size: calc(10px + 0.8vw);
+    font-size: 22px;
     & a {
       color: #fff;
       text-decoration: none;
