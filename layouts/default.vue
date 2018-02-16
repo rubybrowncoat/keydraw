@@ -1,5 +1,5 @@
 <template>
-	<router-view></router-view>
+  <nuxt/>
 </template>
 
 <style lang="scss">
@@ -17,7 +17,6 @@ html {
   box-sizing: inherit;
 }
 </style>
-
 
 <script>
 export default {

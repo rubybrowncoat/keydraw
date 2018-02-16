@@ -1,49 +1,22 @@
 <template>
-  <div id="wrapper" :class="currentTheme">
-    <instructions :inactive="true" />
-    <base-canvas :inactive="true" />
+  <div class="wrapper" :class="currentTheme">
+    <div class="content">
+      <instructions :inactive="true" />
+      <base-canvas :inactive="true" />
+    </div>
   </div>
 </template>
-
-<style lang="scss" scoped>
-#wrapper {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  min-height: 100vh;
-
-  &.dark {
-    color: #ffffff;
-    background-color: #444444;
-    font-family: 'VT323';
-    & a {
-      color: #fff;
-      text-decoration: none;
-    }
-  }
-
-  &.paper {
-    color: #000000;
-    background-color: #fffced;
-    font-family: 'Amiri';
-    & a {
-      color: #000;
-      text-decoration: none;
-    }
-  }
-}
-</style>
-
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 
 import LZString from 'lz-string'
 
-import Instructions from '../components/Instructions'
-import BaseCanvas from '../components/BaseCanvas'
+import Instructions from '../../components/Instructions'
+import BaseCanvas from '../../components/BaseCanvas'
 
 export default {
+  transition: 'slide-left',
   components: {
     'instructions': Instructions,
     'base-canvas': BaseCanvas,

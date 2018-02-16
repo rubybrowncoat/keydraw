@@ -1,4 +1,5 @@
 node_modules/
 .DS_Store
+.nuxt/
 /poi.config.js
 dist

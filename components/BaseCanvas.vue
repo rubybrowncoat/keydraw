@@ -256,7 +256,7 @@ export default {
             const exportString = `${this.exportTheme};${this.exportActives}`
             const routeParam = LZString.compressToEncodedURIComponent(exportString)
 
-            this.$router.push(`/export/${routeParam}`)
+            this.$router.push(`/artefact/${routeParam}`)
             break
           }
           default: {
