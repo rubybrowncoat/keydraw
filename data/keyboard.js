@@ -1,5 +1,4 @@
 export default [
-
   { code: 81, key: 'q' },
   { code: 87, key: 'w' },
   { code: 69, key: 'e' },
@@ -23,5 +22,4 @@ export default [
   { code: 66, key: 'b' },
   { code: 78, key: 'n' },
   { code: 77, key: 'm' },
-
 ]
