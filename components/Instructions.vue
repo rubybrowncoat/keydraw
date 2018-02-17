@@ -7,16 +7,17 @@
     </span>
     <div class="menu active" v-show="!inactive">
       <span class="menuItem"><span class="label">ARROWS</span>MOVE</span>
-      <span class="menuItem"><span class="label">SPACE</span><span :style="{ color: currentHex }" >COLOR</span></span>
+      <span class="menuItem"><span class="label">&#8679;+ARROWS</span>RESIZE</span>
+      <span class="menuItem"><span class="label">SPACE</span><span>COLOR</span></span>
       <span class="menuItem"><span class="label">KEYS</span>TOGGLE</span>
 
       <span class="menuItem"><span class="label">⌫</span>CLEAR</span>
       <!-- <span class="menuItem"><span class="label">O</span>THEME</span> -->
       <!--<span class="menuItem">P: PREVIEW</span>-->
-      <span class="menuItem"><span class="label">⮐</span><em>ARTEFACT</em></span>
+      <span class="menuItem"><span class="label">&#11152;</span><em>ARTEFACT</em></span>
     </div>
     <div class="menu inactive" v-show="inactive">
-      <span class="menuItem"><span class="label">⌫</span>EDIT</span>
+      <span class="menuItem"><span class="label">&#9003;</span>EDIT</span>
     </div>
     <span class="copyright">
       &copy; 2018 <a href="http://pumo.mp">pumo.mp</a>
@@ -56,8 +57,9 @@
   & .menu {
     & .menuItem {
       display: inline-block;
-      margin-right: 12px;
       margin-bottom: 15px;
+      margin-left: 15px;
+      white-space: nowrap;
       & .label {
         font-size: 15px;
         border: 1px solid #fff;
@@ -67,8 +69,6 @@
         background-color: #555;
 
       }
-      margin-left: 15px;
-      white-space: nowrap;
     }
   }
   & .copyright {
@@ -104,6 +104,7 @@ export default {
   ],
   computed: {
     ...mapGetters('color', ['currentName', 'currentHex']),
+    ...mapGetters('grid', ['actives']),
   }
 }
 </script>

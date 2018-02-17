@@ -15,8 +15,9 @@
         v-if="active.top < gridHeight && active.left < gridWidth"
         class="active-key"
         :key="key"
+        :class="[active.status]"
         :style="{
-          backgroundColor: active.status || 'transparent',
+          //backgroundColor: active.status || 'transparent',
           top: `${active.top * keySize}px`,
           left: `${active.left * keySize}px`,
           width: `${keySize}px`,

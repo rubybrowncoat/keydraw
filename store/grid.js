@@ -5,7 +5,7 @@ import keyboard from '../data/keyboard'
 import colors from '../data/colors'
 
 export const state = () => ({
-  size: [3, 4],
+  size: [4, 7],
 
   keyboardWidth: 7,
 
@@ -62,12 +62,12 @@ export const actions = {
         const color = colors[colorIndex]
 
         if (color) {
-          const colorHex = colors[colorIndex].hex
+          const colorName = colors[colorIndex].name
 
           result[position] = {
             top,
             left,
-            status: colorHex,
+            status: colorName,
           }
         }
 

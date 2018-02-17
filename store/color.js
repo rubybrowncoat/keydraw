@@ -1,6 +1,7 @@
 import { findIndex as _findIndex, head as _head, nth as _nth } from 'lodash'
 
 import colors from '../data/colors'
+import themes from '../data/themes'
 
 export const state = () => ({
   currentColor: { ..._head(colors) },

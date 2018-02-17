@@ -1,0 +1,30 @@
+// DARK THEME COLORS //
+
+.dark {
+
+  & .white {
+    background-color: #fff;
+  }
+  & .black {
+    background-color: #000;
+  }
+  & .red {
+    background-color: #f00;
+  }
+  & .blue {
+    background-color: #00f;
+  }
+  & .green {
+    background-color: #0f0;
+  }
+  & .cyan {
+    background-color: #0ff;
+  }
+  & .yellow {
+    background-color: #ff0;
+  }
+  & .fuchsia {
+    background-color: #f0f;
+  }
+
+}
