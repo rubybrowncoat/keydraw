@@ -8,7 +8,7 @@
     <div class="menu active" v-show="!inactive">
       <span class="menuItem"><span class="label">ARROWS</span>MOVE</span>
       <span class="menuItem"><span class="label">&#8679;+ARROWS</span>RESIZE</span>
-      <span class="menuItem"><span class="label">SPACE</span><span>COLOR</span></span>
+      <span class="menuItem"><span class="label">SPACE</span><span :class="['is-text', currentName]">COLOR</span></span>
       <span class="menuItem"><span class="label">KEYS</span>TOGGLE</span>
 
       <span class="menuItem"><span class="label">⌫</span>CLEAR</span>
@@ -39,7 +39,7 @@
   justify-content: space-between;
   text-transform: uppercase;
 
-  & .name {
+  .name {
     float: left;
     padding: 3px 7px;
     margin-top: -3px;
@@ -54,13 +54,13 @@
     }
 
   }
-  & .menu {
-    & .menuItem {
+  .menu {
+    .menuItem {
       display: inline-block;
       margin-bottom: 15px;
       margin-left: 15px;
       white-space: nowrap;
-      & .label {
+      .label {
         font-size: 15px;
         border: 1px solid #fff;
         padding: 5px 8px;
@@ -71,21 +71,16 @@
       }
     }
   }
-  & .copyright {
+
+  .copyright {
     margin-left: 15px;
   }
-  .paper & {
-    color: #000;
-    font-size: 12px;
-    & a {
-      color: #000;
-      text-decoration: none;
-    }
-  }
+
   .dark & {
     color: #fff;
     font-size: 22px;
-    & a {
+
+    a {
       color: #fff;
       text-decoration: none;
     }
@@ -103,7 +98,7 @@ export default {
     'inactive',
   ],
   computed: {
-    ...mapGetters('color', ['currentName', 'currentHex']),
+    ...mapGetters('color', ['currentName']),
     ...mapGetters('grid', ['actives']),
   }
 }

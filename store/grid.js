@@ -32,12 +32,12 @@ export const actions = {
   },
 
   toggleActive({ state, commit }, payload) {
-    const { position, color } = payload
+    const { position, name } = payload
     const currentPosition = state.actives[position]
 
     if (!currentPosition) {
       commit('addActive', payload)
-    } else if (currentPosition.status !== color) {
+    } else if (currentPosition.status !== name) {
       commit('replaceActive', payload)
     } else {
       commit('removeActive', position)
@@ -126,16 +126,16 @@ export const mutations = {
     Vue.set(state.size, 1, state.size[1] - 1)
   },
 
-  addActive(state, { position, color }) {
+  addActive(state, { position, name }) {
     const [left, top] = position.split('x')
 
     Vue.set(state.actives, position, {
       top,
       left,
-      status: color,
+      status: name,
     })
   },
-  replaceActive(state, { position, color }) {
+  replaceActive(state, { position, name }) {
     const [left, top] = position.split('x')
     const newActives = {
       ...state.actives,
@@ -144,7 +144,7 @@ export const mutations = {
     newActives[position] = {
       top,
       left,
-      status: color,
+      status: name,
     }
 
     state.actives = newActives

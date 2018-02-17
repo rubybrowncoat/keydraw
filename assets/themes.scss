@@ -1,30 +1,32 @@
-// DARK THEME COLORS //
-
 .dark {
+  $dark-colors:
+    white #fff #000,
+    black #000 #fff,
+    red #f00 transparent,
+    blue #00f transparent,
+    green #0f0 transparent,
+    cyan #0ff transparent,
+    yellow #ff0 transparent,
+    fuchsia #f0f transparent;
+  @each $color in $dark-colors {
+      .#{nth($color, 1)} {
+          background-color: nth($color, 2);
 
-  & .white {
-    background-color: #fff;
-  }
-  & .black {
-    background-color: #000;
-  }
-  & .red {
-    background-color: #f00;
-  }
-  & .blue {
-    background-color: #00f;
-  }
-  & .green {
-    background-color: #0f0;
-  }
-  & .cyan {
-    background-color: #0ff;
-  }
-  & .yellow {
-    background-color: #ff0;
-  }
-  & .fuchsia {
-    background-color: #f0f;
+          &.is-text {
+            background-color: nth($color, 3);
+            color: nth($color, 2);
+          }
+      }
   }
 
+  &.wrapper {
+    color: #ffffff;
+    background-color: #444444;
+    font-family: 'VT323';
+
+    a {
+      color: #fff;
+      text-decoration: none;
+    }
+  }
 }

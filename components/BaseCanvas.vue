@@ -13,11 +13,9 @@
       <div
         v-for="(active, key) in actives"
         v-if="active.top < gridHeight && active.left < gridWidth"
-        class="active-key"
         :key="key"
-        :class="[active.status]"
+        :class="[ 'active-key', active.status ]"
         :style="{
-          //backgroundColor: active.status || 'transparent',
           top: `${active.top * keySize}px`,
           left: `${active.left * keySize}px`,
           width: `${keySize}px`,
