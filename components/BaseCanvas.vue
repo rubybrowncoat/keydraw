@@ -73,6 +73,11 @@
     border-color: #ddd;
   }
 
+  .zoo & {
+    background-image: linear-gradient(to right, #555 1px, transparent 1px), linear-gradient(to bottom, #555 1px, transparent 1px);
+    border-color: #555;
+  }
+
   .hide & {
     border-width: 0;
     background: transparent;
@@ -119,6 +124,9 @@
   }
 
   .dark & {
+    border-color: #555;
+  }
+  .zoo & {
     border-color: #555;
   }
   .paper & {

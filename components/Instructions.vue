@@ -38,6 +38,7 @@
   display: flex;
   justify-content: space-between;
   text-transform: uppercase;
+  font-size: 22px;
 
   .name {
     float: left;
@@ -78,7 +79,7 @@
 
   .dark & {
     color: #fff;
-    font-size: 22px;
+    
 
     a {
       color: #fff;

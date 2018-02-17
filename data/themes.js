@@ -3,6 +3,6 @@ export default [
     name: 'dark',
   },
   {
-     name: 'paper',
+    name: 'zoo',
   },
 ]
