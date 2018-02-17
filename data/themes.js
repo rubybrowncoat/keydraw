@@ -8,4 +8,7 @@ export default [
   {
     name: 'zoo',
   },
+   {
+    name: 'vapor',
+  },
 ]

@@ -18,30 +18,6 @@
       }
     }
   }
-
-}
-
-.zoo {
-  $zoo-colors:
-  white #fff #000 url('../tiles/zoo/white.png'),
-  black #000 #fff url('../tiles/zoo/black.png'),
-  red #f00 transparent url('../tiles/zoo/red.png'),
-  blue #00f transparent url('../tiles/zoo/blue.png'),
-  green #0f0 transparent url('../tiles/zoo/green.png'),
-  cyan #0ff transparent url('../tiles/zoo/cyan.png'),
-  yellow #ff0 transparent url('../tiles/zoo/yellow.png'),
-  fuchsia #f0f transparent url('../tiles/zoo/fuchsia.png');
-  @each $color in $zoo-colors {
-    .#{nth($color, 1)} {
-      background: nth($color, 4);
-
-      &.is-text {
-        background: nth($color, 3);
-        color: nth($color, 2);
-      }
-    }
-  }
-
 }
 
 .pastel {
@@ -64,16 +40,60 @@
       }
     }
   }
+}
 
+.zoo {
+  $zoo-colors:
+  white #fff #000 url('../tiles/zoo/white.png'),
+  black #000 #fff url('../tiles/zoo/black.png'),
+  red #f00 transparent url('../tiles/zoo/red.png'),
+  blue #00f transparent url('../tiles/zoo/blue.png'),
+  green #0f0 transparent url('../tiles/zoo/green.png'),
+  cyan #0ff transparent url('../tiles/zoo/cyan.png'),
+  yellow #ff0 transparent url('../tiles/zoo/yellow.png'),
+  fuchsia #f0f transparent url('../tiles/zoo/fuchsia.png');
+  @each $color in $zoo-colors {
+    .#{nth($color, 1)} {
+      background: nth($color, 4);
+
+      &.is-text {
+        background: nth($color, 3);
+        color: nth($color, 2);
+      }
+    }
+  }
+}
+
+.vapor {
+  $dark-colors:
+  white linear-gradient(45deg, #fff, #888) #000,
+  black linear-gradient(45deg, #000, #111) #fff,
+  red linear-gradient(45deg, #f00, #811) transparent,
+  blue linear-gradient(45deg, #00f, #118) transparent,
+  green linear-gradient(45deg, #0f0, #181) transparent,
+  cyan linear-gradient(45deg, #0ff, #188) transparent,
+  yellow linear-gradient(45deg, #ff0, #881) transparent,
+  fuchsia linear-gradient(45deg, #f0f, #818) transparent;
+  @each $color in $dark-colors {
+    .#{nth($color, 1)} {
+      background: nth($color, 2);
+
+      &.is-text {
+        background-color: nth($color, 3);
+        color: nth($color, 2);
+      }
+    }
+  }
 }
 
 $base-colors:
 
 /* name primary secondary tertiary keyboard */
 
-dark #444444 #FFFFFF #555555 rgba(255, 255, 255, 0.05),
-pastel #FFFFE5 #9B9B58 #DBDBB0 rgba(186, 186, 126, 0.1),
-zoo #000000 #FFFFFF #111111 rgba(255, 255, 255, 0.05);
+dark #444444 #FFFFFF #555555 rgba(255, 255, 255, 0.05) none,
+pastel #FFFFE5 #9B9B58 #DBDBB0 rgba(186, 186, 126, 0.1) none,
+zoo #000000 #FFFFFF #222222 rgba(255, 255, 255, 0.05) none,
+vapor #1e1651 #fff #f0f rgba(255, 0, 255, 0.1) linear-gradient(#1e1651, #0ff);
 
 @each $color in $base-colors {
   .#{nth($color, 1)} {
@@ -81,6 +101,7 @@ zoo #000000 #FFFFFF #111111 rgba(255, 255, 255, 0.05);
     &.wrapper {
       color: nth($color, 3);
       background-color: nth($color, 2);
+      background-image: nth($color, 6);
       font-family: 'VT323';
 
       a {
@@ -96,10 +117,14 @@ zoo #000000 #FFFFFF #111111 rgba(255, 255, 255, 0.05);
 
     & .keyboard {
       background-color: nth($color, 5);
+      border-color: nth($color, 4);
     }
 
     & [class*='key-'] {
       border-color: nth($color, 4);
+      span {
+        color: nth($color, 4);
+      }
     }
 
     & .name {

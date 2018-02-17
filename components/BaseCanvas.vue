@@ -28,7 +28,7 @@
         v-show="!hidden"
         :style="{
           transform: `translate3d(+${keySize * keyboardLeft}px, +${keySize * keyboardTop}px, 0)`,
-          width: `${keySize * keyboardWidth}px`
+          width: `calc(${keySize * keyboardWidth}px + 1px)`
         }"
       >
         <div
@@ -78,6 +78,11 @@
   position: absolute;
   display: inline-block;
   top: 0;
+  border-width: 1px;
+  border-style: solid;
+  border-left-width: 0;
+  border-top-width: 0;
+  box-sizing: border-box;
 
 }
 
@@ -96,7 +101,6 @@
   span {
     font-size: 1vw;
     display: inline;
-    color: #555;
     margin: 0 !important;
     padding: 0 !important;
   }
