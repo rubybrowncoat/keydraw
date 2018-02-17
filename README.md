@@ -7,10 +7,10 @@ a thing to draw with keypresses lol
 ## Prerequisite Instructions
 
 - Have either `yarn` or `npm`
-- Install `poi` globally:  `yarn global add poi` or `npm install -g poi`
 - `yarn` or `npm install` in project root
 
 ## Build Instructions
 
-- `poi dev` for a development build on a local server
-- `poi build` for a production build (in dist/)
+- `yarn dev` or `npm run dev` for a development build and a local server
+- `yarn build` or `npm run build` for a production build (in dist/)
+- `yarn deploy` or `npm run deploy` to deploy to gh-pages (repo url is /keydraw/)
