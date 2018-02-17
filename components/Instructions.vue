@@ -11,8 +11,8 @@
       <span class="menuItem"><span class="label">SPACE</span><span :class="['is-text', currentName]">COLOR</span></span>
       <span class="menuItem"><span class="label">KEYS</span>TOGGLE</span>
 
-      <span class="menuItem"><span class="label">⌫</span>CLEAR</span>
-      <!-- <span class="menuItem"><span class="label">O</span>THEME</span> -->
+      <span class="menuItem"><span class="label">&#9003;</span>CLEAR</span>
+      <span class="menuItem"><span class="label">O</span>THEME</span>
       <!--<span class="menuItem">P: PREVIEW</span>-->
       <span class="menuItem"><span class="label">&#11152;</span><em>ARTEFACT</em></span>
     </div>
@@ -45,14 +45,6 @@
     padding: 3px 7px;
     margin-top: -3px;
     height: 30px;
-    .dark & {
-      background-color: #fff;
-      color: #444444;
-    }
-    .paper & {
-      background-color: #000;
-      color: #fffced;
-    }
 
   }
   .menu {
@@ -63,28 +55,17 @@
       white-space: nowrap;
       .label {
         font-size: 15px;
-        border: 1px solid #fff;
+        border-width: 1px;
+        border-style: solid;
         padding: 5px 8px;
         margin-right: 10px;
         border-radius: 5px;
-        background-color: #555;
-
       }
     }
   }
 
   .copyright {
     margin-left: 15px;
-  }
-
-  .dark & {
-    color: #fff;
-    
-
-    a {
-      color: #fff;
-      text-decoration: none;
-    }
   }
 
 }

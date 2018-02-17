@@ -79,13 +79,6 @@
   display: inline-block;
   top: 0;
 
-  .dark & {
-    background-color: rgba(255, 255, 255, 0.05);
-  }
-
-  .paper & {
-    background-color: rgba(0, 0, 0, 0.05);
-  }
 }
 
 [class*='key-'] {
