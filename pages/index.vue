@@ -47,7 +47,7 @@ export default {
     'base-canvas': BaseCanvas,
   },
   computed: {
-    ...mapGetters('color', ['currentHex']),
+    ...mapGetters('color', ['currentName']),
     ...mapGetters('theme', [
       'currentTheme',
 
@@ -90,7 +90,7 @@ export default {
 
       this.toggleActive({
         position: `${gridLeft}x${gridTop}`,
-        color: this.currentHex
+        name: this.currentName
       })
     },
 

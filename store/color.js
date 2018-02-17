@@ -1,7 +1,6 @@
 import { findIndex as _findIndex, head as _head, nth as _nth } from 'lodash'
 
 import colors from '../data/colors'
-import themes from '../data/themes'
 
 export const state = () => ({
   currentColor: { ..._head(colors) },
@@ -20,9 +19,6 @@ export const actions = {
 export const getters = {
   currentName(state) {
     return state.currentColor.name
-  },
-  currentHex(state) {
-    return state.currentColor.hex
   },
 }
 
