@@ -104,7 +104,7 @@ export const getters = {
   },
   exportActives(state) {
     return `a#${_map(state.actives, (active, key) => {
-      const colorIndex = _findIndex(colors, ['hex', active.status])
+      const colorIndex = _findIndex(colors, ['name', active.status])
 
       return `${key}-${colorIndex}`
     }).join('/')}`

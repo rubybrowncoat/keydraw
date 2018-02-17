@@ -29,10 +29,20 @@
       text-decoration: none;
     }
   }
+
+  & .display-grid {
+    background-image: linear-gradient(to right, #555 1px, transparent 1px), linear-gradient(to bottom, #555 1px, transparent 1px);
+    border-color: #555;
+  }
+
+  & [class*='key-'] {
+    border-color: #555;
+  }
+
 }
 
 .zoo {
-  $dark-colors:
+  $zoo-colors:
     white #fff #000 url('../tiles/zoo/white.png'),
     black #000 #fff url('../tiles/zoo/black.png'),
     red #f00 transparent url('../tiles/zoo/red.png'),
@@ -41,7 +51,7 @@
     cyan #0ff transparent url('../tiles/zoo/cyan.png'),
     yellow #ff0 transparent url('../tiles/zoo/yellow.png'),
     fuchsia #f0f transparent url('../tiles/zoo/fuchsia.png');
-  @each $color in $dark-colors {
+  @each $color in $zoo-colors {
       .#{nth($color, 1)} {
           background: nth($color, 4);
 
@@ -61,5 +71,14 @@
       color: #fff;
       text-decoration: none;
     }
+  }
+
+  & .display-grid {
+    background-image: linear-gradient(to right, #111 1px, transparent 1px), linear-gradient(to bottom, #111 1px, transparent 1px);
+    border-color: #111;
+  }
+
+  & [class*='key-'] {
+    border-color: #111;
   }
 }

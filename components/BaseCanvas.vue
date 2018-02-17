@@ -63,21 +63,6 @@
   border-top: 0;
   border-left: 0;
 
-  .dark & {
-    background-image: linear-gradient(to right, #555 1px, transparent 1px), linear-gradient(to bottom, #555 1px, transparent 1px);
-    border-color: #555;
-  }
-
-  .paper & {
-    background-image: linear-gradient(to right, #ddd 1px, transparent 1px), linear-gradient(to bottom, #ddd 1px, transparent 1px);
-    border-color: #ddd;
-  }
-
-  .zoo & {
-    background-image: linear-gradient(to right, #555 1px, transparent 1px), linear-gradient(to bottom, #555 1px, transparent 1px);
-    border-color: #555;
-  }
-
   .hide & {
     border-width: 0;
     background: transparent;
@@ -123,15 +108,6 @@
     padding: 0 !important;
   }
 
-  .dark & {
-    border-color: #555;
-  }
-  .zoo & {
-    border-color: #555;
-  }
-  .paper & {
-    border-color: #ddd;
-  }
   .hide & {
     border-width: 0px;
   }
