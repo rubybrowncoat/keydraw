@@ -8,11 +8,11 @@
     <div class="menu active" v-show="!inactive">
       <span class="menuItem"><span class="label">ARROWS</span>MOVE</span>
       <span class="menuItem"><span class="label">&#8679;+ARROWS</span>RESIZE</span>
-      <span class="menuItem"><span class="label">SPACE</span><span :class="['is-text', currentName]">COLOR</span></span>
+      <span class="menuItem"><span class="label">SPACE</span>COLOR<span :class="['colorTile', currentName]"></span></span>
       <span class="menuItem"><span class="label">KEYS</span>TOGGLE</span>
 
       <span class="menuItem"><span class="label">&#9003;</span>CLEAR</span>
-      <span class="menuItem"><span class="label">O</span>THEME</span>
+      <span class="menuItem"><span class="label">O</span>THEME<span class="themeName">{{currentTheme}}</span></span>
       <!--<span class="menuItem">P: PREVIEW</span>-->
       <span class="menuItem"><span class="label">&#11152;</span><em>ARTEFACT</em></span>
     </div>
@@ -62,6 +62,21 @@
         border-radius: 5px;
       }
     }
+    .colorTile {
+      position: relative;
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin-left: 10px;
+      top: 3px;
+    }
+    .themeName {
+      position: relative;
+      margin-left: 10px;
+      font-size: 15px;
+      padding: 2px 4px;
+      top: -2px
+    }
   }
 
   .copyright {
@@ -81,6 +96,7 @@ export default {
   ],
   computed: {
     ...mapGetters('color', ['currentName']),
+    ...mapGetters('theme', ['currentTheme']),
     ...mapGetters('grid', ['actives']),
   }
 }

@@ -5,10 +5,16 @@ export default [
    {
     name: 'pastel',
   },
+   {
+    name: 'invert',
+  },
   {
     name: 'zoo',
   },
    {
     name: 'vapor',
+  },
+   {
+    name: 'go',
   },
 ]

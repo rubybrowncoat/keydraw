@@ -2,46 +2,48 @@
   <div class="base-canvas" :class="{
     hide: hidden,
   }">
+  <div
+  class="display-grid"
+  :style="{
+    backgroundSize: `${keySize}px ${keySize}px`,
+    width: `${gridWidth * keySize}px`,
+    height: `${gridHeight * keySize}px`,
+  }"
+  >
+  <div
+  v-for="(active, key) in actives"
+  v-if="active.top < gridHeight && active.left < gridWidth"
+  :key="key"
+  :class="[ 'active-key', active.status ]"
+  :style="{
+    top: `${active.top * keySize}px`,
+    left: `${active.left * keySize}px`,
+    width: `${keySize}px`,
+    height: `${keySize}px`,
+  }"
+  />
+  <div class="keyboardContainer">
     <div
-      class="display-grid"
-      :style="{
-        backgroundSize: `${keySize}px ${keySize}px`,
-        width: `${gridWidth * keySize}px`,
-        height: `${gridHeight * keySize}px`,
-      }"
+    class="keyboard"
+    v-if="keyboardLeft !== undefined && keyboardTop !== undefined"
+    v-show="!hidden"
+    :style="{
+      transform: `translate3d(+${keySize * keyboardLeft}px, +${keySize * keyboardTop}px, 0)`,
+      width: `calc(${keySize * keyboardWidth}px + 1px)`
+    }"
     >
-      <div
-        v-for="(active, key) in actives"
-        v-if="active.top < gridHeight && active.left < gridWidth"
-        :key="key"
-        :class="[ 'active-key', active.status ]"
-        :style="{
-          top: `${active.top * keySize}px`,
-          left: `${active.left * keySize}px`,
-          width: `${keySize}px`,
-          height: `${keySize}px`,
-        }"
-      />
-      <div
-        class="keyboard"
-        v-if="keyboardLeft !== undefined && keyboardTop !== undefined"
-        v-show="!hidden"
-        :style="{
-          transform: `translate3d(+${keySize * keyboardLeft}px, +${keySize * keyboardTop}px, 0)`,
-          width: `calc(${keySize * keyboardWidth}px + 1px)`
-        }"
-      >
-        <div
-          v-for="{ code, key } in keyboard"
-          :key="code"
-          :class="[ `key-${code}` ]"
-          :style="{ width: `${keySize}px`, height: `${keySize}px`}"
-        >
-          <span>{{ key }}</span>
-        </div>
-      </div>
-    </div>
+    <div
+    v-for="{ code, key } in keyboard"
+    :key="code"
+    :class="[ `key-${code}` ]"
+    :style="{ width: `${keySize}px`, height: `${keySize}px`}"
+    >
+    <span>{{ key }}</span>
   </div>
+</div>
+</div>
+</div>
+</div>
 </template>
 
 <style lang="scss" scoped>
@@ -119,12 +121,12 @@ import keyboard from '../data/keyboard'
 
 export default {
   props: [
-    'hidden',
+  'hidden',
 
-    'keySize',
+  'keySize',
 
-    'keyboardLeft',
-    'keyboardTop',
+  'keyboardLeft',
+  'keyboardTop',
   ],
   data: () => ({
     keyboard,
@@ -138,7 +140,7 @@ export default {
       'gridHeight',
 
       'actives',
-    ]),
+      ]),
   },
 }
 </script>
