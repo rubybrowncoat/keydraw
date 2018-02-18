@@ -12,7 +12,7 @@
       <span class="menuItem"><span class="label">KEYS</span>TOGGLE</span>
 
       <span class="menuItem"><span class="label">&#9003;</span>CLEAR</span>
-      <span class="menuItem"><span class="label">O</span>THEME<span class="themeName">{{currentTheme}}</span></span>
+      <span class="menuItem"><span class="label">I/O</span>THEME<span class="themeName">{{currentTheme}}</span></span>
       <!--<span class="menuItem">P: PREVIEW</span>-->
       <span class="menuItem"><span class="label">&#11152;</span><em>ARTEFACT</em></span>
     </div>

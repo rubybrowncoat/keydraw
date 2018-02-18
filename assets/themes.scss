@@ -129,22 +129,26 @@
     }
   }
 
-  & .display-grid {
+  /*& .display-grid {
     transform: translateX(calc(-50% + 15px)) translateY(15px) !important;
     border-top-width: 0px !important;
-
     background-image: linear-gradient(to right, #000 1px, transparent 1px), linear-gradient(to bottom, #000 1px, transparent 1px) !important;
       border-color: transparent !important;
+  } */
 
-    //height: calc(100%) !important;
-    
-  }
-  & .keyboardContainer {
-    transform: translateX(-15px) translateY(-15px) !important;
-  }  
+  & .display-grid {
+
+    background-image: linear-gradient(to right, transparent 14px, #000 15px, transparent 2px), linear-gradient(to bottom, transparent 14px, #000 15px, transparent 2px) !important;
+    border-color: transparent !important;
+      
+  } 
+
+  //& .keyboardContainer {
+    //transform: translateX(-15px) translateY(-15px) !important;
+  //}  
 
   & .active-key {
-    transform: translateX(-15px) translateY(-15px);
+    //transform: translateX(-15px) translateY(-15px);
     border-radius: 100% !important;
   }  
 

@@ -15,6 +15,14 @@ export const actions = {
     commit('setCurrentTheme', nextTheme)
   },
 
+  previousTheme({ state, commit }) {
+    const currentIndex = _findIndex(themes, theme => theme.name === state.currentTheme.name)
+    const previousIndex = currentIndex - 1
+    const previousTheme = { ..._nth(themes, previousIndex % themes.length) }
+
+    commit('setCurrentTheme', previousTheme)
+  },
+
   setTheme({ state, commit }, themeName) {
     const theme = { ..._find(themes, ['name', themeName]) }
 
