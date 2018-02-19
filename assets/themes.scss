@@ -130,9 +130,11 @@
   }
 
   & .display-grid {
-    background-image: linear-gradient(to right, transparent 14px, #000 15px, transparent 2px), linear-gradient(to bottom, transparent 14px, #000 15px, transparent 2px) !important;
+    background-image: linear-gradient(to right, transparent 14px, #000 15px, transparent 0), linear-gradient(to bottom, transparent 14px, #000 15px, transparent 0) !important;
+
     border-color: transparent !important;
   } 
+
   & .active-key {
     border-radius: 100% !important;
   }
