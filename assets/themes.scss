@@ -3,8 +3,8 @@
   white #fff #000,
   black #000 #fff,
   red #f00 transparent,
+  green #0f0 transparent,  
   blue #00f transparent,
-  green #0f0 transparent,
   cyan #0ff transparent,
   yellow #ff0 transparent,
   fuchsia #f0f transparent;
@@ -25,8 +25,8 @@
   white #fff #000,
   black #333333 #fff,
   red #FF3B3B transparent,
+  green #00BD46 transparent,  
   blue #3D5EC1 transparent,
-  green #00BD46 transparent,
   cyan #00E0FF transparent,
   yellow #FFD758 transparent,
   fuchsia #B84EAB transparent;
@@ -47,8 +47,8 @@
   white #000 #fff,
   black #fff #000,
   red #0ff transparent,
+  green #f0f transparent,  
   blue #ff0 transparent,
-  green #f0f transparent,
   cyan #f00 transparent,
   yellow #00f transparent,
   fuchsia #0f0 transparent;
@@ -69,8 +69,8 @@
   white #fff #000 url('../tiles/zoo/white.png'),
   black #000 #fff url('../tiles/zoo/black.png'),
   red #f00 transparent url('../tiles/zoo/red.png'),
+  green #0f0 transparent url('../tiles/zoo/green.png'),  
   blue #00f transparent url('../tiles/zoo/blue.png'),
-  green #0f0 transparent url('../tiles/zoo/green.png'),
   cyan #0ff transparent url('../tiles/zoo/cyan.png'),
   yellow #ff0 transparent url('../tiles/zoo/yellow.png'),
   fuchsia #f0f transparent url('../tiles/zoo/fuchsia.png');
@@ -91,8 +91,8 @@
   white linear-gradient(45deg, #fff, #888) #000,
   black linear-gradient(45deg, #000, #111) #fff,
   red linear-gradient(45deg, #f00, #811) transparent,
+  green linear-gradient(45deg, #0f0, #181) transparent,  
   blue linear-gradient(45deg, #00f, #118) transparent,
-  green linear-gradient(45deg, #0f0, #181) transparent,
   cyan linear-gradient(45deg, #0ff, #188) transparent,
   yellow linear-gradient(45deg, #ff0, #881) transparent,
   fuchsia linear-gradient(45deg, #f0f, #818) transparent;
@@ -113,8 +113,8 @@
   white #fff transparent,
   black #000 transparent,
   red #000 transparent,
-  blue #000 transparent,
   green #fff transparent,
+  blue #000 transparent,
   cyan #fff transparent,
   yellow #fff transparent,
   fuchsia #000 transparent;
@@ -129,29 +129,29 @@
     }
   }
 
-  /*& .display-grid {
-    transform: translateX(calc(-50% + 15px)) translateY(15px) !important;
-    border-top-width: 0px !important;
-    background-image: linear-gradient(to right, #000 1px, transparent 1px), linear-gradient(to bottom, #000 1px, transparent 1px) !important;
-      border-color: transparent !important;
-  } */
-
   & .display-grid {
-
     background-image: linear-gradient(to right, transparent 14px, #000 15px, transparent 2px), linear-gradient(to bottom, transparent 14px, #000 15px, transparent 2px) !important;
     border-color: transparent !important;
-      
   } 
-
-  //& .keyboardContainer {
-    //transform: translateX(-15px) translateY(-15px) !important;
-  //}  
-
   & .active-key {
-    //transform: translateX(-15px) translateY(-15px);
     border-radius: 100% !important;
-  }  
-
+  }
+  & [class*='key-'] {
+    border-radius: 100% !important;
+    border-bottom-width: 1px !important;
+    border-right-width: 1px !important;
+    background-color: rgba(0, 0, 0, 0.1);
+    span {
+      text-shadow:
+   -1px -1px 0 #dab15b,  
+    1px -1px 0 #dab15b,
+    -1px 1px 0 #dab15b,
+     1px 1px 0 #dab15b;
+    }
+  }
+  & .keyboard {
+    border-width: 0 !important;
+  }
 }
 
 $base-colors:
@@ -163,7 +163,7 @@ pastel #FFFFE5 #9B9B58 #DBDBB0 rgba(186, 186, 126, 0.1) none,
 invert #BBBBBB #000000 #AAAAAA rgba(0, 0, 0, 0.05) none,
 zoo #000000 #FFFFFF #222222 rgba(255, 255, 255, 0.05) none,
 vapor #1e1651 #fff #f0f rgba(255, 0, 255, 0.1) linear-gradient(#1e1651, #0ff),
-go #dab15b #FFFFFF #000000 rgba(0, 0, 0, 0.1) none;
+go #dab15b #FFFFFF #000000 transparent none;
 
 @each $color in $base-colors {
   .#{nth($color, 1)} {

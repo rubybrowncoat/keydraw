@@ -22,7 +22,6 @@
     height: `${keySize}px`,
   }"
   />
-  <div class="keyboardContainer">
     <div
     class="keyboard"
     v-if="keyboardLeft !== undefined && keyboardTop !== undefined"
@@ -40,7 +39,6 @@
     >
     <span>{{ key }}</span>
   </div>
-</div>
 </div>
 </div>
 </div>
@@ -101,7 +99,7 @@
   margin: 0;
 
   span {
-    font-size: 1vw;
+    font-size: 20px;
     display: inline;
     margin: 0 !important;
     padding: 0 !important;

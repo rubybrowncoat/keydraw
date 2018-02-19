@@ -9,16 +9,16 @@ export default [
     name: 'red',
   },
   {
-    name: 'blue',
-  },
-  {
     name: 'green',
   },
   {
-    name: 'cyan',
+    name: 'blue',
   },
   {
     name: 'yellow',
+  },
+  {
+    name: 'cyan',
   },
   {
     name: 'fuchsia',
