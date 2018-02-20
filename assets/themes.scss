@@ -1,32 +1,216 @@
 .dark {
   $dark-colors:
-    white #fff #000,
-    black #000 #fff,
-    red #f00 transparent,
-    blue #00f transparent,
-    green #0f0 transparent,
-    cyan #0ff transparent,
-    yellow #ff0 transparent,
-    fuchsia #f0f transparent;
+  white #fff #000,
+  black #000 #fff,
+  red #f00 transparent,
+  green #0f0 transparent,  
+  blue #00f transparent,
+  cyan #0ff transparent,
+  yellow #ff0 transparent,
+  fuchsia #f0f transparent;
   @each $color in $dark-colors {
-      .#{nth($color, 1)} {
-          background-color: nth($color, 2);
+    .#{nth($color, 1)} {
+      background-color: nth($color, 2);
 
-          &.is-text {
-            background-color: nth($color, 3);
-            color: nth($color, 2);
-          }
+      &.is-text {
+        background-color: nth($color, 3);
+        color: nth($color, 2);
       }
-  }
-
-  &.wrapper {
-    color: #ffffff;
-    background-color: #444444;
-    font-family: 'VT323';
-
-    a {
-      color: #fff;
-      text-decoration: none;
     }
   }
 }
+
+.pastel {
+  $pastel-colors:
+  white #fff #000,
+  black #333333 #fff,
+  red #FF3B3B transparent,
+  green #00BD46 transparent,  
+  blue #3D5EC1 transparent,
+  cyan #00E0FF transparent,
+  yellow #FFD758 transparent,
+  fuchsia #B84EAB transparent;
+  @each $color in $pastel-colors {
+    .#{nth($color, 1)} {
+      background-color: nth($color, 2);
+
+      &.is-text {
+        background-color: nth($color, 3);
+        color: nth($color, 2);
+      }
+    }
+  }
+}
+
+.invert {
+  $invert-colors:
+  white #000 #fff,
+  black #fff #000,
+  red #0ff transparent,
+  green #f0f transparent,  
+  blue #ff0 transparent,
+  cyan #f00 transparent,
+  yellow #00f transparent,
+  fuchsia #0f0 transparent;
+  @each $color in $invert-colors {
+    .#{nth($color, 1)} {
+      background-color: nth($color, 2);
+
+      &.is-text {
+        background-color: nth($color, 3);
+        color: nth($color, 2);
+      }
+    }
+  }
+}
+
+.zoo {
+  $zoo-colors:
+  white #fff #000 url('../tiles/zoo/white.png'),
+  black #000 #fff url('../tiles/zoo/black.png'),
+  red #f00 transparent url('../tiles/zoo/red.png'),
+  green #0f0 transparent url('../tiles/zoo/green.png'),  
+  blue #00f transparent url('../tiles/zoo/blue.png'),
+  cyan #0ff transparent url('../tiles/zoo/cyan.png'),
+  yellow #ff0 transparent url('../tiles/zoo/yellow.png'),
+  fuchsia #f0f transparent url('../tiles/zoo/fuchsia.png');
+  @each $color in $zoo-colors {
+    .#{nth($color, 1)} {
+      background: nth($color, 4);
+
+      &.is-text {
+        background: nth($color, 3);
+        color: nth($color, 2);
+      }
+    }
+  }
+}
+
+.vapor {
+  $vapor-colors:
+  white linear-gradient(45deg, #fff, #888) #000,
+  black linear-gradient(45deg, #000, #111) #fff,
+  red linear-gradient(45deg, #f00, #811) transparent,
+  green linear-gradient(45deg, #0f0, #181) transparent,  
+  blue linear-gradient(45deg, #00f, #118) transparent,
+  cyan linear-gradient(45deg, #0ff, #188) transparent,
+  yellow linear-gradient(45deg, #ff0, #881) transparent,
+  fuchsia linear-gradient(45deg, #f0f, #818) transparent;
+  @each $color in $vapor-colors {
+    .#{nth($color, 1)} {
+      background: nth($color, 2);
+
+      &.is-text {
+        background-color: nth($color, 3);
+        color: nth($color, 2);
+      }
+    }
+  }
+}
+
+.go {
+  $go-colors:
+  white #fff transparent,
+  black #000 transparent,
+  red #000 transparent,
+  green #fff transparent,
+  blue #000 transparent,
+  cyan #fff transparent,
+  yellow #fff transparent,
+  fuchsia #000 transparent;
+  @each $color in $go-colors {
+    .#{nth($color, 1)} {
+      background-color: nth($color, 2);
+
+      &.is-text {
+        background-color: nth($color, 3);
+        color: nth($color, 2);
+      }
+    }
+  }
+
+  & .display-grid {
+    background-image: linear-gradient(to right, transparent 14px, #000 15px, transparent 0), linear-gradient(to bottom, transparent 14px, #000 15px, transparent 0) !important;
+
+    border-color: transparent !important;
+  } 
+
+  & .active-key {
+    border-radius: 100% !important;
+  }
+  & [class*='key-'] {
+    border-radius: 100% !important;
+    border-bottom-width: 1px !important;
+    border-right-width: 1px !important;
+    background-color: rgba(0, 0, 0, 0.1);
+    span {
+      text-shadow:
+   -1px -1px 0 #dab15b,  
+    1px -1px 0 #dab15b,
+    -1px 1px 0 #dab15b,
+     1px 1px 0 #dab15b;
+    }
+  }
+  & .keyboard {
+    border-width: 0 !important;
+  }
+}
+
+$base-colors:
+
+/* name primary secondary tertiary keyboard bg-img */
+
+dark #444444 #FFFFFF #555555 rgba(255, 255, 255, 0.05) none,
+pastel #FFFFE5 #9B9B58 #DBDBB0 rgba(186, 186, 126, 0.1) none,
+invert #BBBBBB #000000 #AAAAAA rgba(0, 0, 0, 0.05) none,
+zoo #000000 #FFFFFF #222222 rgba(255, 255, 255, 0.05) none,
+vapor #1e1651 #fff #f0f rgba(255, 0, 255, 0.1) linear-gradient(#1e1651, #0ff),
+go #dab15b #FFFFFF #000000 transparent none;
+
+@each $color in $base-colors {
+  .#{nth($color, 1)} {
+
+    &.wrapper {
+      color: nth($color, 3);
+      background-color: nth($color, 2);
+      background-image: nth($color, 6);
+      font-family: 'VT323';
+
+      a {
+        color: nth($color, 3);
+        text-decoration: none;
+      }
+    }
+
+    & .display-grid {
+      background-image: linear-gradient(to right, nth($color, 4) 1px, transparent 1px), linear-gradient(to bottom, nth($color, 4) 1px, transparent 1px);
+      border-color: nth($color, 4);
+    }
+
+    & .keyboard {
+      background-color: nth($color, 5);
+      border-color: nth($color, 4);
+    }
+
+    & [class*='key-'] {
+      border-color: nth($color, 4);
+      span {
+        color: nth($color, 4);
+      }
+    }
+
+    & .name {
+      background-color: nth($color, 3);
+      color: nth($color, 2);
+    }
+    & .label {
+      border-color: nth($color, 3);
+      background-color: nth($color, 4);
+    }
+    & .themeName {
+      color: nth($color, 4);
+      background-color: nth($color, 3);
+    }
+  }
+}
+

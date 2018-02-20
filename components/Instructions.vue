@@ -8,11 +8,11 @@
     <div class="menu active" v-show="!inactive">
       <span class="menuItem"><span class="label">ARROWS</span>MOVE</span>
       <span class="menuItem"><span class="label">&#8679;+ARROWS</span>RESIZE</span>
-      <span class="menuItem"><span class="label">SPACE</span><span :class="['is-text', currentName]">COLOR</span></span>
+      <span class="menuItem"><span class="label">SPACE</span>COLOR<span :class="['colorTile', currentName]"></span></span>
       <span class="menuItem"><span class="label">KEYS</span>TOGGLE</span>
 
-      <span class="menuItem"><span class="label">⌫</span>CLEAR</span>
-      <!-- <span class="menuItem"><span class="label">O</span>THEME</span> -->
+      <span class="menuItem"><span class="label">&#9003;</span>CLEAR</span>
+      <span class="menuItem"><span class="label">I/O</span>THEME<span class="themeName">{{currentTheme}}</span></span>
       <!--<span class="menuItem">P: PREVIEW</span>-->
       <span class="menuItem"><span class="label">&#11152;</span><em>ARTEFACT</em></span>
     </div>
@@ -38,20 +38,13 @@
   display: flex;
   justify-content: space-between;
   text-transform: uppercase;
+  font-size: 22px;
 
   .name {
     float: left;
     padding: 3px 7px;
     margin-top: -3px;
     height: 30px;
-    .dark & {
-      background-color: #fff;
-      color: #444444;
-    }
-    .paper & {
-      background-color: #000;
-      color: #fffced;
-    }
 
   }
   .menu {
@@ -62,28 +55,32 @@
       white-space: nowrap;
       .label {
         font-size: 15px;
-        border: 1px solid #fff;
+        border-width: 1px;
+        border-style: solid;
         padding: 5px 8px;
         margin-right: 10px;
         border-radius: 5px;
-        background-color: #555;
-
       }
+    }
+    .colorTile {
+      position: relative;
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin-left: 10px;
+      top: 3px;
+    }
+    .themeName {
+      position: relative;
+      margin-left: 10px;
+      font-size: 15px;
+      padding: 2px 4px;
+      top: -2px
     }
   }
 
   .copyright {
     margin-left: 15px;
-  }
-
-  .dark & {
-    color: #fff;
-    font-size: 22px;
-
-    a {
-      color: #fff;
-      text-decoration: none;
-    }
   }
 
 }
@@ -99,6 +96,7 @@ export default {
   ],
   computed: {
     ...mapGetters('color', ['currentName']),
+    ...mapGetters('theme', ['currentTheme']),
     ...mapGetters('grid', ['actives']),
   }
 }

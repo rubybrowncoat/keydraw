@@ -28,7 +28,7 @@
         v-show="!hidden"
         :style="{
           transform: `translate3d(+${limitedKeySize * keyboardLeft}px, +${limitedKeySize * keyboardTop}px, 0)`,
-          width: `${limitedKeySize * keyboardWidth}px`
+          width: `calc(${limitedKeySize * keyboardWidth}px + 1px)`
         }"
       >
         <div
@@ -36,8 +36,9 @@
           :key="code"
           :class="[
             `key-${code}`,
-            limitedKeySize < 15 ? 'small' : null,
-            limitedKeySize < 12 ? 'tiny' : null,
+            limitedKeySize <= 24 ? 'medium' : null,
+            limitedKeySize <= 18 ? 'small' : null,
+            limitedKeySize <= 12 ? 'tiny' : null,
           ]"
           :style="{
             minWidth: `${limitedKeySize}px`,
@@ -74,16 +75,6 @@
   border-top: 0;
   border-left: 0;
 
-  .dark & {
-    background-image: linear-gradient(to right, #555 1px, transparent 1px), linear-gradient(to bottom, #555 1px, transparent 1px);
-    border-color: #555;
-  }
-
-  .paper & {
-    background-image: linear-gradient(to right, #ddd 1px, transparent 1px), linear-gradient(to bottom, #ddd 1px, transparent 1px);
-    border-color: #ddd;
-  }
-
   .hide & {
     border-width: 0;
     background: transparent;
@@ -97,15 +88,13 @@
 
 .keyboard {
   display: flex;
+  top: 0;
+  border-width: 1px;
+  border-style: solid;
+  border-left-width: 0;
+  border-top-width: 0;
+  box-sizing: border-box;
   flex-wrap: wrap;
-
-  .dark & {
-    background-color: rgba(255, 255, 255, 0.05);
-  }
-
-  .paper & {
-    background-color: rgba(0, 0, 0, 0.05);
-  }
 }
 
 [class*='key-'] {
@@ -120,19 +109,25 @@
   margin: 0;
 
   span {
-    font-size: 16px;
+    font-size: 20px;
     display: block;
     text-align: center;
-    color: #555;
+
     margin: 0 !important;
     padding: 0 !important;
+  }
+
+  &.medium {
+    span {
+      font-size: 14px;
+    }
   }
 
   &.small {
     span {
       font-size: 11px;
     }
-  }
+ }
 
   &.tiny {
     span {
@@ -140,13 +135,7 @@
     }
   }
 
-  .dark & {
-    border-color: #555;
-  }
-  .paper & {
-    border-color: #ddd;
-  }
-  .hide & {
+   .hide & {
     border-width: 0px;
   }
 }

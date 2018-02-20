@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     ...mapActions('color', ['nextColor']),
-    ...mapActions('theme', ['nextTheme']),
+    ...mapActions('theme', ['nextTheme', 'previousTheme']),
     ...mapActions('grid', [
       'incrementWidth',
       'decrementWidth',
@@ -185,7 +185,16 @@ export default {
         }
         case 'o': {
           // o
+          if (event.shiftKey) {
+              this.previousTheme()
+            } else {
           this.nextTheme()
+        }
+          break
+        }
+        case 'i': {
+          // i
+          this.previousTheme()
           break
         }
         case 'Enter': {

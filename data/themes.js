@@ -2,7 +2,19 @@ export default [
   {
     name: 'dark',
   },
+   {
+    name: 'pastel',
+  },
+   {
+    name: 'invert',
+  },
   {
-     name: 'paper',
+    name: 'zoo',
+  },
+   {
+    name: 'vapor',
+  },
+   {
+    name: 'go',
   },
 ]
