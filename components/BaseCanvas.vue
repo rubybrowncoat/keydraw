@@ -5,9 +5,9 @@
     <div
       class="display-grid"
       :style="{
-        backgroundSize: `${keySize}px ${keySize}px`,
-        width: `${gridWidth * keySize}px`,
-        height: `${gridHeight * keySize}px`,
+        backgroundSize: `${limitedKeySize}px ${limitedKeySize}px`,
+        width: `${gridWidth * limitedKeySize}px`,
+        height: `${gridHeight * limitedKeySize}px`,
       }"
     >
       <div
@@ -16,10 +16,10 @@
         :key="key"
         :class="[ 'active-key', active.status ]"
         :style="{
-          top: `${active.top * keySize}px`,
-          left: `${active.left * keySize}px`,
-          width: `${keySize}px`,
-          height: `${keySize}px`,
+          top: `${active.top * limitedKeySize}px`,
+          left: `${active.left * limitedKeySize}px`,
+          width: `${limitedKeySize}px`,
+          height: `${limitedKeySize}px`,
         }"
       />
       <div
@@ -27,15 +27,26 @@
         v-if="keyboardLeft !== undefined && keyboardTop !== undefined"
         v-show="!hidden"
         :style="{
-          transform: `translate3d(+${keySize * keyboardLeft}px, +${keySize * keyboardTop}px, 0)`,
-          width: `${keySize * keyboardWidth}px`
+          transform: `translate3d(+${limitedKeySize * keyboardLeft}px, +${limitedKeySize * keyboardTop}px, 0)`,
+          width: `${limitedKeySize * keyboardWidth}px`
         }"
       >
         <div
           v-for="{ code, key } in keyboard"
           :key="code"
-          :class="[ `key-${code}` ]"
-          :style="{ width: `${keySize}px`, height: `${keySize}px`}"
+          :class="[
+            `key-${code}`,
+            limitedKeySize < 15 ? 'small' : null,
+            limitedKeySize < 12 ? 'tiny' : null,
+          ]"
+          :style="{
+            minWidth: `${limitedKeySize}px`,
+            width: `${limitedKeySize}px`,
+            minHeight: `${limitedKeySize}px`,
+            height: `${limitedKeySize}px`,
+
+            lineHeight: `${limitedKeySize}px`,
+          }"
         >
           <span>{{ key }}</span>
         </div>
@@ -85,9 +96,8 @@
 }
 
 .keyboard {
-  position: absolute;
-  display: inline-block;
-  top: 0;
+  display: flex;
+  flex-wrap: wrap;
 
   .dark & {
     background-color: rgba(255, 255, 255, 0.05);
@@ -107,15 +117,27 @@
   border-right-width: 0;
   opacity: 1 !important;
 
-  padding: 5px;
   margin: 0;
 
   span {
-    font-size: 1vw;
-    display: inline;
+    font-size: 16px;
+    display: block;
+    text-align: center;
     color: #555;
     margin: 0 !important;
     padding: 0 !important;
+  }
+
+  &.small {
+    span {
+      font-size: 11px;
+    }
+  }
+
+  &.tiny {
+    span {
+      font-size: 0;
+    }
   }
 
   .dark & {
@@ -131,8 +153,9 @@
 </style>
 
 <script>
-
 import { mapState, mapGetters } from 'vuex'
+
+import { throttle as _throttle } from 'lodash'
 
 import keyboard from '../data/keyboard'
 
@@ -147,6 +170,7 @@ export default {
   ],
   data: () => ({
     keyboard,
+    windowWidth: window.innerWidth,
   }),
   computed: {
     ...mapGetters('grid', [
@@ -158,6 +182,15 @@ export default {
 
       'actives',
     ]),
+
+    limitedKeySize() {
+      return Math.min(Math.floor(( this.windowWidth - 50 ) / this.gridWidth), this.keySize)
+    },
   },
+  mounted() {
+    window.addEventListener('resize', _throttle(() => {
+      this.windowWidth = window.innerWidth
+    }, 250))
+  }
 }
 </script>
