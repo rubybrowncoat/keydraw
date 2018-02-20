@@ -176,10 +176,16 @@ export default {
       return Math.min(Math.floor(( this.windowWidth - 50 ) / this.gridWidth), this.keySize)
     },
   },
-  mounted() {
-    window.addEventListener('resize', _throttle(() => {
+  methods: {
+    keyResize: _throttle(() => {
       this.windowWidth = window.innerWidth
-    }, 250))
-  }
+    }, 250)
+  },
+  beforeMount() {
+    window.addEventListener('resize', this.keyResize)
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.keyResize)
+  },
 }
 </script>
