@@ -11,6 +11,16 @@ module.exports = {
     '~/assets/main.scss'
   ],
 
+  head: {
+    link: [
+      {
+        rel: 'icon',
+        type: 'image/png',
+        href: 'favicon2.png',
+      },
+    ],
+  },
+
   modules: [
     '@nuxtjs/webpackmonitor',
   ],

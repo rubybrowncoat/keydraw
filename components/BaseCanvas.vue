@@ -2,46 +2,58 @@
   <div class="base-canvas" :class="{
     hide: hidden,
   }">
-  <div
-  class="display-grid"
-  :style="{
-    backgroundSize: `${keySize}px ${keySize}px`,
-    width: `${gridWidth * keySize}px`,
-    height: `${gridHeight * keySize}px`,
-  }"
-  >
-  <div
-  v-for="(active, key) in actives"
-  v-if="active.top < gridHeight && active.left < gridWidth"
-  :key="key"
-  :class="[ 'active-key', active.status ]"
-  :style="{
-    top: `${active.top * keySize}px`,
-    left: `${active.left * keySize}px`,
-    width: `${keySize}px`,
-    height: `${keySize}px`,
-  }"
-  />
     <div
-    class="keyboard"
-    v-if="keyboardLeft !== undefined && keyboardTop !== undefined"
-    v-show="!hidden"
-    :style="{
-      transform: `translate3d(+${keySize * keyboardLeft}px, +${keySize * keyboardTop}px, 0)`,
-      width: `calc(${keySize * keyboardWidth}px + 1px)`
-    }"
+      class="display-grid"
+      :style="{
+        backgroundSize: `${limitedKeySize}px ${limitedKeySize}px`,
+        width: `${gridWidth * limitedKeySize}px`,
+        height: `${gridHeight * limitedKeySize}px`,
+      }"
     >
-    <div
-    v-for="{ code, key } in keyboard"
-    :key="code"
-    :class="[ `key-${code}` ]"
-    :style="{ width: `${keySize}px`, height: `${keySize}px`}"
-    >
-    <span>{{ key }}</span>
+      <div
+        v-for="(active, key) in actives"
+        v-if="active.top < gridHeight && active.left < gridWidth"
+        :key="key"
+        :class="[ 'active-key', active.status ]"
+        :style="{
+          top: `${active.top * limitedKeySize}px`,
+          left: `${active.left * limitedKeySize}px`,
+          width: `${limitedKeySize}px`,
+          height: `${limitedKeySize}px`,
+        }"
+      />
+      <div
+        class="keyboard"
+        v-if="keyboardLeft !== undefined && keyboardTop !== undefined"
+        v-show="!hidden"
+        :style="{
+          transform: `translate3d(+${limitedKeySize * keyboardLeft}px, +${limitedKeySize * keyboardTop}px, 0)`,
+          width: `calc(${limitedKeySize * keyboardWidth}px + 1px)`
+        }"
+      >
+        <div
+          v-for="{ code, key } in keyboard"
+          :key="code"
+          :class="[
+            `key-${code}`,
+            limitedKeySize <= 24 ? 'medium' : null,
+            limitedKeySize <= 18 ? 'small' : null,
+            limitedKeySize <= 12 ? 'tiny' : null,
+          ]"
+          :style="{
+            minWidth: `${limitedKeySize}px`,
+            width: `${limitedKeySize}px`,
+            minHeight: `${limitedKeySize}px`,
+            height: `${limitedKeySize}px`,
+
+            lineHeight: `${limitedKeySize}px`,
+          }"
+        >
+          <span>{{ key }}</span>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
-</div>
-</div>
 </template>
 
 <style lang="scss" scoped>
@@ -75,15 +87,14 @@
 }
 
 .keyboard {
-  position: absolute;
-  display: inline-block;
+  display: flex;
   top: 0;
   border-width: 1px;
   border-style: solid;
   border-left-width: 0;
   border-top-width: 0;
   box-sizing: border-box;
-
+  flex-wrap: wrap;
 }
 
 [class*='key-'] {
@@ -95,39 +106,60 @@
   border-right-width: 0;
   opacity: 1 !important;
 
-  padding: 5px;
   margin: 0;
 
   span {
     font-size: 20px;
-    display: inline;
+    display: block;
+    text-align: center;
+
     margin: 0 !important;
     padding: 0 !important;
   }
 
-  .hide & {
+  &.medium {
+    span {
+      font-size: 14px;
+    }
+  }
+
+  &.small {
+    span {
+      font-size: 11px;
+    }
+ }
+
+  &.tiny {
+    span {
+      font-size: 0;
+    }
+  }
+
+   .hide & {
     border-width: 0px;
   }
 }
 </style>
 
 <script>
-
 import { mapState, mapGetters } from 'vuex'
+
+import { throttle as _throttle } from 'lodash'
 
 import keyboard from '../data/keyboard'
 
 export default {
   props: [
-  'hidden',
+    'hidden',
 
-  'keySize',
+    'keySize',
 
-  'keyboardLeft',
-  'keyboardTop',
+    'keyboardLeft',
+    'keyboardTop',
   ],
   data: () => ({
     keyboard,
+    windowWidth: window.innerWidth,
   }),
   computed: {
     ...mapGetters('grid', [
@@ -138,7 +170,16 @@ export default {
       'gridHeight',
 
       'actives',
-      ]),
+    ]),
+
+    limitedKeySize() {
+      return Math.min(Math.floor(( this.windowWidth - 50 ) / this.gridWidth), this.keySize)
+    },
   },
+  mounted() {
+    window.addEventListener('resize', _throttle(() => {
+      this.windowWidth = window.innerWidth
+    }, 250))
+  }
 }
 </script>
