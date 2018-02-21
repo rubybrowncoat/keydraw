@@ -104,6 +104,19 @@ export default {
       }
     },
 
+    async doExport() {
+      const exportString = `${this.exportTheme};${this.exportSize};${this.exportActives}`
+      const content = LZString.compressToEncodedURIComponent(exportString)
+
+      const board = await this.$axios.$post('saved_boards', {
+        content,
+      })
+
+      if (board.url) {
+        this.$router.push(`/artefact/${board.url}`)
+      }
+    },
+
     keyOperation(evt) {
       evt.preventDefault()
 
@@ -199,10 +212,7 @@ export default {
         }
         case 'Enter': {
           // ENTER
-          const exportString = `${this.exportTheme};${this.exportSize};${this.exportActives}`
-          const routeParam = LZString.compressToEncodedURIComponent(exportString)
-
-          this.$router.push(`/artefact/${routeParam}`)
+          this.doExport()
           break
         }
         default: {

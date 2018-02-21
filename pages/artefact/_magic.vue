@@ -25,6 +25,8 @@ export default {
     keySize: 30,
 
     hidden: false,
+
+    board: {},
   }),
   components: {
     'instructions': Instructions,
@@ -49,6 +51,11 @@ export default {
       }
     },
   },
+  async asyncData({ params: { magic }, app }) {
+    const board = await app.$axios.$get(`saved_boards/${magic}`)
+
+    return { board }
+  },
   beforeMount() {
     window.addEventListener('keydown', this.keyOperation)
   },
@@ -56,17 +63,20 @@ export default {
     window.removeEventListener('keydown', this.keyOperation)
   },
   mounted() {
-    const { magic } = this.$route.params
-    const exportString = LZString.decompressFromEncodedURIComponent(magic)
-    const [ themeExport, sizeExport, activesExport ] = exportString.split(';')
+    const { board } = this
 
-    const [ , theme ] = themeExport.split('#')
-    const [ , size ] = sizeExport.split('#')
-    const [ , actives ] = activesExport.split('#')
+    if (board.content) {
+      const exportString = LZString.decompressFromEncodedURIComponent(board.content)
+      const [ themeExport, sizeExport, activesExport ] = exportString.split(';')
 
-    this.setTheme(theme)
-    this.setSize(size)
-    this.setActives(actives)
+      const [ , theme ] = themeExport.split('#')
+      const [ , size ] = sizeExport.split('#')
+      const [ , actives ] = activesExport.split('#')
+
+      this.setTheme(theme)
+      this.setSize(size)
+      this.setActives(actives)
+    }
   },
 }
 </script>
