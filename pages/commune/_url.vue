@@ -173,14 +173,16 @@ export default {
 
       this.subscription = this.cable.subscriptions.create('SharedActivesChannel', {
         received: (data) => {
-          const { active } = data
+          const { active, board } = data
 
-          console.log('activate', active)
+          if (board === this.$route.params.url) {
+            console.log('activate', active)
 
-          this.setShared({
-            position: `${active.left}x${active.top}`,
-            status: active.status,
-          })
+            this.setShared({
+              position: `${active.left}x${active.top}`,
+              status: active.status,
+            })
+          }
         },
       })
     }
