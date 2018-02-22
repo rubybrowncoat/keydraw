@@ -43,6 +43,53 @@ export const actions = {
       commit('removeActive', position)
     }
   },
+  setShared({ state, commit }, payload) {
+    const { position, status } = payload
+    const currentPosition = state.actives[position]
+
+    const color = colors[status]
+
+    if (color) {
+      const mutationPayload = {
+        position,
+        name: color.name,
+      }
+
+      commit('replaceActive', mutationPayload)
+    } else {
+      commit('removeActive', position)
+    }
+  },
+  toggleShared({ state, commit}, payload) {
+    const { left, top, url, name } = payload
+
+    const position = `${left}x${top}`
+    const mutationPayload = {
+      position,
+      name,
+    }
+
+    const currentPosition = state.actives[position]
+    let colorIndex = _findIndex(colors, ['name', name])
+
+    if (!currentPosition) {
+      commit('addActive', mutationPayload)
+    } else if (currentPosition.status !== name) {
+      commit('replaceActive', mutationPayload)
+    } else {
+      colorIndex = -1
+      commit('removeActive', position)
+    }
+
+    this.$axios.$post('shared_actives', {
+      status: colorIndex,
+
+      left,
+      top,
+
+      url,
+    })
+  },
   clearActives({ commit }) {
     commit('clearActives')
   },
@@ -62,11 +109,36 @@ export const actions = {
         const color = colors[colorIndex]
 
         if (color) {
-          const colorName = colors[colorIndex].name
+          const colorName = color.name
 
           result[position] = {
             top,
             left,
+            status: colorName,
+          }
+        }
+
+        return result
+      },
+      {}
+    )
+
+    commit('setActives', newActives)
+  },
+  setCommuneActives({ commit }, payload) {
+    const newActives = _reduce(
+      payload,
+      (result, active) => {
+        const position = `${active.left}x${active.top}`
+
+        const color = colors[active.status]
+
+        if (color) {
+          const colorName = color.name
+
+          result[position] = {
+            top: active.top,
+            left: active.left,
             status: colorName,
           }
         }

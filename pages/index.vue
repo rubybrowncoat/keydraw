@@ -117,6 +117,19 @@ export default {
       }
     },
 
+    async doShared() {
+      const exportString = `${this.exportTheme};${this.exportSize}`
+      const content = LZString.compressToEncodedURIComponent(exportString)
+
+      const board = await this.$axios.$post('shared_boards', {
+        content,
+      })
+
+      if (board.url) {
+        this.$router.push(`/commune/${board.url}`)
+      }
+    },
+
     keyOperation(evt) {
       evt.preventDefault()
 
@@ -213,6 +226,11 @@ export default {
         case 'Enter': {
           // ENTER
           this.doExport()
+          break
+        }
+        case '\\': {
+          // Backslash
+          this.doShared()
           break
         }
         default: {
