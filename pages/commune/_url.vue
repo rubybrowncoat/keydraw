@@ -176,8 +176,6 @@ export default {
           const { active, board } = data
 
           if (board === this.$route.params.url) {
-            console.log('activate', active)
-
             this.setShared({
               position: `${active.left}x${active.top}`,
               status: active.status,
@@ -204,8 +202,7 @@ export default {
     const { board } = this
 
     if (board.content) {
-      const exportString = LZString.decompressFromEncodedURIComponent(board.content)
-      const [themeExport, sizeExport] = exportString.split(';')
+      const [themeExport, sizeExport] = board.content.split(';')
 
       const [, theme] = themeExport.split('#')
       const [, size] = sizeExport.split('#')

@@ -1,8 +1,20 @@
 import Vue from 'vue'
-import { findIndex as _findIndex, map as _map, reduce as _reduce } from 'lodash'
+import {
+  findIndex as _findIndex,
+  map as _map,
+  memoize as _memoize,
+  reduce as _reduce
+} from 'lodash'
 
 import keyboard from '../data/keyboard'
 import colors from '../data/colors'
+
+const exportDictionary = [
+  '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
+  'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+]
+
+const setCharAt = (string, index, character) => string.substr(0, index) + character + string.substr(index + 1)
 
 export const state = () => ({
   size: [4, 7],
@@ -95,26 +107,33 @@ export const actions = {
   },
 
   setSize({ commit }, payload) {
-    const newSize = _map(payload.split('x'), size => parseInt(size))
+    const newSize = _map(payload.split('-'), size => parseInt(size))
 
     commit('setSize', newSize)
   },
-  setActives({ commit }, payload) {
+  setActives({ commit, getters }, payload) {
     const newActives = _reduce(
-      payload.split('/'),
-      (result, compressedActive) => {
-        const [position, colorIndex] = compressedActive.split('-')
-        const [left, top] = position.split('x')
+      payload.replace(
+        /\:(.)(\d+)\:/g,
+        (match, character, quantity) => character.repeat(quantity)
+      ),
+      (result, active, index) => {
+        if (active != '*') {
+          const colorIndex = exportDictionary.indexOf(active)
+          const color = colors[colorIndex]
 
-        const color = colors[colorIndex]
+          if (color) {
+            const left = index % getters.gridWidth
+            const top = Math.floor(index / getters.gridWidth)
+            const position = `${left}x${top}`
 
-        if (color) {
-          const colorName = color.name
+            const colorName = color.name
 
-          result[position] = {
-            top,
-            left,
-            status: colorName,
+            result[position] = {
+              top,
+              left,
+              status: colorName,
+            }
           }
         }
 
@@ -122,7 +141,6 @@ export const actions = {
       },
       {}
     )
-
     commit('setActives', newActives)
   },
   setCommuneActives({ commit }, payload) {
@@ -172,14 +190,25 @@ export const getters = {
   },
 
   exportSize(state) {
-    return `s#${state.size.join('x')}`
+    return `s#${state.size.join('-')}`
   },
-  exportActives(state) {
-    return `a#${_map(state.actives, (active, key) => {
-      const colorIndex = _findIndex(colors, ['name', active.status])
+  exportActives(state, getters) {
+    const findColor = _memoize(color => _findIndex(colors, ['name', color]))
+    const colorCharacter = color => exportDictionary[findColor(color)]
 
-      return `${key}-${colorIndex}`
-    }).join('/')}`
+    const emptyString = '*'.repeat(getters.gridWidth * getters.gridHeight)
+    const activesString =
+      _reduce(state.actives, (aggregator, active, key) => {
+        const stringIndex = (
+          parseInt(active.top) * parseInt(getters.gridWidth)
+        ) + parseInt(active.left)
+        const stringCharacter = colorCharacter(active.status)
+
+        return setCharAt(aggregator, stringIndex, stringCharacter)
+      }, emptyString)
+      .replace(/(.)\1*/g, (match, character) => match.length <= 4 ? match : `:${character}${match.length}:`)
+
+    return 'a#' + activesString
   },
 }
 

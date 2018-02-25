@@ -105,8 +105,7 @@ export default {
     },
 
     async doExport() {
-      const exportString = `${this.exportTheme};${this.exportSize};${this.exportActives}`
-      const content = LZString.compressToEncodedURIComponent(exportString)
+      const content = `${this.exportTheme};${this.exportSize};${this.exportActives}`
 
       const board = await this.$axios.$post('saved_boards', {
         content,
@@ -118,8 +117,7 @@ export default {
     },
 
     async doShared() {
-      const exportString = `${this.exportTheme};${this.exportSize}`
-      const content = LZString.compressToEncodedURIComponent(exportString)
+      const content = `${this.exportTheme};${this.exportSize}`
 
       const board = await this.$axios.$post('shared_boards', {
         content,

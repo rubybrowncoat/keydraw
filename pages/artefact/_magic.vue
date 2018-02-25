@@ -66,8 +66,7 @@ export default {
     const { board } = this
 
     if (board.content) {
-      const exportString = LZString.decompressFromEncodedURIComponent(board.content)
-      const [ themeExport, sizeExport, activesExport ] = exportString.split(';')
+      const [ themeExport, sizeExport, activesExport ] = board.content.split(';')
 
       const [ , theme ] = themeExport.split('#')
       const [ , size ] = sizeExport.split('#')
