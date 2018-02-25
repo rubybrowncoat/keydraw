@@ -17,8 +17,6 @@
 <script>
 import Vue from 'vue'
 
-import LZString from 'lz-string'
-
 import { mapGetters, mapActions } from 'vuex'
 
 import { findIndex as _findIndex } from 'lodash'

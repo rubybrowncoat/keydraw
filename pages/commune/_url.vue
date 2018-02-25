@@ -22,8 +22,6 @@ import ActionCable from 'actioncable'
 
 import { findIndex as _findIndex } from 'lodash'
 
-import LZString from 'lz-string'
-
 import Instructions from '../../components/Instructions'
 import BaseCanvas from '../../components/BaseCanvas'
 

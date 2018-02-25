@@ -14,8 +14,6 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 
-import LZString from 'lz-string'
-
 import Instructions from '../../components/Instructions'
 import BaseCanvas from '../../components/BaseCanvas'
 
