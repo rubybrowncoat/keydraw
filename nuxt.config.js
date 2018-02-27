@@ -3,7 +3,7 @@ require('dotenv').config()
 const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
   router: {
     mode: 'hash',
-    base: '/keydraw/'
+    base: process.env.DEPLOY_DIRECTORY || '/keydraw/',
   }
 } : {}
 
@@ -32,7 +32,8 @@ module.exports = {
   ...routerBase,
 
   env: {
-    API_URL: process.env.API_URL || 'http://localhost:3000',
+    API_URL: process.env.API_URL || 'http://127.0.0.1:3000',
+    WS_URL: process.env.WS_URL || 'http://127.0.0.1:3000/cable',
   },
   axios: {
     proxyHeaders: true,
