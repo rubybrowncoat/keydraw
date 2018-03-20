@@ -14,7 +14,7 @@
       <span class="menuItem"><span class="label">&#9003;</span>CLEAR</span>
       <span class="menuItem"><span class="label">I/O</span>THEME<span class="themeName">{{currentTheme}}</span></span>
       <!--<span class="menuItem">P: PREVIEW</span>-->
-      <span class="menuItem"><span class="label">&#11152;</span><em>ARTEFACT</em></span>
+      <!--<span class="menuItem"><span class="label">&#11152;</span><em>ARTEFACT</em></span>-->
     </div>
     <div class="menu inactive" v-show="inactive">
       <span class="menuItem"><span class="label">&#9003;</span>EDIT</span>

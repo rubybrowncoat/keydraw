@@ -199,6 +199,12 @@ go #dab15b #FFFFFF #000000 transparent none;
       }
     }
 
+    & .action-bar {
+      background-color: nth($color, 2);
+      //box-shadow: 0 0 10px nth($color, 4);
+      border-color: nth($color, 4);   
+    }
+
     & .name {
       background-color: nth($color, 3);
       color: nth($color, 2);

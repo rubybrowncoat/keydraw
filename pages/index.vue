@@ -10,6 +10,7 @@
 
         :hidden="hidden"
       />
+      <action-bar />
     </div>
   </div>
 </template>
@@ -23,6 +24,7 @@ import { findIndex as _findIndex } from 'lodash'
 
 import Instructions from '../components/Instructions'
 import BaseCanvas from '../components/BaseCanvas'
+import ActionBar from '../components/ActionBar'
 
 import keyboard from '../data/keyboard'
 
@@ -43,6 +45,7 @@ export default {
   components: {
     instructions: Instructions,
     'base-canvas': BaseCanvas,
+    'action-bar': ActionBar,
   },
   computed: {
     ...mapGetters('color', ['currentName']),
