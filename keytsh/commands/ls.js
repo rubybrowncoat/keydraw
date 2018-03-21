@@ -2,6 +2,14 @@ import { takeRight as _takeRight, orderBy as _orderBy } from 'lodash'
 
 import paint from '../system/paint'
 
+const boardLink = type => board => {
+  const link = paint(board.url, {
+    link: `${process.env.DEPLOY_DIRECTORY}#/${type}/${board.url}`
+  })
+
+  return paint(`${board.updated_at} &mdash; ${link}`)
+}
+
 export default (parsed) => new Promise(async (resolve, reject) => {
   const sharedBoards = _orderBy(_takeRight(
     await $nuxt.$axios.$get(`shared_boards`),
@@ -17,20 +25,12 @@ export default (parsed) => new Promise(async (resolve, reject) => {
     '',
     paint('COMMUNES', { styles: ['magenta', 'bold'] }),
     '',
-    ...sharedBoards.map(board => {
-      const link = paint(board.url, { link: `/commune/${board.url}` })
-
-      return paint(`${board.updated_at} &mdash; ${link}`)
-    }),
+    ...sharedBoards.map(boardLink('commune')),
     '',
     '',
     paint('ARTEFACTS', { styles: ['magenta', 'bold'] }),
     '',
-    ...savedBoards.map(board => {
-      const link = paint(board.url, { link: `/artefact/${board.url}`})
-
-      return paint(`${board.updated_at} &mdash; ${link}`)
-    })
+    ...savedBoards.map(boardLink('artefact'))
   ]
 
   resolve(lsLines)
