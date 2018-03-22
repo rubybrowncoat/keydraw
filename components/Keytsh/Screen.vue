@@ -25,7 +25,7 @@ code {
   max-height: 100%;
   width: 100%;
 
-  padding-top: 50px;
+  padding-top: 70px;
   padding-bottom: 41px;
 
   overflow: auto;

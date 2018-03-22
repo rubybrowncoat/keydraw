@@ -202,8 +202,8 @@ export const actions = {
     })
   },
 
-  toggleKeytshCollapse({ commit }) {
-    commit('toggleKeytshCollapse')
+  toggleKeytshCollapse({ commit }, override) {
+    commit('toggleKeytshCollapse', override)
   },
 }
 
@@ -270,7 +270,13 @@ export const mutations = {
     }
   },
 
-  toggleKeytshCollapse(state) {
+  toggleKeytshCollapse(state, override) {
+    if (override) {
+      state.keytshCollapsed = override
+
+      return
+    }
+
     state.keytshCollapsed = !state.keytshCollapsed
   },
 }
