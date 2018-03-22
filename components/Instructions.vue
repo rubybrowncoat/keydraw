@@ -11,7 +11,7 @@
     </span>
     <span class="menuItem"><span class="label"><i class="fas fa-keyboard"></i></span>TOGGLE</span>
     <span class="menuItem" v-show="!commune"><span class="label"><i class="fas fa-long-arrow-alt-left"></i></span>CLEAR</span>
-    <span class="menuItem"><span class="label" v-show="!commune">I/O</span><span class="label" v-show="commune"><i class="fas fa-lock"></i></span>THEME<span class="themeName">{{currentTheme}}</span></span>
+    <span class="menuItem"><span class="label" v-show="!commune"><i class="far fa-circle"></i></span><span class="label" v-show="commune"><i class="fas fa-lock"></i></span>THEME<span class="themeName">{{currentTheme}}</span></span>
   </div>
 
   <div class="menu" v-show="artefact">

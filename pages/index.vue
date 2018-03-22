@@ -217,15 +217,11 @@ export default {
           }
           case 'o': {
             // o
-            if (evt.shiftKey) {
-              this.previousTheme()
-            } else {
-              this.nextTheme()
-            }
+            this.nextTheme()
             break
           }
-          case 'i': {
-            // i
+          case 'O': {
+            // O
             this.previousTheme()
             break
           }
