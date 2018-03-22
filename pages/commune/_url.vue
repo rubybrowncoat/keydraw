@@ -67,7 +67,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions('color', ['nextColor']),
+    ...mapActions('color', ['nextColor', 'previousColor']),
     ...mapActions('theme', ['setTheme']),
     ...mapActions('grid', [
       'setSize',

@@ -1,131 +1,101 @@
 .dark {
   $dark-colors:
-  white #fff #000,
-  black #000 #fff,
-  red #f00 transparent,
-  green #0f0 transparent,  
-  blue #00f transparent,
-  cyan #0ff transparent,
-  yellow #ff0 transparent,
-  fuchsia #f0f transparent;
+  white #fff,
+  black #000,
+  red #f00,
+  green #0f0,  
+  blue #00f,
+  cyan #0ff,
+  yellow #ff0,
+  fuchsia #f0f;
   @each $color in $dark-colors {
     .#{nth($color, 1)} {
       background-color: nth($color, 2);
-
-      &.is-text {
-        background-color: nth($color, 3);
-        color: nth($color, 2);
-      }
     }
   }
 }
 
 .pastel {
   $pastel-colors:
-  white #fff #000,
-  black #333333 #fff,
-  red #FF3B3B transparent,
-  green #00BD46 transparent,  
-  blue #3D5EC1 transparent,
-  cyan #00E0FF transparent,
-  yellow #FFD758 transparent,
-  fuchsia #B84EAB transparent;
+  white #fff,
+  black #333333,
+  red #FF3B3B,
+  green #00BD46,  
+  blue #3D5EC1,
+  cyan #00E0FF,
+  yellow #FFD758,
+  fuchsia #B84EAB;
   @each $color in $pastel-colors {
     .#{nth($color, 1)} {
       background-color: nth($color, 2);
-
-      &.is-text {
-        background-color: nth($color, 3);
-        color: nth($color, 2);
-      }
     }
   }
 }
 
 .invert {
   $invert-colors:
-  white #000 #fff,
-  black #fff #000,
-  red #0ff transparent,
-  green #f0f transparent,  
-  blue #ff0 transparent,
-  cyan #f00 transparent,
-  yellow #00f transparent,
-  fuchsia #0f0 transparent;
+  white #000,
+  black #fff,
+  red #0ff,
+  green #f0f,  
+  blue #ff0,
+  cyan #f00,
+  yellow #00f,
+  fuchsia #0f0;
   @each $color in $invert-colors {
     .#{nth($color, 1)} {
       background-color: nth($color, 2);
-
-      &.is-text {
-        background-color: nth($color, 3);
-        color: nth($color, 2);
-      }
     }
   }
 }
 
 .zoo {
   $zoo-colors:
-  white #fff #000 url('../tiles/zoo/white.png'),
-  black #000 #fff url('../tiles/zoo/black.png'),
-  red #f00 transparent url('../tiles/zoo/red.png'),
-  green #0f0 transparent url('../tiles/zoo/green.png'),  
-  blue #00f transparent url('../tiles/zoo/blue.png'),
-  cyan #0ff transparent url('../tiles/zoo/cyan.png'),
-  yellow #ff0 transparent url('../tiles/zoo/yellow.png'),
-  fuchsia #f0f transparent url('../tiles/zoo/fuchsia.png');
+  white #fff url('../tiles/zoo/white.png'),
+  black #000 url('../tiles/zoo/black.png'),
+  red #f00 url('../tiles/zoo/red.png'),
+  green #0f0 url('../tiles/zoo/green.png'),  
+  blue #00f url('../tiles/zoo/blue.png'),
+  cyan #0ff url('../tiles/zoo/cyan.png'),
+  yellow #ff0 url('../tiles/zoo/yellow.png'),
+  fuchsia #f0f url('../tiles/zoo/fuchsia.png');
   @each $color in $zoo-colors {
     .#{nth($color, 1)} {
-      background: nth($color, 4);
-
-      &.is-text {
-        background: nth($color, 3);
-        color: nth($color, 2);
-      }
+      background: nth($color, 3);
     }
   }
 }
 
 .vapor {
   $vapor-colors:
-  white linear-gradient(45deg, #fff, #888) #000,
-  black linear-gradient(45deg, #000, #111) #fff,
-  red linear-gradient(45deg, #f00, #811) transparent,
-  green linear-gradient(45deg, #0f0, #181) transparent,  
-  blue linear-gradient(45deg, #00f, #118) transparent,
-  cyan linear-gradient(45deg, #0ff, #188) transparent,
-  yellow linear-gradient(45deg, #ff0, #881) transparent,
-  fuchsia linear-gradient(45deg, #f0f, #818) transparent;
+  white linear-gradient(45deg, #fff, #888),
+  black linear-gradient(45deg, #000, #333),
+  red linear-gradient(45deg, #f00, #811),
+  green linear-gradient(45deg, #0f0, #181),  
+  blue linear-gradient(45deg, #00f, #118),
+  cyan linear-gradient(45deg, #0ff, #188),
+  yellow linear-gradient(45deg, #ff0, #881),
+  fuchsia linear-gradient(45deg, #f0f, #818);
   @each $color in $vapor-colors {
     .#{nth($color, 1)} {
       background: nth($color, 2);
-
-      &.is-text {
-        background-color: nth($color, 3);
-        color: nth($color, 2);
-      }
     }
   }
 }
 
 .go {
   $go-colors:
-  white #fff transparent,
-  black #000 transparent,
-  red #000 transparent,
-  green #fff transparent,
-  blue #000 transparent,
-  cyan #fff transparent,
-  yellow #fff transparent,
-  fuchsia #000 transparent;
+  white #fff,
+  black #000,
+  red #000,
+  green #fff,
+  blue #000,
+  cyan #fff,
+  yellow #fff,
+  fuchsia #000;
   @each $color in $go-colors {
     .#{nth($color, 1)} {
       background-color: nth($color, 2);
-
-      &.is-text {
-        background-color: nth($color, 3);
-        color: nth($color, 2);
-      }
     }
   }
 
@@ -201,7 +171,8 @@ go #dab15b #FFFFFF #000000 transparent none;
 
     & .action-bar {
       background-color: nth($color, 2);
-      //box-shadow: 0 0 10px nth($color, 4);
+      background-image: nth($color, 6);
+      box-shadow: 0 -4px nth($color, 4);
       border-color: nth($color, 4);   
     }
 

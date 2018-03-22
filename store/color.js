@@ -14,6 +14,14 @@ export const actions = {
 
     commit('setCurrentColor', nextColor)
   },
+
+  previousColor({ state, commit }) {
+    const currentIndex = _findIndex(colors, color => color.name === state.currentColor.name)
+    const previousIndex = currentIndex - 1
+    const previousColor = { ..._nth(colors, previousIndex % colors.length) }
+
+    commit('setCurrentColor', previousColor)
+  },
 }
 
 export const getters = {

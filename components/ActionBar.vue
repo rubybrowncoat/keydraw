@@ -27,11 +27,9 @@
 <style lang="scss" scoped>
 .action-bar {
   position: fixed;
-  //width: 400px;
   padding: 20px 20px;
   bottom: 0px;
   left: 50%;
-  //margin-left: 50%;
   transform: translateX(-50%);
   vertical-align: middle;
   text-align: center;
@@ -39,9 +37,9 @@
   font-size: 22px;
   border-radius: 10px 10px 0 0;
   border-width: 1px;
+  border-bottom-width: 0;
   border-style: solid;
  
-
   .menu {
     .menuItem {
       display: inline-block;

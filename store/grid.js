@@ -18,6 +18,7 @@ const setCharAt = (string, index, character) => string.substr(0, index) + charac
 
 export const state = () => ({
   size: [4, 7],
+  maxSize: [16, 28],
 
   keyboardWidth: 7,
 
@@ -25,8 +26,10 @@ export const state = () => ({
 })
 
 export const actions = {
-  incrementWidth({ commit }) {
+  incrementWidth({ commit, state }) {
+    if (state.size[0] < state.maxSize[0]) {
     commit('incrementWidth')
+   }
   },
   decrementWidth({ commit, state }) {
     if (state.size[0] > 1) {
@@ -34,8 +37,10 @@ export const actions = {
     }
   },
 
-  incrementHeight({ commit }) {
+  incrementHeight({ commit, state }) {
+    if (state.size[1] < state.maxSize[1]) {
     commit('incrementHeight')
+    }
   },
   decrementHeight({ commit, state }) {
     if (state.size[1] > 1) {

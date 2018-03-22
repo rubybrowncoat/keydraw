@@ -76,7 +76,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions('color', ['nextColor']),
+    ...mapActions('color', ['nextColor', 'previousColor']),
     ...mapActions('theme', ['nextTheme', 'previousTheme']),
     ...mapActions('grid', [
       'incrementWidth',
@@ -212,7 +212,16 @@ export default {
           }
           case ' ': {
             // SPACE
+            if (evt.shiftKey) {
+                this.previousColor()
+              } else {
             this.nextColor()
+            break
+            }
+          }
+          case 'k': {
+            // k
+            this.previousColor()
             break
           }
           case 'o': {
@@ -228,11 +237,6 @@ export default {
           case 'Enter': {
             // ENTER
             this.doExport()
-            break
-          }
-          case 'l': {
-            // l
-            this.doShared()
             break
           }
           case '\\': {
