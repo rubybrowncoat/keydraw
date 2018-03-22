@@ -289,7 +289,6 @@ export const mutations = {
     }
   },
   replaceBuffer(state, { buffer, index }) {
-    console.log(buffer, index)
     Vue.set(state.buffer, index, buffer)
   },
   deleteBuffer(state, index) {
