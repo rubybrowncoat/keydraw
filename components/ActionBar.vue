@@ -1,7 +1,5 @@
 <template>
-  <div class="action-bar" :class="{
-    hide: inactive,
-  }">
+  <div class="action-bar">
 
     <div class="menu active" v-show="!artefact && !commune">
       <span class="menuItem"><span class="label">&#11152;</span><em>ARTEFACT</em></span>
