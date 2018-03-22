@@ -3,10 +3,15 @@
     hide: inactive,
   }">
 
-    <div class="menu active" v-show="!inactive">
-
+    <div class="menu active" v-show="!artefact && !commune">
       <span class="menuItem"><span class="label">&#11152;</span><em>ARTEFACT</em></span>
       <span class="menuItem"><span class="label">&#92;</span><em>COMMUNE</em></span>
+    </div>
+    <div class="menu active" v-show="artefact">
+      <span class="menuItem"><span class="label">&#9003;</span>EDIT</span>
+    </div>
+    <div class="menu active" v-show="commune">
+      You are now in a <em>commune</em>. Share it with your friends and enemies!
     </div>
 
   </div>
@@ -15,13 +20,14 @@
 <style lang="scss" scoped>
 .action-bar {
   position: fixed;
-  width: 280px;
-  padding: 20px 10px;
+  //width: 400px;
+  padding: 20px 20px;
   bottom: 0px;
   left: 50%;
-  margin-left: -140px;
-  //transform: translateX(-50%);
+  //margin-left: 50%;
+  transform: translateX(-50%);
   vertical-align: middle;
+  text-align: center;
   text-transform: uppercase;
   font-size: 22px;
   border-radius: 10px 10px 0 0;
@@ -35,6 +41,9 @@
       margin-bottom: 0px;
       margin-left: 15px;
       white-space: nowrap;
+      &:first-child {
+        margin-left: 0;
+      }  
       .label {
         font-size: 15px;
         border-width: 1px;
@@ -56,7 +65,8 @@ import { mapGetters } from 'vuex'
 
 export default {
   props: [
-    'inactive',
+    'artefact',
+    'commune',
   ],
 
 }

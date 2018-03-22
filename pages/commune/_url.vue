@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper" :class="currentTheme">
     <div class="content">
-      <instructions />
+      <instructions :commune="true" />
       <base-canvas
         :keySize="keySize"
 
@@ -10,6 +10,7 @@
 
         :hidden="hidden"
       />
+      <action-bar :commune="true" />
     </div>
   </div>
 </template>
@@ -24,6 +25,7 @@ import { findIndex as _findIndex } from 'lodash'
 
 import Instructions from '../../components/Instructions'
 import BaseCanvas from '../../components/BaseCanvas'
+import ActionBar from '../../components/ActionBar'
 
 import keyboard from '../../data/keyboard'
 import colors from '../../data/colors'
@@ -44,6 +46,7 @@ export default {
   components: {
     instructions: Instructions,
     'base-canvas': BaseCanvas,
+    'action-bar': ActionBar,
   },
   computed: {
     ...mapGetters('color', ['currentName']),

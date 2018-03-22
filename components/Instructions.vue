@@ -5,19 +5,19 @@
     <span class="name">
       Keydraw
     </span>
-    <div class="menu active" v-show="!inactive">
+
+    <div class="menu active" v-show="!artefact">
       <span class="menuItem"><span class="label">ARROWS</span>MOVE</span>
-      <span class="menuItem"><span class="label">&#8679;+ARROWS</span>RESIZE</span>
+      <span class="menuItem" v-show="!commune"><span class="label">&#8679;+ARROWS</span>RESIZE</span>
       <span class="menuItem"><span class="label">SPACE</span>COLOR<span :class="['colorTile', currentName]"></span></span>
       <span class="menuItem"><span class="label">KEYS</span>TOGGLE</span>
 
       <span class="menuItem"><span class="label">&#9003;</span>CLEAR</span>
-      <span class="menuItem"><span class="label">I/O</span>THEME<span class="themeName">{{currentTheme}}</span></span>
-      <!--<span class="menuItem">P: PREVIEW</span>-->
-      <!--<span class="menuItem"><span class="label">&#11152;</span><em>ARTEFACT</em></span>-->
+      <span class="menuItem" v-show="!commune"><span class="label">I/O</span>THEME<span class="themeName">{{currentTheme}}</span></span>
     </div>
-    <div class="menu inactive" v-show="inactive">
-      <span class="menuItem"><span class="label">&#9003;</span>EDIT</span>
+
+    <div class="menu inactive" v-show="artefact">
+      <!--<span class="menuItem"><span class="label">&#9003;</span>EDIT</span>-->
     </div>
     <span class="copyright">
       &copy; 2018 <a href="http://pumo.mp">pumo.mp</a>
@@ -92,7 +92,8 @@ import { mapGetters } from 'vuex'
 
 export default {
   props: [
-    'inactive',
+    'artefact',
+    'commune',
   ],
   computed: {
     ...mapGetters('color', ['currentName']),

@@ -1,12 +1,13 @@
 <template>
   <div class="wrapper" :class="currentTheme">
     <div class="content">
-      <instructions :inactive="true" />
+      <instructions :artefact="true" />
       <base-canvas
         :keySize="keySize"
 
         :hidden="true"
       />
+      <action-bar :artefact="true" />
     </div>
   </div>
 </template>
@@ -16,6 +17,7 @@ import { mapGetters, mapActions } from 'vuex'
 
 import Instructions from '../../components/Instructions'
 import BaseCanvas from '../../components/BaseCanvas'
+import ActionBar from '../../components/ActionBar'
 
 export default {
   transition: 'slide-left',
@@ -29,6 +31,7 @@ export default {
   components: {
     'instructions': Instructions,
     'base-canvas': BaseCanvas,
+    'action-bar': ActionBar,
   },
   computed: {
     ...mapGetters('theme', ['currentTheme']),
