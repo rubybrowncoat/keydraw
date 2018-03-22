@@ -1,4 +1,7 @@
+import Vue from 'vue'
+
 import {
+  findIndex as _findIndex,
   isArray as _isArray,
   isEmpty as _isEmpty,
   isNil as _isNil,
@@ -192,11 +195,30 @@ export const actions = {
     commit('clearBuffer')
   },
   addBuffer({ commit }, buffer) {
+    const uid = bufferUids.generate()
+
     commit('addBuffer', {
       ...buffer,
 
-      uid: bufferUids.generate(),
+      uid,
     })
+
+    return uid
+  },
+  replaceBuffer({ commit, getters }, buffer) {
+    const bufferIndex = _findIndex(getters.buffer, ['uid', buffer.uid])
+
+    commit('replaceBuffer', {
+      buffer,
+      index: bufferIndex
+    })
+  },
+  deleteBuffer({ commit, getters }, uid) {
+    const bufferIndex = _findIndex(getters.buffer, ['uid', uid])
+
+    if (bufferIndex > -1) {
+      commit('deleteBuffer', bufferIndex)
+    }
   },
 
   toggleKeytshCollapse({ commit }, override) {
@@ -265,6 +287,13 @@ export const mutations = {
     } else {
       state.buffer.push(buffer)
     }
+  },
+  replaceBuffer(state, { buffer, index }) {
+    console.log(buffer, index)
+    Vue.set(state.buffer, index, buffer)
+  },
+  deleteBuffer(state, index) {
+    Vue.delete(state.buffer, index)
   },
 
   toggleKeytshCollapse(state, override) {

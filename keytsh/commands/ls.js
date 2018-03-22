@@ -1,5 +1,7 @@
 import { takeRight as _takeRight, orderBy as _orderBy } from 'lodash'
 
+import { startIndeterminate, stopIndeterminate } from '../system/progress'
+
 const boardLink = type => board => {
   return [
     `${board.updated_at} &mdash;`,
@@ -8,6 +10,8 @@ const boardLink = type => board => {
 }
 
 export default (parsed) => new Promise(async (resolve, reject) => {
+  startIndeterminate(['/', '-', '|', '-', '\\', '-'], 'Loading boards...', 100)
+
   const sharedBoards = _orderBy(_takeRight(
     await $nuxt.$axios.$get(`shared_boards`),
     10
@@ -17,6 +21,8 @@ export default (parsed) => new Promise(async (resolve, reject) => {
     await $nuxt.$axios.$get(`saved_boards`),
     10
   ), ['id'], ['desc'])
+
+  stopIndeterminate()
 
   const lsLines = [
     '',
