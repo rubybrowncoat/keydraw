@@ -1,7 +1,5 @@
 <template>
-  <div class="instructions-container" :class="{
-    hide: inactive,
-  }">
+  <div class="instructions-container">
     <span class="name">
       Keydraw
     </span>
@@ -16,7 +14,7 @@
       <span class="menuItem" v-show="!commune"><span class="label">I/O</span>THEME<span class="themeName">{{currentTheme}}</span></span>
     </div>
 
-    <div class="menu inactive" v-show="artefact">
+    <div class="menu" v-show="artefact">
       <!--<span class="menuItem"><span class="label">&#9003;</span>EDIT</span>-->
     </div>
     <span class="copyright">
