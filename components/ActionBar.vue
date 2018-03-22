@@ -2,14 +2,23 @@
   <div class="action-bar">
 
     <div class="menu active" v-show="!artefact && !commune">
-      <span class="menuItem"><span class="label">&#11152;</span><em>ARTEFACT</em></span>
-      <span class="menuItem"><span class="label">&#92;</span><em>COMMUNE</em></span>
+      <span class="menuItem">
+        <span class="label">&#11152;</span>
+        <em>ARTEFACT</em>
+      </span>
+      <span class="menuItem">
+        <span class="label">&#92;</span>
+        <em>COMMUNE</em>
+      </span>
     </div>
+    
     <div class="menu active" v-show="artefact">
-      <span class="menuItem"><span class="label">&#9003;</span>EDIT</span>
+      <span class="menuItem">
+        <span class="label"><i class="fas fa-long-arrow-alt-left"></i></span>EDIT</span>
     </div>
+
     <div class="menu active" v-show="commune">
-      You are now in a <em>commune</em>. Share it with your friends and enemies!
+      <span class="menuItem"><span class="label"><i class="fas fa-long-arrow-alt-left"></i></span>GO ALONE</span>
     </div>
 
   </div>

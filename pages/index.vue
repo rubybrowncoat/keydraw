@@ -217,7 +217,7 @@ export default {
           }
           case 'o': {
             // o
-            if (event.shiftKey) {
+            if (evt.shiftKey) {
               this.previousTheme()
             } else {
               this.nextTheme()
@@ -232,6 +232,11 @@ export default {
           case 'Enter': {
             // ENTER
             this.doExport()
+            break
+          }
+          case 'l': {
+            // l
+            this.doShared()
             break
           }
           case '\\': {

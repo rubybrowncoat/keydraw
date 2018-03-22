@@ -212,6 +212,7 @@ go #dab15b #FFFFFF #000000 transparent none;
     & .label {
       border-color: nth($color, 3);
       background-color: nth($color, 4);
+      box-shadow: 0 2px nth($color, 3);
     }
     & .themeName {
       color: nth($color, 4);
