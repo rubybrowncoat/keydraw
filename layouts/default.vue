@@ -1,5 +1,8 @@
 <template>
-  <nuxt/>
+  <div>
+    <nuxt />
+    <keytsh />
+  </div>
 </template>
 
 <style lang="scss">
@@ -19,7 +22,12 @@ html {
 </style>
 
 <script>
+import Keytsh from '../components/Keytsh/Keytsh.vue'
+
 export default {
   name: 'KeyDraw',
+  components: {
+    keytsh: Keytsh,
+  }
 }
 </script>

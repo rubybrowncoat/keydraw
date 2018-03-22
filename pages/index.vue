@@ -64,6 +64,9 @@ export default {
       'exportSize',
       'exportActives',
     ]),
+    ...mapGetters('keytsh', [
+      'keytshCollapsed',
+    ]),
 
     keyboardLeft() {
       return this.keyboardPosition[0]
@@ -83,6 +86,9 @@ export default {
 
       'clearActives',
       'toggleActive'
+    ]),
+    ...mapActions('keytsh', [
+      'toggleKeytshCollapse',
     ]),
 
     toggleGrid(keyboardIndex) {
@@ -130,117 +136,126 @@ export default {
     },
 
     keyOperation(evt) {
-      evt.preventDefault()
+      if (this.keytshCollapsed) {
+        evt.preventDefault()
 
-      switch (evt.key) {
-        case 'ArrowLeft': {
-          // LEFT ARROW
-          if (!this.hidden) {
-            if (evt.shiftKey) {
-              this.decrementWidth()
+        switch (evt.key) {
+          case 'ArrowLeft': {
+            // LEFT ARROW
+            if (!this.hidden) {
+              if (evt.shiftKey) {
+                this.decrementWidth()
 
-              this.$nextTick(() => {
-                this.checkKeyboard()
-              })
-            } else {
-              if (this.keyboardLeft > 0) {
-                Vue.set(this.keyboardPosition, 0, this.keyboardLeft - this.keyboardWidth)
+                this.$nextTick(() => {
+                  this.checkKeyboard()
+                })
+              } else {
+                if (this.keyboardLeft > 0) {
+                  Vue.set(this.keyboardPosition, 0, this.keyboardLeft - this.keyboardWidth)
+                }
               }
             }
+            break
           }
-          break
-        }
-        case 'ArrowUp': {
-          // UP ARROW
-          if (!this.hidden) {
-            if (evt.shiftKey) {
-              this.decrementHeight()
+          case 'ArrowUp': {
+            // UP ARROW
+            if (!this.hidden) {
+              if (evt.shiftKey) {
+                this.decrementHeight()
 
-              this.$nextTick(() => {
-                this.checkKeyboard()
-              })
-            } else {
-              if (this.keyboardTop > 0) {
-                Vue.set(this.keyboardPosition, 1, this.keyboardTop - this.keyboardHeight)
+                this.$nextTick(() => {
+                  this.checkKeyboard()
+                })
+              } else {
+                if (this.keyboardTop > 0) {
+                  Vue.set(this.keyboardPosition, 1, this.keyboardTop - this.keyboardHeight)
+                }
               }
             }
+            break
           }
-          break
-        }
-        case 'ArrowRight': {
-          // RIGHT ARROW
-          if (!this.hidden) {
-            if (evt.shiftKey) {
-              this.incrementWidth()
-            } else {
-              if (this.keyboardLeft < this.gridWidth - this.keyboardWidth) {
-                Vue.set(this.keyboardPosition, 0, this.keyboardLeft + this.keyboardWidth)
+          case 'ArrowRight': {
+            // RIGHT ARROW
+            if (!this.hidden) {
+              if (evt.shiftKey) {
+                this.incrementWidth()
+              } else {
+                if (this.keyboardLeft < this.gridWidth - this.keyboardWidth) {
+                  Vue.set(this.keyboardPosition, 0, this.keyboardLeft + this.keyboardWidth)
+                }
               }
             }
+            break
           }
-          break
-        }
-        case 'ArrowDown': {
-          // DOWN ARROW
-          if (!this.hidden) {
-            if (evt.shiftKey) {
-              this.incrementHeight()
-            } else {
-              if (this.keyboardTop < this.gridHeight - this.keyboardHeight) {
-                Vue.set(this.keyboardPosition, 1, this.keyboardTop + this.keyboardHeight)
+          case 'ArrowDown': {
+            // DOWN ARROW
+            if (!this.hidden) {
+              if (evt.shiftKey) {
+                this.incrementHeight()
+              } else {
+                if (this.keyboardTop < this.gridHeight - this.keyboardHeight) {
+                  Vue.set(this.keyboardPosition, 1, this.keyboardTop + this.keyboardHeight)
+                }
               }
             }
+            break
           }
-          break
-        }
-        case 'p': {
-          // p
-          this.hidden = !this.hidden
-          break
-        }
-        case 'Backspace': {
-          // BACKSPACE
-          this.clearActives()
-          break
-        }
-        case ' ': {
-          // SPACE
-          this.nextColor()
-          break
-        }
-        case 'o': {
-          // o
-          if (event.shiftKey) {
+          case 'p': {
+            // p
+            this.hidden = !this.hidden
+            break
+          }
+          case 'Backspace': {
+            // BACKSPACE
+            this.clearActives()
+            break
+          }
+          case ' ': {
+            // SPACE
+            this.nextColor()
+            break
+          }
+          case 'o': {
+            // o
+            if (event.shiftKey) {
               this.previousTheme()
             } else {
-          this.nextTheme()
-        }
-          break
-        }
-        case 'i': {
-          // i
-          this.previousTheme()
-          break
-        }
-        case 'Enter': {
-          // ENTER
-          this.doExport()
-          break
-        }
-        case '\\': {
-          // Backslash
-          this.doShared()
-          break
-        }
-        default: {
-          // KEYS
-          if (!this.hidden) {
-            const keyboardIndex = _findIndex(keyboard, ['key', evt.key])
+              this.nextTheme()
+            }
+            break
+          }
+          case 'i': {
+            // i
+            this.previousTheme()
+            break
+          }
+          case 'Enter': {
+            // ENTER
+            this.doExport()
+            break
+          }
+          case '\\': {
+            // Backslash
+            this.doShared()
+            break
+          }
+          default: {
+            // KEYS
+            if (!this.hidden) {
+              const keyboardIndex = _findIndex(keyboard, ['key', evt.key])
 
-            if (keyboardIndex > -1) {
-              this.toggleGrid(keyboardIndex)
+              if (keyboardIndex > -1) {
+                this.toggleGrid(keyboardIndex)
+              }
             }
           }
+        }
+      }
+
+      switch (evt.key) {
+        case '!': {
+          this.toggleKeytshCollapse()
+          break
         }
       }
     },

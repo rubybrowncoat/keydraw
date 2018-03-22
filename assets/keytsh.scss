@@ -1,0 +1,108 @@
+.paint {
+  //
+}
+.paint.white {
+  color: rgb(249, 249, 245);
+}
+.paint.white-bg {
+  background-color: rgb(249, 249, 245);
+}
+.paint.white.underline {
+  border-bottom: 1px solid rgb(249, 249, 245);
+}
+.paint.black {
+  color: rgb(17, 17, 17);
+}
+.paint.black-bg {
+  background-color: rgb(17, 17, 17);
+}
+.paint.black.underline {
+  border-bottom: 1px solid rgb(17, 17, 17);
+}
+.paint.red {
+  color: rgb(255, 110, 103);
+}
+.paint.red-bg {
+  background-color: rgb(255, 110, 103);
+}
+.paint.red.underline {
+  border-bottom: 1px solid rgb(255, 110, 103);
+}
+.paint.green {
+  color: rgb(90, 247, 142);
+}
+.paint.green-bg {
+  background-color: rgb(90, 247, 142);
+}
+.paint.green.underline {
+  border-bottom: 1px solid rgb(90, 247, 142);
+}
+.paint.yellow {
+  color: rgb(244, 249, 157);
+}
+.paint.yellow-bg {
+  background-color: rgb(244, 249, 157);
+}
+.paint.yellow.underline {
+  border-bottom: 1px solid rgb(244, 249, 157);
+}
+.paint.blue {
+  color: rgb(202, 169, 250);
+}
+.paint.blue-bg {
+  background-color: rgb(202, 169, 250);
+}
+.paint.blue.underline {
+  border-bottom: 1px solid rgb(202, 169, 250);
+}
+.paint.magenta {
+  color: rgb(255, 146, 208);
+}
+.paint.magenta-bg {
+  background-color: rgb(255, 146, 208);
+}
+.paint.magenta.underline {
+  border-bottom: 1px solid rgb(255, 146, 208);
+}
+.paint.cyan {
+  color: rgb(154, 237, 254);
+}
+.paint.cyan-bg {
+  background-color: rgb(154, 237, 254);
+}
+.paint.cyan.underline {
+  border-bottom: 1px solid rgb(154, 237, 254);
+}
+.paint.gray {
+  color: rgb(199, 199, 199);
+}
+.paint.gray-bg {
+  background-color: rgb(199, 199, 199);
+}
+.paint.gray.underline {
+  border-bottom: 1px solid rgb(199, 199, 199);
+}
+.paint.bold {
+  text-shadow: 0px 0px 1px;
+}
+.paint.underline {
+  border-bottom: 1px solid rgb(249, 249, 245);
+}
+.paint.strikethrough {
+  text-decoration: line-through;
+}
+.paint.italic {
+  font-style: italic;
+}
+.paint.dim {
+  opacity: 0.7;
+}
+.paint.command {
+  cursor: pointer;
+  border-bottom: 1px dotted rgb(249, 249, 245);
+}
+.paint a {
+  cursor: pointer;
+  color: rgb(0, 92, 187);
+  text-decoration: underline;
+}
