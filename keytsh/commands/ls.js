@@ -1,13 +1,10 @@
 import { takeRight as _takeRight, orderBy as _orderBy } from 'lodash'
 
-import paint from '../system/paint'
-
 const boardLink = type => board => {
-  const link = paint(board.url, {
-    link: `${process.env.DEPLOY_DIRECTORY}#/${type}/${board.url}`
-  })
-
-  return paint(`${board.updated_at} &mdash; ${link}`)
+  return [
+    `${board.updated_at} &mdash;`,
+    [board.url, { route: `${type}/${board.url}` }],
+  ]
 }
 
 export default (parsed) => new Promise(async (resolve, reject) => {
@@ -23,14 +20,11 @@ export default (parsed) => new Promise(async (resolve, reject) => {
 
   const lsLines = [
     '',
-    paint('COMMUNES', { styles: ['magenta', 'bold'] }),
-    '',
+    ['COMMUNES', { styles: ['magenta', 'bold'] }],
     ...sharedBoards.map(boardLink('commune')),
     '',
-    '',
-    paint('ARTEFACTS', { styles: ['magenta', 'bold'] }),
-    '',
-    ...savedBoards.map(boardLink('artefact'))
+    ['ARTEFACTS', { styles: ['magenta', 'bold'] }],
+    ...savedBoards.map(boardLink('artefact')),
   ]
 
   resolve(lsLines)

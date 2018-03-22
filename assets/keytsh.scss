@@ -1,107 +1,107 @@
-.paint {
+.screenline {
   //
 }
-.paint.white {
+.screenline.white {
   color: rgb(249, 249, 245);
 }
-.paint.white-bg {
+.screenline.white-bg {
   background-color: rgb(249, 249, 245);
 }
-.paint.white.underline {
+.screenline.white.underline {
   border-bottom: 1px solid rgb(249, 249, 245);
 }
-.paint.black {
+.screenline.black {
   color: rgb(17, 17, 17);
 }
-.paint.black-bg {
+.screenline.black-bg {
   background-color: rgb(17, 17, 17);
 }
-.paint.black.underline {
+.screenline.black.underline {
   border-bottom: 1px solid rgb(17, 17, 17);
 }
-.paint.red {
+.screenline.red {
   color: rgb(255, 110, 103);
 }
-.paint.red-bg {
+.screenline.red-bg {
   background-color: rgb(255, 110, 103);
 }
-.paint.red.underline {
+.screenline.red.underline {
   border-bottom: 1px solid rgb(255, 110, 103);
 }
-.paint.green {
+.screenline.green {
   color: rgb(90, 247, 142);
 }
-.paint.green-bg {
+.screenline.green-bg {
   background-color: rgb(90, 247, 142);
 }
-.paint.green.underline {
+.screenline.green.underline {
   border-bottom: 1px solid rgb(90, 247, 142);
 }
-.paint.yellow {
+.screenline.yellow {
   color: rgb(244, 249, 157);
 }
-.paint.yellow-bg {
+.screenline.yellow-bg {
   background-color: rgb(244, 249, 157);
 }
-.paint.yellow.underline {
+.screenline.yellow.underline {
   border-bottom: 1px solid rgb(244, 249, 157);
 }
-.paint.blue {
+.screenline.blue {
   color: rgb(202, 169, 250);
 }
-.paint.blue-bg {
+.screenline.blue-bg {
   background-color: rgb(202, 169, 250);
 }
-.paint.blue.underline {
+.screenline.blue.underline {
   border-bottom: 1px solid rgb(202, 169, 250);
 }
-.paint.magenta {
+.screenline.magenta {
   color: rgb(255, 146, 208);
 }
-.paint.magenta-bg {
+.screenline.magenta-bg {
   background-color: rgb(255, 146, 208);
 }
-.paint.magenta.underline {
+.screenline.magenta.underline {
   border-bottom: 1px solid rgb(255, 146, 208);
 }
-.paint.cyan {
+.screenline.cyan {
   color: rgb(154, 237, 254);
 }
-.paint.cyan-bg {
+.screenline.cyan-bg {
   background-color: rgb(154, 237, 254);
 }
-.paint.cyan.underline {
+.screenline.cyan.underline {
   border-bottom: 1px solid rgb(154, 237, 254);
 }
-.paint.gray {
+.screenline.gray {
   color: rgb(199, 199, 199);
 }
-.paint.gray-bg {
+.screenline.gray-bg {
   background-color: rgb(199, 199, 199);
 }
-.paint.gray.underline {
+.screenline.gray.underline {
   border-bottom: 1px solid rgb(199, 199, 199);
 }
-.paint.bold {
+.screenline.bold {
   text-shadow: 0px 0px 1px;
 }
-.paint.underline {
+.screenline.underline {
   border-bottom: 1px solid rgb(249, 249, 245);
 }
-.paint.strikethrough {
+.screenline.strikethrough {
   text-decoration: line-through;
 }
-.paint.italic {
+.screenline.italic {
   font-style: italic;
 }
-.paint.dim {
+.screenline.dim {
   opacity: 0.7;
 }
-.paint.command {
+.screenline.command {
   cursor: pointer;
   border-bottom: 1px dotted rgb(249, 249, 245);
 }
-.paint a {
+.screenline a {
   cursor: pointer;
   color: rgb(0, 92, 187);
   text-decoration: underline;

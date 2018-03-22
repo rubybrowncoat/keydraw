@@ -1,23 +1,24 @@
 <template>
   <div class="screen">
     <div
-      v-for="line in buffer"
-      v-bind:key="line.uid"
+      v-for="bufferLine in buffer"
+      v-bind:key="bufferLine.uid"
 
-      :class="{newline: line.newline}">
-      <pre v-html="line.text" />
+      :class="{newline: bufferLine.newline}">
+      <div
+        v-for="(line, index) in bufferLine.composition"
+        v-bind:key="`ll${index}`"
+
+        class="line">
+        <screenline
+          :composition="line"
+          :prekey="`ll${index}`" />
+      </div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-input,
-textarea,
-pre,
-code {
-  font-family: Monaco, Menlo, 'Courier New', monospace;
-}
-
 .screen {
   position: absolute;
   bottom: 0;
@@ -34,17 +35,20 @@ code {
   -moz-osx-font-smoothing: grayscale;
 
   color: rgb(249, 249, 245);
+  font-family: Monaco, Menlo, 'Courier New', monospace;
 
   .newline {
     margin-top: 15px;
   }
 
-  pre {
+  .line {
     display: block;
-    font-weight: bold;
-    font-size: 12px;
-    padding: 0 25px;
+
     margin: 5px 0;
+    padding: 0 25px;
+
+    font-size: 12px;
+    font-weight: bold;
     white-space: pre-wrap;
   }
 }
@@ -52,6 +56,8 @@ code {
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+
+import ScreenLine from './ScreenLine'
 
 const easing = (time, base, change, duration) => {
   let dTime = time / (duration / 2)
@@ -67,6 +73,9 @@ const easing = (time, base, change, duration) => {
 
 export default {
   name: 'screen',
+  components: {
+    screenline: ScreenLine,
+  },
   data: () => ({
     lines: [],
   }),

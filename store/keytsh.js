@@ -40,12 +40,16 @@ export const state = () => ({
 export const actions = {
   errorCommandFormat({ dispatch }, command) {
     dispatch('addBuffer', {
-      text: `~keytsh ❌ ${command}: command is in the wrong application format. It should return a function.`,
+      composition: [
+        `~keytsh ❌ ${command}: command is in the wrong application format. It should return a function.`,
+      ],
     })
   },
   errorCommandNotFound({ dispatch }, command) {
     dispatch('addBuffer', {
-      text: `~keytsh ⛔️ ${command}: command not found.`,
+      composition: [
+        `~keytsh ⛔️ ${command}: command not found.`,
+      ],
     })
   },
 
@@ -60,7 +64,9 @@ export const actions = {
     })
 
     dispatch('addBuffer', {
-      text: `${getters.prompt} ${commandLine}`,
+      composition: [
+        `${getters.prompt} ${commandLine}`
+      ],
       newline: true,
     })
 
@@ -70,7 +76,7 @@ export const actions = {
 
         const output = await executor(parsed)
 
-        dispatch('processBufferOutputs', output)
+        dispatch('addBuffer', { composition: output })
 
         commit('setCommandExecution', false)
       } else {
@@ -89,7 +95,9 @@ export const actions = {
     })
 
     dispatch('addBuffer', {
-      text: `${getters.prompt} ${pipeLine}`,
+      composition: [
+        `${getters.prompt} ${pipeLine}`,
+      ],
       newline: true,
     })
 
@@ -122,7 +130,7 @@ export const actions = {
           const output = await executor(parsed)
 
           if (_isEmpty(splitLine)) {
-            dispatch('processBufferOutputs', output)
+            dispatch('addBuffer', { composition: output })
           } else {
             await dispatch('unravelPipe', {
               pipe: splitLine,
@@ -182,17 +190,6 @@ export const actions = {
 
   clearBuffer({ commit }) {
     commit('clearBuffer')
-  },
-  processBufferOutputs({ dispatch }, outputs) {
-    if (_isArray(outputs)) {
-      outputs.forEach((output) => dispatch('addBuffer', {
-        text: output,
-      }))
-    } else {
-      dispatch('addBuffer', {
-        text: outputs,
-      })
-    }
   },
   addBuffer({ commit }, buffer) {
     commit('addBuffer', {
@@ -259,7 +256,7 @@ export const mutations = {
     state.buffer = []
   },
   addBuffer(state, buffer) {
-    if (!buffer.text) {
+    if (!buffer.composition || _isEmpty(buffer.composition)) {
       state.buffer.push({
         newline: true,
 
