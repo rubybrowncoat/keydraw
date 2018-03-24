@@ -212,25 +212,20 @@ export default {
           }
           case ' ': {
             // SPACE
-            if (evt.shiftKey) {
+            /*if (evt.shiftKey) {
                 this.previousColor()
-              } else {
+              } else {*/
             this.nextColor()
             break
-            }
-          }
-          case 'k': {
-            // k
-            this.previousColor()
-            break
+            //}
           }
           case 'o': {
             // o
             this.nextTheme()
             break
           }
-          case 'O': {
-            // O
+          case 'i': {
+            // i
             this.previousTheme()
             break
           }

@@ -4,22 +4,31 @@
       Keydraw<span class="qualifier" v-show="commune"> commune</span>
     </span>
 
-    <div class="menu active" v-show="!artefact">
-      <span class="menuItem"><span class="label"><i class="fas fa-arrows-alt"></i></span>MOVE</span>
-      <span class="menuItem" v-show="!commune"><span class="label"><i class="fas fa-arrow-alt-circle-up"></i>&nbsp;<i class="fas fa-arrows-alt"></i></span>RESIZE</span>
-      <span class="menuItem"><span class="label"><i class="fas fa-space-shuttle"></i></span>COLOR<span :class="['colorTile', currentName]"></span>
-    </span>
-    <span class="menuItem"><span class="label"><i class="fas fa-keyboard"></i></span>TOGGLE</span>
-    <span class="menuItem" v-show="!commune"><span class="label"><i class="fas fa-long-arrow-alt-left"></i></span>CLEAR</span>
-    <span class="menuItem"><span class="label" v-show="!commune"><i class="far fa-circle"></i></span><span class="label" v-show="commune"><i class="fas fa-lock"></i></span>THEME<span class="themeName">{{currentTheme}}</span></span>
-  </div>
 
-  <div class="menu" v-show="artefact">
+    <div class="menu active" v-show="!artefact">
+      <!-- MOVE -->      
+      <span class="menuItem"><span class="label"><i class="fas fa-arrows-alt"></i></span>MOVE</span>
+      <!-- SIZE -->  
+      <span class="menuItem">
+        <span class="label" v-show="!commune">&#8679;&nbsp;<i class="fas fa-arrows-alt"></i></span><span class="label lock" v-show="commune"><i class="fas fa-lock"></i></span>SIZE<span class="txtLabel">{{gridWidth}}&#215;{{gridHeight}}</span>
+      </span>
+      <!-- TOGGLE -->  
+      <span class="menuItem"><span class="label"><i class="fas fa-keyboard"></i></span>TOGGLE</span>
+      <!-- CLEAR -->  
+      <span class="menuItem" v-show="!commune"><span class="label">&#9003;</span>CLEAR</span>
+      <!-- COLOR -->  
+      <span class="menuItem"><span class="label"><i class="fas fa-space-shuttle"></i></span>COLOR<span :class="['colorLabel', currentName]">{{currentName}}</span></span>
+      <!-- THEME-->  
+      <span class="menuItem"><span class="label" v-show="!commune">I/O</span><span class="label lock" v-show="commune"><i class="fas fa-lock"></i></span>THEME<span class="txtLabel">{{currentTheme}}</span></span>
+
+    </div>
+
+    <div class="menu" v-show="artefact">
+    </div>
+    <span class="copyright">
+      &copy; 2018 <a href="http://pumo.mp">pumo.mp</a>
+    </span>
   </div>
-  <span class="copyright">
-    &copy; 2018 <a href="http://pumo.mp">pumo.mp</a>
-  </span>
-</div>
 </template>
 
 <style lang="scss" scoped>
@@ -48,8 +57,9 @@
     .menuItem {
       display: inline-block;
       margin-bottom: 15px;
-      margin-left: 15px;
+      margin-left: 20px;
       white-space: nowrap;
+      position: relative;
       .label {
         font-size: 15px;
         border-width: 1px;
@@ -58,34 +68,35 @@
         margin-right: 10px;
         border-radius: 5px;
       }
-    }
-    .colorTile {
-      position: relative;
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      margin-left: 10px;
-      top: 3px;
-      border-radius: 5px;
-      background-size: 100%;
-    }
-    .themeName {
-      display: inline-block;
-      min-width: 45px;
-      position: relative;
-      text-align: center;
-      margin-left: 10px;
-      font-size: 15px;
-      padding: 2px 4px;
-      top: -2px;
-      border-radius: 5px
+      .colorTile {
+        position: relative;
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin-left: 10px;
+        top: 3px;
+        border-radius: 3px;
+        background-size: 100%;
+        border-width: 1px;
+        border-style: solid;
+      }
+      .txtLabel,
+      .colorLabel {
+        display: inline-block;
+        min-width: 50px;
+        position: relative;
+        text-align: center;
+        margin-left: 10px;
+        font-size: 15px;
+        padding: 2px 4px;
+        top: -2px;
+        border-radius: 5px;
+      }
     }
   }
-
   .copyright {
     margin-left: 15px;
   }
-
 }
 
 </style>
@@ -101,7 +112,17 @@ export default {
   computed: {
     ...mapGetters('color', ['currentName']),
     ...mapGetters('theme', ['currentTheme']),
-    ...mapGetters('grid', ['actives']),
+    ...mapGetters('grid', [
+      'keyboardWidth',
+      'keyboardHeight',
+
+      'gridWidth',
+      'gridHeight',
+
+      'actives',
+      ]),
   }
 }
+
+
 </script>

@@ -14,11 +14,11 @@
     
     <div class="menu active" v-show="artefact">
       <span class="menuItem">
-        <span class="label"><i class="fas fa-long-arrow-alt-left"></i></span>EDIT</span>
+        <span class="label">&#9003;</span>EDIT</span>
     </div>
 
     <div class="menu active" v-show="commune">
-      <span class="menuItem"><span class="label"><i class="fas fa-long-arrow-alt-left"></i></span>GO ALONE</span>
+      <span class="menuItem"><span class="label">&#9003;</span>GO ALONE</span>
     </div>
 
   </div>

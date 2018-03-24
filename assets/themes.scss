@@ -81,6 +81,14 @@
       background: nth($color, 2);
     }
   }
+
+    &.wrapper {
+      background-image: linear-gradient(#1e1651, #0ff);
+    }
+    & .action-bar {
+      background-image: linear-gradient(#1e1651, #0ff);
+    }
+
 }
 
 .go {
@@ -128,14 +136,14 @@
 
 $base-colors:
 
-/* name primary secondary tertiary keyboard bg-img */
+/* name primary secondary tertiary keyboard */
 
-dark #444444 #FFFFFF #555555 rgba(255, 255, 255, 0.05) none,
-pastel #FFFFE5 #9B9B58 #DBDBB0 rgba(186, 186, 126, 0.1) none,
-invert #BBBBBB #000000 #AAAAAA rgba(0, 0, 0, 0.05) none,
-zoo #000000 #FFFFFF #222222 rgba(255, 255, 255, 0.05) none,
-vapor #1e1651 #fff #f0f rgba(255, 0, 255, 0.1) linear-gradient(#1e1651, #0ff),
-go #dab15b #FFFFFF #000000 transparent none;
+dark #444444 #FFFFFF #555555 rgba(255, 255, 255, 0.05),
+pastel #FFFFE5 #9B9B58 #DBDBB0 rgba(186, 186, 126, 0.1),
+invert #BBBBBB #000000 #AAAAAA rgba(0, 0, 0, 0.05),
+zoo #000000 #FFFFFF #222222 rgba(255, 255, 255, 0.05),
+vapor #1e1651 #fff #f0f rgba(255, 0, 255, 0.1),
+go #dab15b #FFFFFF #000000 transparent;
 
 @each $color in $base-colors {
   .#{nth($color, 1)} {
@@ -143,7 +151,6 @@ go #dab15b #FFFFFF #000000 transparent none;
     &.wrapper {
       color: nth($color, 3);
       background-color: nth($color, 2);
-      background-image: nth($color, 6);
       font-family: 'VT323';
 
       a {
@@ -171,7 +178,6 @@ go #dab15b #FFFFFF #000000 transparent none;
 
     & .action-bar {
       background-color: nth($color, 2);
-      background-image: nth($color, 6);
       box-shadow: 0 -4px nth($color, 4);
       border-color: nth($color, 4);   
     }
@@ -184,8 +190,15 @@ go #dab15b #FFFFFF #000000 transparent none;
       border-color: nth($color, 3);
       background-color: nth($color, 4);
       box-shadow: 0 2px nth($color, 3);
+      &.lock {
+        background-color: #8B0000;
+
+      }
     }
-    & .themeName {
+    & .colorLabel {
+      color: nth($color, 2);
+    }
+    & .txtLabel {
       color: nth($color, 4);
       background-color: nth($color, 3);
     }
