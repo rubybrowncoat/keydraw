@@ -82,12 +82,12 @@
     }
   }
 
-    &.wrapper {
-      background-image: linear-gradient(#1e1651, #0ff);
-    }
-    & .action-bar {
-      background-image: linear-gradient(#1e1651, #0ff);
-    }
+  &.wrapper {
+    background-image: linear-gradient(#1e1651, #0ff);
+  }
+  & .action-bar {
+    background-image: linear-gradient(#1e1651, #0ff);
+  }
 
 }
 
@@ -123,10 +123,10 @@
     background-color: rgba(0, 0, 0, 0.1);
     span {
       text-shadow:
-   -1px -1px 0 #dab15b,  
-    1px -1px 0 #dab15b,
-    -1px 1px 0 #dab15b,
-     1px 1px 0 #dab15b;
+      -1px -1px 0 #dab15b,  
+      1px -1px 0 #dab15b,
+      -1px 1px 0 #dab15b,
+      1px 1px 0 #dab15b;
     }
   }
   & .keyboard {
@@ -182,25 +182,28 @@ go #dab15b #FFFFFF #000000 transparent;
       border-color: nth($color, 4);   
     }
 
+    & .menuItem {
+
+      border-color: nth($color, 3);
+      background-color: nth($color, 4);
+      box-shadow: 0 0 nth($color, 3);
+      &.lock {
+        background-color: #8B0000;
+      }
+
+    }
+
     & .name {
       background-color: nth($color, 3);
       color: nth($color, 2);
     }
-    & .label {
-      border-color: nth($color, 3);
-      background-color: nth($color, 4);
-      box-shadow: 0 2px nth($color, 3);
-      &.lock {
-        background-color: #8B0000;
 
-      }
-    }
     & .colorLabel {
       color: nth($color, 2);
     }
     & .txtLabel {
-      color: nth($color, 4);
-      background-color: nth($color, 3);
+      color: nth($color, 3);
+      background-color: nth($color, 2);
     }
   }
 }

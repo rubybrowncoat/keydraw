@@ -40,22 +40,49 @@
   border-bottom-width: 0;
   border-style: solid;
  
-  .menu {
+    .menu {
     .menuItem {
       display: inline-block;
-      margin-bottom: 0px;
-      margin-left: 15px;
+      height: 33px;
+      margin-left: 20px;
       white-space: nowrap;
-      &:first-child {
+      border-width:: 0px;
+      border-style: solid;
+      padding: 5px 8px;
+      border-radius: 5px;
+      vertical-align: middle;
+        &:first-child {
         margin-left: 0;
       }  
+
       .label {
         font-size: 15px;
-        border-width: 1px;
-        border-style: solid;
-        padding: 5px 8px;
+        margin-left: 5px;
         margin-right: 10px;
-        border-radius: 5px;
+
+      }
+      .txtLabel {
+        display: inline-block;
+        min-width: 50px;
+        text-align: center;
+        margin-left: 10px;
+        font-size: 15px;
+        padding: 2px 4px;
+        border-radius: 3px;
+        position: relative;
+        top: -2px;
+
+      }
+      .colorLabel {
+        display: inline-block;
+        min-width: 19px;
+        min-height: 19px;
+        margin-left: 10px;
+
+        border-radius: 3px;
+        position: relative;
+        top:2px;
+
       }
     }
   }

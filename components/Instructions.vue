@@ -1,7 +1,7 @@
 <template>
   <div class="instructions-container">
-    <span class="name">
-      Keydraw<span class="qualifier" v-show="commune"> commune</span>
+    <span class="name">Keydraw<span class="txtLabel" v-show="commune">commune</span>
+      <span class="txtLabel" v-show="artefact">artefact</span>
     </span>
 
 
@@ -9,17 +9,24 @@
       <!-- MOVE -->      
       <span class="menuItem"><span class="label"><i class="fas fa-arrows-alt"></i></span>MOVE</span>
       <!-- SIZE -->  
-      <span class="menuItem">
-        <span class="label" v-show="!commune">&#8679;&nbsp;<i class="fas fa-arrows-alt"></i></span><span class="label lock" v-show="commune"><i class="fas fa-lock"></i></span>SIZE<span class="txtLabel">{{gridWidth}}&#215;{{gridHeight}}</span>
+      <span class="menuItem" v-show="!commune">
+        <span class="label">&#8679;&nbsp;<i class="fas fa-arrows-alt"></i></span>SIZE<span class="txtLabel">{{gridWidth}}&#215;{{gridHeight}}</span>
       </span>
+
+      <span class="menuItem lock" v-show="commune">
+        <span class="label" v-show="commune"><i class="fas fa-lock"></i></span>SIZE<span class="txtLabel">{{gridWidth}}&#215;{{gridHeight}}</span>
+      </span>
+
       <!-- TOGGLE -->  
       <span class="menuItem"><span class="label"><i class="fas fa-keyboard"></i></span>TOGGLE</span>
       <!-- CLEAR -->  
       <span class="menuItem" v-show="!commune"><span class="label">&#9003;</span>CLEAR</span>
       <!-- COLOR -->  
-      <span class="menuItem"><span class="label"><i class="fas fa-space-shuttle"></i></span>COLOR<span :class="['colorLabel', currentName]">{{currentName}}</span></span>
+      <span class="menuItem"><span class="label"><i class="fas fa-space-shuttle"></i></span>COLOR<span :class="['colorLabel', currentName]"></span></span>
       <!-- THEME-->  
-      <span class="menuItem"><span class="label" v-show="!commune">I/O</span><span class="label lock" v-show="commune"><i class="fas fa-lock"></i></span>THEME<span class="txtLabel">{{currentTheme}}</span></span>
+      <span class="menuItem" v-show="!commune"><span class="label">I/O</span>THEME<span class="txtLabel">{{currentTheme}}</span></span>
+
+      <span class="menuItem lock" v-show="commune"><span class="label" v-show="commune"><i class="fas fa-lock"></i></span>THEME<span class="txtLabel">{{currentTheme}}</span></span>
 
     </div>
 
@@ -48,54 +55,56 @@
 
   .name {
     float: left;
-    padding: 3px 7px;
-    margin-top: -3px;
-    height: 30px;
+    padding: 5px 10px;
+    height: 33px;
+    border-radius: 5px;
 
   }
   .menu {
     .menuItem {
       display: inline-block;
+      height: 33px;
       margin-bottom: 15px;
       margin-left: 20px;
       white-space: nowrap;
-      position: relative;
+      border-width:: 0px;
+      border-style: solid;
+      padding: 5px 8px;
+      border-radius: 5px;
+      vertical-align: middle;
+
       .label {
         font-size: 15px;
-        border-width: 1px;
-        border-style: solid;
-        padding: 5px 8px;
+        margin-left: 5px;
         margin-right: 10px;
-        border-radius: 5px;
+
       }
-      .colorTile {
-        position: relative;
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        margin-left: 10px;
-        top: 3px;
-        border-radius: 3px;
-        background-size: 100%;
-        border-width: 1px;
-        border-style: solid;
-      }
-      .txtLabel,
       .colorLabel {
         display: inline-block;
-        min-width: 50px;
-        position: relative;
-        text-align: center;
+        min-width: 19px;
+        min-height: 19px;
         margin-left: 10px;
-        font-size: 15px;
-        padding: 2px 4px;
-        top: -2px;
-        border-radius: 5px;
+
+        border-radius: 3px;
+        position: relative;
+        top:2px;
+
       }
     }
   }
   .copyright {
     margin-left: 15px;
+  }
+  .txtLabel {
+    display: inline-block;
+    min-width: 50px;
+    text-align: center;
+    margin-left: 10px;
+    font-size: 15px;
+    padding: 2px 4px;
+    border-radius: 3px;
+    position: relative;
+    top: -2px;
   }
 }
 
