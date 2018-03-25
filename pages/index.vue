@@ -32,7 +32,10 @@ export default {
   transition(to, from) {
     if (!from) {
       return 'slide-left'
-    } else if (from.name === 'artefact-magic') {
+    } else if (
+      from.name === 'artefact-magic'
+      || from.name === 'commune-url'
+    ) {
       return 'slide-right'
     }
   },
