@@ -8,21 +8,19 @@
     <div class="menu active" v-show="!artefact">
       <!-- MOVE -->      
       <span class="menuItem"><span class="label"><i class="fas fa-arrows-alt"></i></span>MOVE</span>
-      <!-- SIZE -->  
-      <span class="menuItem" v-show="!commune">
-        <span class="label">&#8679;&nbsp;<i class="fas fa-arrows-alt"></i></span>SIZE<span class="txtLabel">{{gridWidth}}&#215;{{gridHeight}}</span>
-      </span>
-
-      <span class="menuItem lock" v-show="commune">
-        <span class="label" v-show="commune"><i class="fas fa-lock"></i></span>SIZE<span class="txtLabel">{{gridWidth}}&#215;{{gridHeight}}</span>
-      </span>
-
       <!-- TOGGLE -->  
       <span class="menuItem"><span class="label"><i class="fas fa-keyboard"></i></span>TOGGLE</span>
       <!-- CLEAR -->  
       <span class="menuItem" v-show="!commune"><span class="label">&#9003;</span>CLEAR</span>
       <!-- COLOR -->  
       <span class="menuItem"><span class="label"><i class="fas fa-space-shuttle"></i></span>COLOR<span :class="['colorLabel', currentName]"></span></span>
+      <!-- SIZE -->  
+      <span class="menuItem" v-show="!commune">
+        <span class="label">&#8679;&nbsp;<i class="fas fa-arrows-alt"></i></span>SIZE<span class="txtLabel">{{gridWidth}}&#215;{{gridHeight}}</span>
+      </span>
+      <span class="menuItem lock" v-show="commune">
+        <span class="label" v-show="commune"><i class="fas fa-lock"></i></span>SIZE<span class="txtLabel">{{gridWidth}}&#215;{{gridHeight}}</span>
+      </span>
       <!-- THEME-->  
       <span class="menuItem" v-show="!commune"><span class="label">I/O</span>THEME<span class="txtLabel">{{currentTheme}}</span></span>
 
@@ -58,8 +56,8 @@
     padding: 5px 10px;
     height: 33px;
     border-radius: 5px;
-
   }
+
   .menu {
     .menuItem {
       display: inline-block;
@@ -75,19 +73,20 @@
 
       .label {
         font-size: 15px;
-        margin-left: 5px;
+        margin-left: 3px;
         margin-right: 10px;
+        position: relative;
+        top: -1px;
 
       }
       .colorLabel {
         display: inline-block;
-        min-width: 19px;
-        min-height: 19px;
+        width: 19px;
+        height: 19px;
         margin-left: 10px;
-
         border-radius: 3px;
         position: relative;
-        top:2px;
+        top: 2px;
 
       }
     }
