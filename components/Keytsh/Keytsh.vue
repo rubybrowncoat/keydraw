@@ -50,6 +50,7 @@
     padding: 3px 7px;
 
     background-color: rgb(249, 249, 245);
+    border-radius: 5px;
   }
 }
 

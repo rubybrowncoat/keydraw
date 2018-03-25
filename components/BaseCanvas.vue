@@ -61,7 +61,7 @@
   position: relative;
 
   margin-top: 50px;
-  margin-bottom: 40px;
+  margin-bottom: 100px;
 }
 
 .display-grid {

@@ -5,8 +5,6 @@
       <span class="txtLabel" v-if="commune">commune</span>
       <span class="txtLabel" v-else-if="artefact">artefact</span>
     </span>
-
-
     <div class="menu active" v-if="!artefact">
       <!-- MOVE -->
       <span class="menuItem">
@@ -42,7 +40,6 @@
         </span>
         CLEAR
       </span>
-
       <!-- COLOR -->
       <span class="menuItem">
         <span class="label">
@@ -92,7 +89,6 @@
     padding: 5px 10px;
     height: 33px;
     border-radius: 5px;
-
   }
 
   .menu {
@@ -111,16 +107,17 @@
       .label {
         font-size: 15px;
         margin-left: 5px;
+
       }
 
       .colorLabel {
         display: inline-block;
         min-width: 19px;
         min-height: 19px;
-
         border-radius: 3px;
         position: relative;
         top:2px;
+
       }
     }
   }
