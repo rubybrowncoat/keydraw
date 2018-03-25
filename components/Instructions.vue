@@ -14,17 +14,6 @@
         MOVE
       </span>
 
-      <!-- SIZE -->
-      <span class="menuItem">
-        <span class="label" v-if="commune">
-          <fa :icon="['fas', 'lock']" />
-        </span>
-        <span class="label" v-else>
-          &#8679;&nbsp;<fa :icon="['fas', 'arrows-alt']" />
-        </span>
-        SIZE <span class="txtLabel">{{gridWidth}}&#215;{{gridHeight}}</span>
-      </span>
-
       <!-- TOGGLE -->
       <span class="menuItem">
         <span class="label">
@@ -48,8 +37,19 @@
         COLOR <span :class="['colorLabel', currentName]"></span>
       </span>
 
+      <!-- SIZE -->
+      <span :class="['menuItem', {lock: commune}]">
+        <span class="label" v-if="commune">
+          <fa :icon="['fas', 'lock']" />
+        </span>
+        <span class="label" v-else>
+          &#8679;&nbsp;<fa :icon="['fas', 'arrows-alt']" />
+        </span>
+        SIZE <span class="txtLabel">{{gridWidth}}&#215;{{gridHeight}}</span>
+      </span>
+
       <!-- THEME-->
-      <span class="menuItem">
+      <span :class="['menuItem', {lock: commune}]">
         <span class="label" v-if="commune">
           <fa :icon="['fas', 'lock']" />
         </span>
@@ -104,10 +104,20 @@
       border-radius: 5px;
       vertical-align: middle;
 
+      &.lock {
+        background: repeating-linear-gradient(
+          45deg,
+          #A10000,
+          #A10000 10px,
+          #BD0000 10px,
+          #BD0000 20px
+          )
+
+      }
+
       .label {
         font-size: 15px;
         margin-left: 5px;
-
       }
 
       .colorLabel {
