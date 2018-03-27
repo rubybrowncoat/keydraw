@@ -1,4 +1,4 @@
-export const UidGenerator = () => ({
+export const UidGenerator = (prefix = '', suffix = '') => ({
   generate() {
     while (true) {
       let head = (Math.random() * 46656) | 0
@@ -7,7 +7,7 @@ export const UidGenerator = () => ({
       head = ('000' + head.toString(36)).slice(-3)
       tail = ('000' + tail.toString(36)).slice(-3)
 
-      const uid = head + tail
+      const uid = prefix + head + tail + suffix
 
       if (!this.hasOwnProperty(uid)) {
         this[uid] = true
@@ -17,3 +17,5 @@ export const UidGenerator = () => ({
     }
   },
 })
+
+export default UidGenerator

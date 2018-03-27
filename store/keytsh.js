@@ -11,7 +11,7 @@ import {
 import commands from '../keytsh/commands'
 import { parseCommand } from '../keytsh/system/parse'
 
-import { UidGenerator } from '../keytsh/system/uid'
+import UidGenerator from '../libs/uid'
 
 const historyUids = new UidGenerator()
 const bufferUids = new UidGenerator()
