@@ -6,8 +6,8 @@ import {
   reduce as _reduce
 } from 'lodash'
 
-import keyboard from '../data/keyboard'
-import colors from '../data/colors'
+import keyboard from '~/data/keyboard'
+import colors from '~/data/colors'
 
 const exportDictionary = [
   '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',

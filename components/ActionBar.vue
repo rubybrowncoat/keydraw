@@ -1,6 +1,8 @@
 <template>
   <div class="action-bar">
-    <div class="menu active" v-show="!artefact && !commune">
+    <div
+      v-if="!artefact && !commune"
+      class="menu active">
       <span class="menuItem">
         <span class="label">&#11152;</span>
         <em>ARTEFACT</em>
@@ -11,12 +13,15 @@
       </span>
     </div>
 
-    <div class="menu active" v-show="artefact">
-      <span class="menuItem">
-        <span class="label">&#9003;</span>EDIT</span>
+    <div
+      v-if="artefact"
+      class="menu active">
+      <span class="menuItem"><span class="label">&#9003;</span>EDIT</span>
     </div>
 
-    <div class="menu active" v-show="commune">
+    <div
+      v-if="commune"
+      class="menu active">
       <span class="menuItem"><span class="label">&#9003;</span>GO ALONE</span>
     </div>
   </div>
