@@ -266,10 +266,10 @@ export default {
     },
   },
   beforeMount() {
-    window.addEventListener('keyup', this.keyOperation)
+    window.addEventListener('keydown', this.keyOperation)
   },
   beforeDestroy() {
-    window.removeEventListener('keyup', this.keyOperation)
+    window.removeEventListener('keydown', this.keyOperation)
   },
 }
 </script>

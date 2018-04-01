@@ -5,11 +5,11 @@
       class="menu active">
       <span class="menuItem">
         <span class="label">&#11152;</span>
-        <em>ARTEFACT</em>
+        <em> ARTEFACT </em>
       </span>
       <span class="menuItem">
         <span class="label">&#92;</span>
-        <em>COMMUNE</em>
+        <em> COMMUNE </em>
       </span>
     </div>
 

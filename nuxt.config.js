@@ -8,7 +8,7 @@ const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
 } : {}
 
 module.exports = {
-  mode: "spa",
+  mode: 'spa',
   css: [
     '~/assets/main.scss'
   ],

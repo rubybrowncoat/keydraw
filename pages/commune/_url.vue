@@ -167,7 +167,7 @@ export default {
     return { board }
   },
   beforeMount() {
-    window.addEventListener('keyup', this.keyOperation)
+    window.addEventListener('keydown', this.keyOperation)
 
     if (!this.cable) {
       this.cable = ActionCable.createConsumer(process.env.WS_URL)
@@ -187,7 +187,7 @@ export default {
     }
   },
   beforeDestroy() {
-    window.removeEventListener('keyup', this.keyOperation)
+    window.removeEventListener('keydown', this.keyOperation)
 
     if (this.subscription) {
       this.subscription.unsubscribe()
