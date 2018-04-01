@@ -108,6 +108,7 @@ export default {
   computed: {
     ...mapGetters('color', ['currentName']),
     ...mapGetters('theme', ['currentTheme']),
+    
     ...mapGetters('grid', [
       'keyboardWidth',
       'keyboardHeight',
@@ -119,6 +120,4 @@ export default {
       ]),
   }
 }
-
-
 </script>
