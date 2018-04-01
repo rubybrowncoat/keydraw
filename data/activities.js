@@ -48,6 +48,7 @@ const activities = [
   'Win company weight-loss competition.',
   'Photocopy pictures of your buttocks.',
   'Daydream about Manfredi Pumo, magnificent designer and great manly man.',
+  'Ship it.',
 ]
 
 export default activities
