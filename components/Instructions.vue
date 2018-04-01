@@ -91,60 +91,8 @@
     border-radius: 5px;
   }
 
-  .menu {
-    .menuItem {
-      display: inline-block;
-      height: 33px;
-      margin-bottom: 15px;
-      margin-left: 20px;
-      white-space: nowrap;
-      border-width: 0px;
-      border-style: solid;
-      padding: 5px 8px;
-      border-radius: 5px;
-      vertical-align: middle;
-
-      &.lock {
-        background: repeating-linear-gradient(
-          45deg,
-          #A10000,
-          #A10000 10px,
-          #BD0000 10px,
-          #BD0000 20px
-          )
-
-      }
-
-      .label {
-        font-size: 15px;
-        margin-left: 5px;
-      }
-
-      .colorLabel {
-        display: inline-block;
-        min-width: 19px;
-        min-height: 19px;
-        border-radius: 3px;
-        position: relative;
-        top:2px;
-
-      }
-    }
-  }
-
   .copyright {
     margin-left: 15px;
-  }
-
-  .txtLabel {
-    display: inline-block;
-    min-width: 50px;
-    text-align: center;
-    font-size: 15px;
-    padding: 2px 4px;
-    border-radius: 3px;
-    position: relative;
-    top: -2px;
   }
 }
 </style>

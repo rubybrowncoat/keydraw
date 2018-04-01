@@ -21,6 +21,8 @@
   height: 100%;
 
   background-color: rgb(40, 42, 54);
+
+  z-index: 42;
 }
 
 .title-bar {

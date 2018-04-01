@@ -4,7 +4,7 @@ import {
   map as _map,
   memoize as _memoize,
   reduce as _reduce
-} from 'lodash'
+} from 'lodash-es'
 
 import keyboard from '~/data/keyboard'
 import colors from '~/data/colors'

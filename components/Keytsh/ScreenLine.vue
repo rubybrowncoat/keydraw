@@ -34,7 +34,7 @@ import {
   isArray as _isArray,
   isPlainObject as _isPlainObject,
   isString as _isString
-} from 'lodash'
+} from 'lodash-es'
 
 import classNames from 'classnames'
 

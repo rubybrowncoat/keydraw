@@ -10,7 +10,7 @@
 
         :hidden="hidden"
       />
-      <action-bar :commune="true" />
+      <action-bar kind="commune" />
     </div>
   </div>
 </template>
@@ -21,7 +21,7 @@ import { mapGetters, mapActions } from 'vuex'
 
 import ActionCable from 'actioncable'
 
-import { findIndex as _findIndex } from 'lodash'
+import { findIndex as _findIndex } from 'lodash-es'
 
 import Instructions from '../../components/Instructions'
 import BaseCanvas from '../../components/BaseCanvas'
@@ -167,7 +167,7 @@ export default {
     return { board }
   },
   beforeMount() {
-    window.addEventListener('keydown', this.keyOperation)
+    window.addEventListener('keyup', this.keyOperation)
 
     if (!this.cable) {
       this.cable = ActionCable.createConsumer(process.env.WS_URL)
@@ -187,7 +187,7 @@ export default {
     }
   },
   beforeDestroy() {
-    window.removeEventListener('keydown', this.keyOperation)
+    window.removeEventListener('keyup', this.keyOperation)
 
     if (this.subscription) {
       this.subscription.unsubscribe()

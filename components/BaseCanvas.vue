@@ -144,7 +144,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 
-import { throttle as _throttle } from 'lodash'
+import { throttle as _throttle } from 'lodash-es'
 
 import keyboard from '../data/keyboard'
 

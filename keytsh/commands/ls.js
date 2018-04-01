@@ -1,4 +1,4 @@
-import { takeRight as _takeRight, orderBy as _orderBy } from 'lodash'
+import { takeRight as _takeRight, orderBy as _orderBy } from 'lodash-es'
 
 import { startIndeterminate, stopIndeterminate } from '../system/progress'
 

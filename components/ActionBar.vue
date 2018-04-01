@@ -1,7 +1,7 @@
 <template>
   <div class="action-bar">
     <div
-      v-if="!artefact && !commune"
+      v-if="kind === 'keydraw'"
       class="menu active">
       <span class="menuItem">
         <span class="label">&#11152;</span>
@@ -14,15 +14,30 @@
     </div>
 
     <div
-      v-if="artefact"
+      v-if="kind === 'artefact'"
       class="menu active">
-      <span class="menuItem"><span class="label">&#9003;</span>EDIT</span>
+      <span class="menuItem">
+        <span class="label">&#9003;</span>
+        EDIT
+      </span>
     </div>
 
     <div
-      v-if="commune"
+      v-if="kind === 'commune'"
       class="menu active">
-      <span class="menuItem"><span class="label">&#9003;</span>GO ALONE</span>
+      <span class="menuItem">
+        <span class="label">&#9003;</span>
+        GO ALONE
+      </span>
+    </div>
+
+    <div
+      v-if="kind === 'generic'"
+      class="menu active">
+      <span class="menuItem">
+        <span class="label">&#9003;</span>
+        BACK
+      </span>
     </div>
   </div>
 </template>
@@ -42,53 +57,6 @@
   border-width: 1px;
   border-bottom-width: 0;
   border-style: solid;
-
-  .menu {
-    .menuItem {
-      display: inline-block;
-      height: 33px;
-      margin-left: 20px;
-      white-space: nowrap;
-      border-width: 0px;
-      border-style: solid;
-      padding: 5px 8px;
-      border-radius: 5px;
-      vertical-align: middle;
-
-      &:first-child {
-        margin-left: 0;
-      }
-
-      .label {
-        font-size: 15px;
-        margin-left: 5px;
-        margin-right: 10px;
-      }
-
-      .txtLabel {
-        display: inline-block;
-        min-width: 50px;
-        text-align: center;
-        margin-left: 10px;
-        font-size: 15px;
-        padding: 2px 4px;
-        border-radius: 3px;
-        position: relative;
-        top: -2px;
-      }
-
-      .colorLabel {
-        display: inline-block;
-        min-width: 19px;
-        min-height: 19px;
-        margin-left: 10px;
-
-        border-radius: 3px;
-        position: relative;
-        top:2px;
-      }
-    }
-  }
 }
 </style>
 
@@ -96,10 +64,13 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  props: [
-    'artefact',
-    'commune',
-  ],
+  props: {
+    kind: {
+      type: String,
+
+      default: 'keydraw',
+    },
+  },
 
 }
 </script>

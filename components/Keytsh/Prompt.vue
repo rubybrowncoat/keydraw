@@ -59,7 +59,7 @@ input[disabled] {
 <script>
 import { mapGetters, mapActions } from 'vuex'
 
-import { isNil as _isNil } from 'lodash'
+import { isNil as _isNil } from 'lodash-es'
 
 let preservedCommand = ''
 

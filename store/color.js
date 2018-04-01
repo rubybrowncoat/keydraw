@@ -1,4 +1,4 @@
-import { findIndex as _findIndex, head as _head, nth as _nth } from 'lodash'
+import { findIndex as _findIndex, head as _head, nth as _nth } from 'lodash-es'
 
 import colors from '../data/colors'
 

@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 
-import { keyBy as _keyBy } from 'lodash'
+import { keyBy as _keyBy } from 'lodash-es'
 
 import UidGenerator from '~/libs/uid'
 
@@ -19,22 +19,22 @@ const upgrades = [
   },
   {
     entity: 'asset-qe6yrl',
-    count: new BigNumber('10'),
+    count: 10,
 
     name: 'Mentoring Program',
     description:
-      'While reading binder upon binder of information is fun for some people, it is easier to learn and retain information from a good teacher.',
+      'While reading tutorial after tutorial, binder upon binder, ebook over ebook of information is fun for some people, it is easier to learn and retain information from a good teacher.',
 
     fups: new BigNumber('.1'),
     cost: new BigNumber('1500'),
   },
   {
     entity: 'asset-qe6yrl',
-    count: new BigNumber('100'),
+    count: 100,
 
     name: 'Better Scheduling',
     description:
-      "When all of your minimum wage employees work under 35 hours a week, there's no need to pay them health benefits!",
+      "When all of your minimum wage employees work under 35 hours a week, there's no need to cover health insurance mandates!",
 
     fups: new BigNumber('.15'),
     cost: new BigNumber('30000'),

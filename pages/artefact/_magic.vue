@@ -7,7 +7,7 @@
 
         :hidden="true"
       />
-      <action-bar :artefact="true" />
+      <action-bar kind="artefact" />
     </div>
   </div>
 </template>
@@ -58,10 +58,10 @@ export default {
     return { board }
   },
   beforeMount() {
-    window.addEventListener('keydown', this.keyOperation)
+    window.addEventListener('keyup', this.keyOperation)
   },
   beforeDestroy() {
-    window.removeEventListener('keydown', this.keyOperation)
+    window.removeEventListener('keyup', this.keyOperation)
   },
   mounted() {
     const { board } = this

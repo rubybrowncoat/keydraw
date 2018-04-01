@@ -1,4 +1,4 @@
-import { head as _head, find as _find, findIndex as _findIndex, nth as _nth } from 'lodash'
+import { head as _head, find as _find, findIndex as _findIndex, nth as _nth } from 'lodash-es'
 
 import themes from '../data/themes'
 

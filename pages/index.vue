@@ -20,7 +20,7 @@ import Vue from 'vue'
 
 import { mapGetters, mapActions } from 'vuex'
 
-import { findIndex as _findIndex } from 'lodash'
+import { findIndex as _findIndex } from 'lodash-es'
 
 import Instructions from '../components/Instructions'
 import BaseCanvas from '../components/BaseCanvas'
@@ -32,10 +32,7 @@ export default {
   transition(to, from) {
     if (!from) {
       return 'slide-left'
-    } else if (
-      from.name === 'artefact-magic'
-      || from.name === 'commune-url'
-    ) {
+    } else {
       return 'slide-right'
     }
   },
@@ -242,6 +239,11 @@ export default {
             this.doShared()
             break
           }
+          case '€': {
+            // Euro Symbol
+            this.$router.push('/keycler')
+            break
+          }
           default: {
             // KEYS
             if (!this.hidden) {
@@ -264,10 +266,10 @@ export default {
     },
   },
   beforeMount() {
-    window.addEventListener('keydown', this.keyOperation)
+    window.addEventListener('keyup', this.keyOperation)
   },
   beforeDestroy() {
-    window.removeEventListener('keydown', this.keyOperation)
+    window.removeEventListener('keyup', this.keyOperation)
   },
 }
 </script>
