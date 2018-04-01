@@ -25,7 +25,7 @@ module.exports = {
 
   modules: [
     '@nuxtjs/dotenv',
-    '@nuxtjs/webpackmonitor',
+    // '@nuxtjs/webpackmonitor',
     '@nuxtjs/axios',
 
     'nuxt-fontawesome',
