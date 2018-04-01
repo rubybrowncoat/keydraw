@@ -104,6 +104,7 @@
   display: block;
 
   margin-bottom: 5px;
+  margin-left: 0;
 
   &.costly {
     opacity: .5;
