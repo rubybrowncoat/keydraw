@@ -137,6 +137,8 @@ import { mapActions, mapGetters } from 'vuex'
 
 import { findKey as _findKey } from 'lodash-es'
 
+import tileset from '~/tiles/apesmiths/tiles.png'
+
 import ActionBar from '~/components/ActionBar'
 import Information from '~/components/Keycler/Information'
 
@@ -282,8 +284,83 @@ export default {
     },
   },
   beforeMount() {
+    const Matriciotta = window.Matriciotta = require('../libs/matrix').default
+
     window.addEventListener('keyup', this.keyOperation)
     window.addEventListener('keydown', this.keyNeutralization)
+
+    // Testing for magics
+    const img = new Image()
+    img.onload = evt => {
+      const tileSize = 3
+
+      const img = evt.target
+      const canvas = document.createElement('canvas')
+      const context = canvas.getContext('2d')
+
+      canvas.width = img.width
+      canvas.height = img.height
+
+      context.drawImage(img, 0, 0, img.width, img.height)
+
+      document.body.appendChild(canvas)
+
+      console.log(img.width, img.height, (img.width - 3) / 4 + 1, (img.height - 3) / 4 + 1, context.getImageData)
+      let tiles = []
+      let tileNumber = 0
+      for (let widthIterator = 0; widthIterator < img.width / 4; widthIterator += 1) {
+        for (let heightIterator = 0; heightIterator < img.height / 4; heightIterator += 1) {
+          tileNumber += 1
+
+          const tileContent = context.getImageData(widthIterator * 4, heightIterator * 4, tileSize, tileSize).data
+          const tilePixels = tileContent.reduce(
+            (aggregator, value, index, array) =>
+            !(index % 4) ? aggregator.concat([array.slice(index, index + 4)]) : aggregator,
+            []
+          )
+
+          const tileMatrix = new Matriciotta(tilePixels, tileSize, tileSize)
+
+          if (!tileMatrix.isUniform(new Uint8ClampedArray([255, 255, 255, 255]))) { // White Pixel
+            const preventionPixel = context.getImageData(widthIterator * 4 + 1, heightIterator * 4 + 3, 1, 1).data
+            const prevented = preventionPixel.toString() === (new Uint8ClampedArray([255, 0, 0, 255])).toString()
+
+            if (!prevented) {
+              const rotationPixel = context.getImageData(widthIterator * 4 + 3, heightIterator * 4, 1, 1).data
+              const includeRotations = rotationPixel.toString() === (new Uint8ClampedArray([0, 0, 0, 255])).toString()
+
+              const likelyhoodPixel = context.getImageData(widthIterator * 4, heightIterator * 4 + 3, 1, 1).data
+              const likelyhoodProbability = 1 - (likelyhoodPixel[0] / 255)
+
+              const tile = {
+                matrix: tileMatrix,
+                likelyhood: likelyhoodProbability,
+                rotated: false,
+              }
+
+              tiles.push(tile)
+
+              if (includeRotations) {
+                for (var iterator = 1; iterator < 4; iterator += 1) {
+                  const rotatedMatrix = tileMatrix.clockwise(iterator)
+
+                  const tile = {
+                    matrix: rotatedMatrix,
+                    likelyhood: likelyhoodProbability,
+                    rotated: true,
+                  }
+
+                  tiles.push(tile)
+                }
+              }
+            }
+          }
+        }
+      }
+
+      console.log(tiles)
+    }
+    img.src = tileset;
   },
   beforeDestroy() {
     window.removeEventListener('keyup', this.keyOperation)
