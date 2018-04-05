@@ -1,6 +1,4 @@
-class Matriciotta {
-
-}
+import { isFunction as _isFunction } from 'lodash-es'
 
 const Matriciotta = (function () {
   const identity = function() { return this }
@@ -50,10 +48,14 @@ const Matriciotta = (function () {
     matrix.length = length
     matrix.rows = height
     matrix.columns = width
-    matrix.array = buffer
+    matrix.buffer = buffer
 
     // Operations
-    matrix.isUniform = (term) => buffer.every((value, index, array) => value.toString() === (term ? term.toString() : array[0].toString()))
+    matrix.isUniform = function(term) {
+      return this.buffer.every(
+        (value, index, array) => value.toString() === (term ? term.toString() : this.buffer[0].toString())
+      )
+    }
 
     matrix.clockwise = function(rotationSteps) {
       const steps = rotationSteps % 4
@@ -61,18 +63,55 @@ const Matriciotta = (function () {
         return this
       }
 
-      const rotatedBuffer = new this.array.constructor(this.length)
+      const rotatedBuffer = new this.buffer.constructor(this.length)
 
       for (let iterator = 0; iterator < this.length; iterator += 1) {
         const row = iterator / this.columns >> 0
         const column = iterator % this.columns
 
-        rotatedBuffer[row * this.columns + column] = this.array[(this.rows - 1) * this.columns
+        rotatedBuffer[row * this.columns + column] = this.buffer[(this.rows - 1) * this.columns
           - (((row * this.columns + column) % this.rows) * this.columns)
           + ((row * this.columns + column) / this.rows >> 0)]
       }
 
-      return maker(rotatedBuffer, this.columns, this.rows).clockwise(steps - 1)
+      return maker(rotatedBuffer, this.rows, this.columns).clockwise(steps - 1)
+    }
+
+    matrix.isValidNeighbor = function(direction) {
+
+    }
+
+    matrix.edge = function(vertical, horizontal) {
+      if (horizontal) {
+        const horizontalEdge = this.buffer.filter(
+          (_, index) => index % this.columns == ( 1 / 2 + horizontal / 2 ) * ( this.columns - 1 )
+        )
+
+        return horizontalEdge
+      }
+
+      if (vertical) {
+        const verticalEdge = this.buffer.filter(
+          (_, index) => index < this.columns * ( this.rows ** ( 1 / 2 + vertical / 2)) && index >= ( 1 / 2 + vertical / 2 ) * ( this.columns * this.rows - this.columns)
+        )
+
+        return verticalEdge
+      }
+    }
+
+    matrix.edges = function(mapFunction) {
+      const edges = [
+        this.edge(-1, 0),
+        this.edge(0, 1),
+        this.edge(1, 0),
+        this.edge(-1, 0),
+      ]
+
+      if (_isFunction(mapFunction)) {
+        return edges.map(mapFunction)
+      }
+
+      return edges
     }
 
     return matrix

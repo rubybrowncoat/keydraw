@@ -137,10 +137,19 @@ import { mapActions, mapGetters } from 'vuex'
 
 import { findKey as _findKey } from 'lodash-es'
 
-import tileset from '~/tiles/apesmiths/tiles.png'
-
 import ActionBar from '~/components/ActionBar'
 import Information from '~/components/Keycler/Information'
+
+
+// TEST
+import tileset from '~/tiles/apesmiths/tiles.png'
+
+import UidGenerator from '~/libs/uid'
+const tileUids = UidGenerator('tile-')
+
+import { each as _each } from 'lodash-es'
+// ENDTEST
+
 
 let loopActive = false
 let loopBreak = false
@@ -306,7 +315,7 @@ export default {
       document.body.appendChild(canvas)
 
       console.log(img.width, img.height, (img.width - 3) / 4 + 1, (img.height - 3) / 4 + 1, context.getImageData)
-      let tiles = []
+      let tiles = {}
       let tileNumber = 0
       for (let widthIterator = 0; widthIterator < img.width / 4; widthIterator += 1) {
         for (let heightIterator = 0; heightIterator < img.height / 4; heightIterator += 1) {
@@ -337,8 +346,7 @@ export default {
                 likelyhood: likelyhoodProbability,
                 rotated: false,
               }
-
-              tiles.push(tile)
+              tiles[tileUids.generate()] = tile
 
               if (includeRotations) {
                 for (var iterator = 1; iterator < 4; iterator += 1) {
@@ -349,14 +357,46 @@ export default {
                     likelyhood: likelyhoodProbability,
                     rotated: true,
                   }
-
-                  tiles.push(tile)
+                  tiles[tileUids.generate()] = tile
                 }
               }
             }
           }
         }
       }
+
+      _each(tiles, (tile, key) => {
+        const mapToString = edge => edge.toString()
+        const tileEdges = tile.matrix.edges(mapToString)
+
+        tile.neighbors = [[], [], [], []]
+
+        _each(tiles, (subTile, subKey) => {
+          if (key === subKey) {
+            return
+          }
+
+          const subTileEdges = subTile.matrix.edges(mapToString)
+
+          if (tileEdges[0] === subTileEdges[2]) {
+            tile.neighbors[0].push(subKey)
+          }
+
+          if (tileEdges[1] === subTileEdges[3]) {
+            tile.neighbors[1].push(subKey)
+          }
+
+          if (tileEdges[2] === subTileEdges[0]) {
+            tile.neighbors[2].push(subKey)
+          }
+
+          if (tileEdges[3] === subTileEdges[1]) {
+            tile.neighbors[3].push(subKey)
+          }
+        })
+
+        return false
+      })
 
       console.log(tiles)
     }
