@@ -142,12 +142,13 @@ import Information from '~/components/Keycler/Information'
 
 
 // TEST
-import tileset from '~/tiles/apesmiths/tiles.png'
+import BigNumber from 'bignumber.js'
+import tileSetImage from '~/tiles/apesmiths/tiles.png'
 
 import UidGenerator from '~/libs/uid'
 const tileUids = UidGenerator('tile-')
 
-import { each as _each } from 'lodash-es'
+import { each as _each, map as _map, isString as _isString, isArray as _isArray, intersection as _intersection } from 'lodash-es'
 // ENDTEST
 
 
@@ -294,6 +295,8 @@ export default {
   },
   beforeMount() {
     const Matriciotta = window.Matriciotta = require('../libs/matrix').default
+    const Mapperotta = window.Mapperotta = require('../libs/map').default
+    const Tilesettolo = window.Tilesettolo = require('../libs/tileset').default
 
     window.addEventListener('keyup', this.keyOperation)
     window.addEventListener('keydown', this.keyNeutralization)
@@ -315,7 +318,10 @@ export default {
       document.body.appendChild(canvas)
 
       console.log(img.width, img.height, (img.width - 3) / 4 + 1, (img.height - 3) / 4 + 1, context.getImageData)
+
       let tiles = {}
+      let orderedTiles = []
+
       let tileNumber = 0
       for (let widthIterator = 0; widthIterator < img.width / 4; widthIterator += 1) {
         for (let heightIterator = 0; heightIterator < img.height / 4; heightIterator += 1) {
@@ -339,25 +345,29 @@ export default {
               const includeRotations = rotationPixel.toString() === (new Uint8ClampedArray([0, 0, 0, 255])).toString()
 
               const likelyhoodPixel = context.getImageData(widthIterator * 4, heightIterator * 4 + 3, 1, 1).data
-              const likelyhoodProbability = 1 - (likelyhoodPixel[0] / 255)
+              const likelyhoodProbability = new BigNumber(`${1 - (likelyhoodPixel[0] / 255)}`)
 
               const tile = {
+                uid: tileUids.generate(),
                 matrix: tileMatrix,
                 likelyhood: likelyhoodProbability,
                 rotated: false,
               }
-              tiles[tileUids.generate()] = tile
+              tiles[tile.uid] = tile
+              orderedTiles.push(tile.uid)
 
               if (includeRotations) {
                 for (var iterator = 1; iterator < 4; iterator += 1) {
                   const rotatedMatrix = tileMatrix.clockwise(iterator)
 
                   const tile = {
+                    uid: tileUids.generate(),
                     matrix: rotatedMatrix,
                     likelyhood: likelyhoodProbability,
                     rotated: true,
                   }
-                  tiles[tileUids.generate()] = tile
+                  tiles[tile.uid] = tile
+                  orderedTiles.push(tile.uid)
                 }
               }
             }
@@ -394,13 +404,118 @@ export default {
             tile.neighbors[3].push(subKey)
           }
         })
-
-        return false
       })
 
-      console.log(tiles)
+      const tileSet = new Tilesettolo(tiles, orderedTiles)
+      const map = new Mapperotta(112, 84)
+
+      const firstLocation = [0, 0]
+      const firstPick = tileSet.pick()
+      map.set(firstLocation, firstPick.uid)
+
+      console.log(map.rows, map.columns)
+
+      for (let heightIterator = 0; heightIterator < map.rows; heightIterator += 1) {
+        for (let widthIterator = 0; widthIterator < map.columns; widthIterator += 1) {
+          const selfContent = map.get([widthIterator, heightIterator])
+
+          map.getNeighborLocations([widthIterator, heightIterator]).forEach((location, index) => {
+            if (location) {
+              const neighborContent = map.get(location)
+
+              let tileDirectionContent
+              if (_isString(selfContent)) {
+                tileDirectionContent = tileSet.tiles[selfContent].neighbors[index]
+              }
+
+              if (_isArray(selfContent)) {
+                tileDirectionContent = _intersection(..._map(selfContent, uid => {
+                  tileSet.tiles[uid].neighbors[index]
+                }))
+              }
+
+              if (_isString(neighborContent)) {
+                return
+              }
+
+              if (_isArray(neighborContent)) {
+                map.set(location, tileSet.pick(_intersection(neighborContent, tileDirectionContent)).uid)
+
+                return
+              }
+
+              map.set(location, tileSet.pick(tileDirectionContent).uid)
+            }
+          })
+        }
+      }
+
+      const testCanvas = document.createElement('canvas')
+      const testContext = testCanvas.getContext('2d')
+      const testWidth = map.columns * 3
+      const testHeight = map.rows * 3
+
+      testCanvas.width = testWidth
+      testCanvas.height = testHeight
+
+      testCanvas.style.position = "absolute"
+      testCanvas.style.top = "50%"
+      testCanvas.style.left = "50%"
+      testCanvas.style.transform = "translate(-50%, -50%)"
+      testCanvas.style.zIndex = "3333"
+
+      document.body.appendChild(testCanvas)
+
+      console.log(map)
+
+      const iteration = (bufferStep = 0) => () => {
+        if (bufferStep >= map.columns * map.rows) {
+          return
+        }
+
+        const xPosition = bufferStep % map.columns
+        const yPosition = bufferStep / map.columns >> 0
+
+        // console.log(bufferStep, xPosition, yPosition, map.buffer[bufferStep])
+
+        const tileUid = map.buffer[bufferStep]
+        const tile = tileSet.tiles[tileUid]
+
+        const dataConcatenation = tile.matrix.buffer.reduce(
+          (aggregator, array) => {
+            return [...aggregator, ...array]
+          }, []
+        )
+
+        const imageData = new ImageData(Uint8ClampedArray.from(dataConcatenation), tile.matrix.columns, tile.matrix.rows)
+
+        testContext.putImageData(imageData, xPosition * 3, yPosition * 3)
+
+        requestAnimationFrame(iteration(bufferStep + 1))
+      }
+
+      requestAnimationFrame(iteration())
+
+      // for (let heightIterator = 0; heightIterator < map.rows; heightIterator += 1) {
+      //   for (let widthIterator = 0; widthIterator < map.columns; widthIterator += 1) {
+      //     const tileUid = map.get([widthIterator, heightIterator])
+      //     const tile = tileSet.tiles[tileUid]
+
+      //     const dataConcatenation = tile.matrix.buffer.reduce(
+      //       (aggregator, array) => {
+      //         return [...aggregator, ...array]
+      //       }, []
+      //     )
+
+      //     const imageData = new ImageData(Uint8ClampedArray.from(dataConcatenation), tile.matrix.columns, tile.matrix.rows)
+
+      //     testContext.putImageData(imageData, widthIterator * 3, heightIterator * 3)
+      //   }
+      // }
+
+      console.log(testContext.getImageData(0, 0, testWidth, testHeight))
     }
-    img.src = tileset;
+    img.src = tileSetImage;
   },
   beforeDestroy() {
     window.removeEventListener('keyup', this.keyOperation)
