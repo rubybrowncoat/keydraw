@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import BigNumber from 'bignumber.js'
+import Decimal from 'decimal.js'
 
 import {
   has as _has,
@@ -20,11 +20,11 @@ const upgradeKeyTest = Object.keys(availableUpgrades)[0]
 export const state = () => ({
   businessOpportunities: 0,
 
-  funds: new BigNumber(0, 10),
-  fundsPerSecond: new BigNumber(0, 10),
+  funds: new Decimal(0, 10),
+  fundsPerSecond: new Decimal(0, 10),
 
   currentActivity: _sample(availableActivities),
-  activityPower: new BigNumber('2.5', 10),
+  activityPower: new Decimal('2.5', 10),
 
   assets: {},
   upgrades: {},
@@ -42,12 +42,12 @@ export const actions = {
           const upgradeFups = upgrade.fups
 
           return total.plus(upgradeFups)
-        }, new BigNumber(assetFups, 10))
-        const totalAssetFups = upgradedAssetFups.multipliedBy(amount)
+        }, new Decimal(assetFups, 10))
+        const totalAssetFups = upgradedAssetFups.times(amount)
 
         return total.plus(totalAssetFups)
       },
-      new BigNumber(0, 10)
+      new Decimal(0, 10)
     )
 
     commit('setFups', totalFups)
@@ -56,7 +56,7 @@ export const actions = {
   buyAsset({ commit, dispatch, getters }, assetUid) {
     const asset = availableAssets[assetUid]
 
-    if (asset.cost.isLessThanOrEqualTo(getters.funds)) {
+    if (asset.cost.lte(getters.funds)) {
       commit('buyAsset', assetUid)
 
       dispatch('recalculateFups')
@@ -67,7 +67,7 @@ export const actions = {
     const assetAmount = getters.assets[upgrade.entity] || 0
     const upgradeCount = upgrade.count || 0
 
-    if (upgrade.cost.isLessThanOrEqualTo(getters.funds) && assetAmount >= upgradeCount) {
+    if (upgrade.cost.lte(getters.funds) && assetAmount >= upgradeCount) {
       commit('buyUpgrade', upgradeUid)
 
       dispatch('recalculateFups')
@@ -109,13 +109,13 @@ export const getters = {
           const upgradeFups = upgrade.fups
 
           return total.plus(upgradeFups)
-        }, new BigNumber(assetFups, 10))
-        const totalAssetFups = upgradedAssetFups.multipliedBy(amount)
+        }, new Decimal(assetFups, 10))
+        const totalAssetFups = upgradedAssetFups.times(amount)
 
         console.log(asset.name, amount, assetFups.toString(), upgradedAssetFups.toString(), totalAssetFups.toString())
         return total.plus(totalAssetFups)
       },
-      new BigNumber(0, 10)
+      new Decimal(0, 10)
     ).toString()
   },
 }
@@ -126,7 +126,7 @@ export const mutations = {
   },
 
   setFups(state, fups) {
-    state.fundsPerSecond = new BigNumber(fups)
+    state.fundsPerSecond = new Decimal(fups)
   },
 
   changeActivity(state) {

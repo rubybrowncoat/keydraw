@@ -8,13 +8,13 @@
         <span class="label">
           <fa :icon="['fas', 'credit-card']" />
         </span>
-        &euro;{{ funds.toFormat() }}
+        &euro;{{ funds.toString() }}
       </span>
     </div>
 
     <div class="righty menu">
       <span class="menuItem">
-        &euro;{{ fundsPerSecond.toFormat() }}
+        &euro;{{ fundsPerSecond.toString() }}
         <span class="txtLabel fups">Fups</span>
       </span>
       <span class="copyright">

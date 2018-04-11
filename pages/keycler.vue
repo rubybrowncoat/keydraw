@@ -14,15 +14,15 @@
               'asset',
               'menuItem',
               {
-                costly: asset.cost.isGreaterThan(funds),
-                hidden: asset.cost.isGreaterThan(funds.multipliedBy(1.5)) && !assets[key],
+                costly: asset.cost.gt(funds),
+                hidden: asset.cost.gt(funds.times(1.5)) && !assets[key],
               },
             ]"
             v-for="(asset, key) in availableAssets"
             :key="key">
             <span class="txtLabel">{{ asset.key }}</span>
             {{ asset.name }}
-            <span class="txtLabel">€{{ asset.cost.toFormat() }}</span>
+            <span class="txtLabel">€{{ asset.cost.toString() }}</span>
             <span class="quantity">{{ assets[key] || 0 }}</span>
           </div>
         </div>
@@ -32,9 +32,9 @@
               'upgrade',
               'menuItem',
               {
-                costly: upgrade.cost.isGreaterThan(funds),
+                costly: upgrade.cost.gt(funds),
                 hidden:
-                  upgrade.cost.isGreaterThan(funds.multipliedBy(1.5))
+                  upgrade.cost.gt(funds.times(1.5))
                   || (assets[upgrade.entity] || 0) < (upgrade.count || 0),
               },
             ]"
@@ -42,7 +42,7 @@
             :key="key">
             <span class="txtLabel">SHIFT + {{ availableAssets[upgrade.entity].key }}</span>
             {{ upgrade.name }}
-            <span class="txtLabel">€{{ upgrade.cost.toFormat() }}</span>
+            <span class="txtLabel">€{{ upgrade.cost.toString() }}</span>
             <span class="description">
               {{ upgrade.description }}
             </span>
@@ -70,7 +70,7 @@
   font-size: 22px;
 
   &:after {
-    content: "";
+    content: '';
     display: table;
     clear: both;
   }
@@ -80,7 +80,8 @@
   display: block;
 }
 
-.assets, .upgrades {
+.assets,
+.upgrades {
   width: 50%;
 
   .txtLabel {
@@ -100,14 +101,15 @@
   padding: 20px 0 0 10px;
 }
 
-.asset, .upgrade {
+.asset,
+.upgrade {
   display: block;
 
   margin-bottom: 5px;
   margin-left: 0;
 
   &.costly {
-    opacity: .5;
+    opacity: 0.5;
   }
 
   &.hidden {
@@ -140,17 +142,27 @@ import { findKey as _findKey } from 'lodash-es'
 import ActionBar from '~/components/ActionBar'
 import Information from '~/components/Keycler/Information'
 
-
 // TEST
-import BigNumber from 'bignumber.js'
+import Decimal from 'decimal.js'
 import tileSetImage from '~/tiles/apesmiths/tiles.png'
 
 import UidGenerator from '~/libs/uid'
 const tileUids = UidGenerator('tile-')
 
-import { each as _each, map as _map, isString as _isString, isArray as _isArray, intersection as _intersection } from 'lodash-es'
+import {
+  each as _each,
+  map as _map,
+  isString as _isString,
+  isArray as _isArray,
+  intersection as _intersection,
+  random as _random,
+  uniq as _uniq,
+  defer as _defer,
+  after as _after,
+  reject as _reject,
+  isEmpty as _isEmpty,
+} from 'lodash-es'
 // ENDTEST
-
 
 let loopActive = false
 let loopBreak = false
@@ -165,9 +177,7 @@ export default {
     fps: 1,
   }),
   computed: {
-    ...mapGetters('theme', [
-      'currentTheme',
-    ]),
+    ...mapGetters('theme', ['currentTheme']),
 
     ...mapGetters('keycler', [
       'funds',
@@ -180,21 +190,11 @@ export default {
       'availableUpgrades',
     ]),
 
-    ...mapGetters('keytsh', [
-      'keytshCollapsed',
-    ]),
+    ...mapGetters('keytsh', ['keytshCollapsed']),
   },
   methods: {
-    ...mapActions('keycler', [
-      'operationalActivity',
-      'collectFups',
-
-      'buyAsset',
-      'buyUpgrade',
-    ]),
-    ...mapActions('keytsh', [
-      'toggleKeytshCollapse',
-    ]),
+    ...mapActions('keycler', ['operationalActivity', 'collectFups', 'buyAsset', 'buyUpgrade']),
+    ...mapActions('keytsh', ['toggleKeytshCollapse']),
 
     keyOperation(evt) {
       if (this.keytshCollapsed) {
@@ -221,7 +221,7 @@ export default {
                 if (upgradeUid) {
                   const upgrade = this.availableUpgrades[upgradeUid]
 
-                  if (upgrade.cost.isLessThanOrEqualTo(this.funds)) {
+                  if (upgrade.cost.lte(this.funds)) {
                     this.buyUpgrade(upgradeUid)
                   }
                 }
@@ -232,7 +232,7 @@ export default {
               if (assetUid) {
                 const asset = this.availableAssets[assetUid]
 
-                if (asset.cost.isLessThanOrEqualTo(this.funds)) {
+                if (asset.cost.lte(this.funds)) {
                   this.buyAsset(assetUid)
                 }
               }
@@ -283,7 +283,7 @@ export default {
         const delta = now - then
 
         if (delta > interval) {
-          then = now - (delta % interval)
+          then = now - delta % interval
 
           this.gameLogic()
         }
@@ -294,14 +294,16 @@ export default {
     },
   },
   beforeMount() {
-    const Matriciotta = window.Matriciotta = require('../libs/matrix').default
-    const Mapperotta = window.Mapperotta = require('../libs/map').default
-    const Tilesettolo = window.Tilesettolo = require('../libs/tileset').default
-
     window.addEventListener('keyup', this.keyOperation)
     window.addEventListener('keydown', this.keyNeutralization)
 
     // Testing for magics
+    const Matriciotta = (window.Matriciotta = require('../libs/matrix').default)
+    const Mapperotta = (window.Mapperotta = require('../libs/map').default)
+    const Tilesettolo = (window.Tilesettolo = require('../libs/tileset').default)
+    const Distribuzia = (window.Distribuzia = require('../libs/distribution').default)
+    const Distribolla = (window.Distribolla = require('../libs/distributionSphere').default)
+
     const img = new Image()
     img.onload = evt => {
       const tileSize = 3
@@ -317,7 +319,13 @@ export default {
 
       document.body.appendChild(canvas)
 
-      console.log(img.width, img.height, (img.width - 3) / 4 + 1, (img.height - 3) / 4 + 1, context.getImageData)
+      console.log(
+        img.width,
+        img.height,
+        (img.width - 3) / 4 + 1,
+        (img.height - 3) / 4 + 1,
+        context.getImageData
+      )
 
       let tiles = {}
       let orderedTiles = []
@@ -327,25 +335,48 @@ export default {
         for (let heightIterator = 0; heightIterator < img.height / 4; heightIterator += 1) {
           tileNumber += 1
 
-          const tileContent = context.getImageData(widthIterator * 4, heightIterator * 4, tileSize, tileSize).data
+          const tileContent = context.getImageData(
+            widthIterator * 4,
+            heightIterator * 4,
+            tileSize,
+            tileSize
+          ).data
           const tilePixels = tileContent.reduce(
             (aggregator, value, index, array) =>
-            !(index % 4) ? aggregator.concat([array.slice(index, index + 4)]) : aggregator,
+              !(index % 4) ? aggregator.concat([array.slice(index, index + 4)]) : aggregator,
             []
           )
 
           const tileMatrix = new Matriciotta(tilePixels, tileSize, tileSize)
 
-          if (!tileMatrix.isUniform(new Uint8ClampedArray([255, 255, 255, 255]))) { // White Pixel
-            const preventionPixel = context.getImageData(widthIterator * 4 + 1, heightIterator * 4 + 3, 1, 1).data
-            const prevented = preventionPixel.toString() === (new Uint8ClampedArray([255, 0, 0, 255])).toString()
+          if (!tileMatrix.isUniform(new Uint8ClampedArray([255, 255, 255, 255]))) {
+            // White Pixel
+            const preventionPixel = context.getImageData(
+              widthIterator * 4 + 1,
+              heightIterator * 4 + 3,
+              1,
+              1
+            ).data
+            const prevented =
+              preventionPixel.toString() === new Uint8ClampedArray([255, 0, 0, 255]).toString()
 
             if (!prevented) {
-              const rotationPixel = context.getImageData(widthIterator * 4 + 3, heightIterator * 4, 1, 1).data
-              const includeRotations = rotationPixel.toString() === (new Uint8ClampedArray([0, 0, 0, 255])).toString()
+              const rotationPixel = context.getImageData(
+                widthIterator * 4 + 3,
+                heightIterator * 4,
+                1,
+                1
+              ).data
+              const includeRotations =
+                rotationPixel.toString() === new Uint8ClampedArray([0, 0, 0, 255]).toString()
 
-              const likelyhoodPixel = context.getImageData(widthIterator * 4, heightIterator * 4 + 3, 1, 1).data
-              const likelyhoodProbability = new BigNumber(`${1 - (likelyhoodPixel[0] / 255)}`)
+              const likelyhoodPixel = context.getImageData(
+                widthIterator * 4,
+                heightIterator * 4 + 3,
+                1,
+                1
+              ).data
+              const likelyhoodProbability = new Decimal(`${1 - likelyhoodPixel[0] / 255}`)
 
               const tile = {
                 uid: tileUids.generate(),
@@ -382,10 +413,6 @@ export default {
         tile.neighbors = [[], [], [], []]
 
         _each(tiles, (subTile, subKey) => {
-          if (key === subKey) {
-            return
-          }
-
           const subTileEdges = subTile.matrix.edges(mapToString)
 
           if (tileEdges[0] === subTileEdges[2]) {
@@ -409,46 +436,22 @@ export default {
       const tileSet = new Tilesettolo(tiles, orderedTiles)
       const map = new Mapperotta(112, 84)
 
-      const firstLocation = [0, 0]
-      const firstPick = tileSet.pick()
-      map.set(firstLocation, firstPick.uid)
+      // Build Map
+      const initialPositions = _uniq(
+        new Array(1 / 300 * map.columns * map.rows >> 0).fill().map(() => [_random(0, 111), _random(0, 83)])
+      )
 
-      console.log(map.rows, map.columns)
+      const orderedCreation = []
 
-      for (let heightIterator = 0; heightIterator < map.rows; heightIterator += 1) {
-        for (let widthIterator = 0; widthIterator < map.columns; widthIterator += 1) {
-          const selfContent = map.get([widthIterator, heightIterator])
-
-          map.getNeighborLocations([widthIterator, heightIterator]).forEach((location, index) => {
-            if (location) {
-              const neighborContent = map.get(location)
-
-              let tileDirectionContent
-              if (_isString(selfContent)) {
-                tileDirectionContent = tileSet.tiles[selfContent].neighbors[index]
-              }
-
-              if (_isArray(selfContent)) {
-                tileDirectionContent = _intersection(..._map(selfContent, uid => {
-                  tileSet.tiles[uid].neighbors[index]
-                }))
-              }
-
-              if (_isString(neighborContent)) {
-                return
-              }
-
-              if (_isArray(neighborContent)) {
-                map.set(location, tileSet.pick(_intersection(neighborContent, tileDirectionContent)).uid)
-
-                return
-              }
-
-              map.set(location, tileSet.pick(tileDirectionContent).uid)
-            }
-          })
-        }
+      const getOppositeIndex = neighborIndex => {
+        return (neighborIndex + 2) % 4
       }
+
+      // Test Distribolla
+      // const distributionSphereTest = new Distribolla(7, 7, tileSet)
+
+      // console.log(distributionSphereTest)
+      // return
 
       const testCanvas = document.createElement('canvas')
       const testContext = testCanvas.getContext('2d')
@@ -458,64 +461,90 @@ export default {
       testCanvas.width = testWidth
       testCanvas.height = testHeight
 
-      testCanvas.style.position = "absolute"
-      testCanvas.style.top = "50%"
-      testCanvas.style.left = "50%"
-      testCanvas.style.transform = "translate(-50%, -50%)"
-      testCanvas.style.zIndex = "3333"
+      testCanvas.style.position = 'absolute'
+      testCanvas.style.top = '50%'
+      testCanvas.style.left = '50%'
+      testCanvas.style.transform = 'translate(-50%, -50%)'
+      testCanvas.style.zIndex = '3333'
+      testCanvas.style.backgroundColor = 'mistyrose'
 
       document.body.appendChild(testCanvas)
 
-      console.log(map)
+      const neighborIntercept = neighborLocations => {
+        const mappedNeighbors = neighborLocations.map((neighborLocation, neighborIndex) => {
+          if (neighborLocation) {
+            const neighborContent = map.get(neighborLocation)
+            const oppositeIndex = getOppositeIndex(neighborIndex)
 
-      const iteration = (bufferStep = 0) => () => {
-        if (bufferStep >= map.columns * map.rows) {
+            if (_isString(neighborContent)) {
+              return tileSet.tiles[neighborContent].neighbors[oppositeIndex]
+            } else {
+              plannedLocations.push(neighborLocation)
+            }
+          }
+
+          return null
+        })
+
+        const withoutEmptyNeighbors = _reject(mappedNeighbors, _isEmpty)
+        const intersectedNeighbors = _intersection(...withoutEmptyNeighbors)
+
+        return intersectedNeighbors
+      }
+
+      let plannedLocations = [].concat(initialPositions)
+      while (plannedLocations.length) {
+        const activeLocation = plannedLocations.shift()
+        const activeContent = map.get(activeLocation)
+
+        if (!_isString(activeContent)) {
+          const neighborLocations = map.getNeighborLocations(activeLocation)
+          const withoutEmptyNeighborLocations = _reject(neighborLocations, _isEmpty)
+
+          const intersectedNeighbors = neighborIntercept(neighborLocations)
+
+          let tilePick
+          if (intersectedNeighbors.length) {
+            tilePick = tileSet.pick(intersectedNeighbors)
+          } else {
+            tilePick = tileSet.pick()
+          }
+
+          map.set(activeLocation, tilePick.uid)
+          orderedCreation.push(activeLocation)
+        }
+      }
+
+      const printage = (index = 0) => () => {
+        // if (index >= map.columns * map.rows) {
+        //   return
+        // }
+        if (index >= orderedCreation.length) {
           return
         }
 
-        const xPosition = bufferStep % map.columns
-        const yPosition = bufferStep / map.columns >> 0
-
-        // console.log(bufferStep, xPosition, yPosition, map.buffer[bufferStep])
-
-        const tileUid = map.buffer[bufferStep]
+        const location = orderedCreation[index]
+        const tileUid = map.get(location)
         const tile = tileSet.tiles[tileUid]
 
-        const dataConcatenation = tile.matrix.buffer.reduce(
-          (aggregator, array) => {
-            return [...aggregator, ...array]
-          }, []
+        const dataConcatenation = tile.matrix.buffer.reduce((aggregator, array) => {
+          return [...aggregator, ...array]
+        }, [])
+
+        const imageData = new ImageData(
+          Uint8ClampedArray.from(dataConcatenation),
+          tile.matrix.columns,
+          tile.matrix.rows
         )
 
-        const imageData = new ImageData(Uint8ClampedArray.from(dataConcatenation), tile.matrix.columns, tile.matrix.rows)
+        testContext.putImageData(imageData, location[0] * 3, location[1] * 3)
 
-        testContext.putImageData(imageData, xPosition * 3, yPosition * 3)
-
-        requestAnimationFrame(iteration(bufferStep + 1))
+        // requestAnimationFrame(printage(index + 1))
+        setTimeout(printage(index + 1), 1)
       }
-
-      requestAnimationFrame(iteration())
-
-      // for (let heightIterator = 0; heightIterator < map.rows; heightIterator += 1) {
-      //   for (let widthIterator = 0; widthIterator < map.columns; widthIterator += 1) {
-      //     const tileUid = map.get([widthIterator, heightIterator])
-      //     const tile = tileSet.tiles[tileUid]
-
-      //     const dataConcatenation = tile.matrix.buffer.reduce(
-      //       (aggregator, array) => {
-      //         return [...aggregator, ...array]
-      //       }, []
-      //     )
-
-      //     const imageData = new ImageData(Uint8ClampedArray.from(dataConcatenation), tile.matrix.columns, tile.matrix.rows)
-
-      //     testContext.putImageData(imageData, widthIterator * 3, heightIterator * 3)
-      //   }
-      // }
-
-      console.log(testContext.getImageData(0, 0, testWidth, testHeight))
+      requestAnimationFrame(printage())
     }
-    img.src = tileSetImage;
+    img.src = tileSetImage
   },
   beforeDestroy() {
     window.removeEventListener('keyup', this.keyOperation)

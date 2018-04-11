@@ -20,6 +20,10 @@ const Matriciotta = (function () {
     return row
   }
 
+  const getOppositeIndex = neighborIndex => {
+    return (neighborIndex + 2) % 4
+  }
+
   const maker = function(farray, fwidth, fheight) {
     const matrix = new Object()
 
@@ -77,8 +81,10 @@ const Matriciotta = (function () {
       return maker(rotatedBuffer, this.rows, this.columns).clockwise(steps - 1)
     }
 
-    matrix.isValidNeighbor = function(direction) {
+    matrix.isValidNeighbor = function(neighborTile, direction) {
+      const selfEdges = this.edges()
 
+      // this.
     }
 
     matrix.edge = function(vertical, horizontal) {
@@ -104,7 +110,7 @@ const Matriciotta = (function () {
         this.edge(-1, 0),
         this.edge(0, 1),
         this.edge(1, 0),
-        this.edge(-1, 0),
+        this.edge(0, -1),
       ]
 
       if (_isFunction(mapFunction)) {

@@ -1,6 +1,6 @@
-import BigNumber from 'bignumber.js'
+import Decimal from 'decimal.js'
 
-import { findIndex as _findIndex } from 'lodash-es'
+import { findIndex as _findIndex, map as _map, reduce as _reduce, size as _size } from 'lodash-es'
 
 const Tilesettolo = (function () {
   const maker = function(ftiles, fordered) {
@@ -9,10 +9,36 @@ const Tilesettolo = (function () {
     tileSet.tiles = ftiles
     tileSet.ordered = fordered
 
+    tileSet.size = _size(tileSet.tiles)
+
+    tileSet.length = tileSet.size === tileSet.ordered.length ? tileSet.size : 0
+
+    tileSet.getTotalProbability = function() {
+      return _reduce(this.tiles, (sum, tile) => sum.plus(Decimal.exp(tile.likelyhood)), new Decimal(0))
+    }
+
+    tileSet.getOrderedProbabilities = function() {
+      return _map(this.ordered, tileUid => {
+        const tile = this.tiles[tileUid]
+
+        return tile.likelyhood
+      })
+    }
+
+    tileSet.getTotalNormalizedProbability = function() {
+      const totalProbability = this.getTotalProbability()
+
+      return _map(this.ordered, tileUid => {
+        const tile = this.tiles[tileUid]
+
+        return tile.likelyhood.minus(Decimal.ln(totalProbability))
+      })
+    }
+
     tileSet.makeDistribution = function(ordered) {
       return ordered.reduce((distribution, uid) => {
         const tile = this.tiles[uid]
-        const previousAggregate = distribution[distribution.length - 1] || new BigNumber(0)
+        const previousAggregate = distribution[distribution.length - 1] || new Decimal(0)
 
         distribution.push(previousAggregate.plus(tile.likelyhood))
 
@@ -30,10 +56,10 @@ const Tilesettolo = (function () {
       }
 
       if (distribution.length) {
-        const randomPick = BigNumber.random().multipliedBy(distribution[distribution.length - 1])
+        const randomPick = Decimal.random().times(distribution[distribution.length - 1])
 
         const foundIndex = _findIndex(distribution, (aggregate, index, collection) => {
-          return randomPick.isLessThanOrEqualTo(aggregate) && randomPick.isGreaterThan(collection[index - 1] || 0)
+          return randomPick.lte(aggregate) && randomPick.gt(collection[index - 1] || 0)
         })
 
         if (foundIndex > -1) {
