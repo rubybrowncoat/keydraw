@@ -1,6 +1,6 @@
 import Decimal from 'decimal.js'
 
-import { findIndex as _findIndex, map as _map, reduce as _reduce, size as _size } from 'lodash-es'
+import { findIndex as _findIndex, isNumber as _isNumber, map as _map, reduce as _reduce, size as _size } from 'lodash-es'
 
 const Tilesettolo = (function () {
   const maker = function(ftiles, fordered) {
@@ -10,8 +10,11 @@ const Tilesettolo = (function () {
     tileSet.ordered = fordered
 
     tileSet.size = _size(tileSet.tiles)
-
     tileSet.length = tileSet.size === tileSet.ordered.length ? tileSet.size : 0
+
+    tileSet.get = function(uidIndex) {
+      return _isNumber(uidIndex) ? this.tiles[this.ordered[uidIndex]] : this.tiles[uidIndex]
+    }
 
     tileSet.getTotalProbability = function() {
       return _reduce(this.tiles, (sum, tile) => sum.plus(Decimal.exp(tile.likelyhood)), new Decimal(0))

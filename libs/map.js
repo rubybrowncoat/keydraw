@@ -1,11 +1,77 @@
-import { findIndex as _findIndex, remove as _remove } from 'lodash-es'
+import Decimal from 'decimal.js'
+
+import {
+  findIndex as _findIndex,
+  isFunction as _isFunction,
+  remove as _remove,
+} from 'lodash-es'
+
+import Distribuzia from './distribution'
+
+const stop = require('lodash-es').after(20, () => {
+  throw Error('stop')
+})
 
 class Mapperotta {
-  constructor(fwidth, fheight) {
+  constructor(fwidth, fheight, ftileSet) {
     this.columns = fwidth
     this.rows = fheight
 
+    this.tileSet = ftileSet
+
     this.buffer = new Array(this.columns * this.rows)
+    this.orderedCreation = []
+
+    this.initialNormalizedDistribution = false
+    this.tileSetDistributions = false
+
+    this.sequentialBuffer = this.sequentialBufferLocations()
+  }
+
+  sequentialBufferLocations() {
+    const sequential = []
+
+    for (let iterator = 0; iterator < this.buffer.length; iterator += 1) {
+      sequential.push(this.indexToLocation(iterator))
+    }
+
+    return sequential
+  }
+
+  distributeSet() {
+    if (!this.initialNormalizedDistribution || !this.tileSetDistributions) {
+      const tileSetProbabilities = this.tileSet.ordered.map(tileUid => {
+        const tile = this.tileSet.get(tileUid)
+
+        return Decimal.max(new Decimal(1), tile.likelyhood).dividedBy(255)
+      })
+      this.initialNormalizedDistribution = new Distribuzia(tileSetProbabilities, tileSetProbabilities.length, true)
+
+      this.tileSetDistributions = new Mapperotta(this.columns, this.rows, this.tileSet)
+      this.tileSetDistributions.fill(() => this.initialNormalizedDistribution.clone())
+    }
+  }
+
+  lowestEntropy() {
+    const mapLocations = this.sequentialBuffer
+
+    let lowest = new Decimal('10113034')
+    let bestLocation = false
+
+    mapLocations.forEach(location => {
+      const locationEntropy = this.tileSetDistributions.get(location).entropy()
+
+      if (locationEntropy.lt(lowest) && !this.get(location)) {
+        lowest = locationEntropy
+        bestLocation = location
+      }
+    })
+
+    return bestLocation
+  }
+
+  indexToLocation(bufferIndex) {
+    return [bufferIndex % this.columns, (bufferIndex / this.columns) >> 0]
   }
 
   get([x, y]) {
@@ -34,6 +100,58 @@ class Mapperotta {
     return value
   }
 
+  fill(filler) {
+    for (let iterator = 0; iterator < this.buffer.length; iterator += 1) {
+      const content = _isFunction(filler) ? filler(this.buffer[iterator]) : filler
+
+      this.buffer[iterator] = content
+    }
+  }
+
+  rectifyDistributions(location, selectionIndex, spheres) {
+    const sphere = spheres[selectionIndex]
+    const tile = this.tileSet.get(selectionIndex)
+
+    const [locationX, locationY] = location
+
+    const halfWidth = (sphere.columns / 2) >> 0
+    const halfHeight = (sphere.rows / 2) >> 0
+
+    const startX = Math.max(locationX - halfWidth, 0)
+    const endX = Math.min(locationX + halfWidth, this.columns)
+
+    const startY = Math.max(locationY - halfHeight, 0)
+    const endY = Math.min(locationY + halfHeight, this.rows)
+
+    for (let iteratorY = startY; iteratorY <= endY; iteratorY += 1) {
+      for (let iteratorX = startX; iteratorX <= endX; iteratorX += 1) {
+        const sphereX = iteratorX - locationX + halfWidth
+        const sphereY = iteratorY - locationY + halfHeight
+
+        const locationDistribution = this.tileSetDistributions.get([iteratorX, iteratorY])
+        const sphereLocationDistribution = sphere.get([sphereX, sphereY])
+
+        if (locationDistribution && sphereLocationDistribution) {
+          locationDistribution.multiply(sphereLocationDistribution).normalize()
+        }
+      }
+    }
+
+    this.set(location, tile)
+    this.orderedCreation.push(location)
+  }
+
+  placeTile(location, spheres) {
+    if (!this.get(location)) {
+      const locationDistribution = this.tileSetDistributions.get(location)
+      const weightedSelectionIndex = locationDistribution.weightedSelection()
+
+      this.rectifyDistributions(location, weightedSelectionIndex, spheres)
+
+      return weightedSelectionIndex
+    }
+  }
+
   getNeighbors([x, y]) {
     return [
       y >= 1 ? this.get([x, y - 1]) : false,
@@ -56,23 +174,23 @@ class Mapperotta {
     const [sourceX, sourceY] = sourceLocation
     const [neighborX, neighborY] = neighborLocation
 
-    if (neighborX >= this.columns || neighborY >= this.rows || neighborX < 0 || neighborY < 0) {
+    if (
+      neighborX >= this.columns ||
+      neighborY >= this.rows ||
+      neighborX < 0 ||
+      neighborY < 0
+    ) {
       return true
     } else {
-      return sourceTile
+      return sourceTile.isValidNeighbor(neighborTile, [
+        neighborX - sourceX,
+        neighborY - sourceY,
+      ])
     }
   }
-  // boolean isValidNeighbor(Tile tile, int tileX, int tileY, Tile neighbor, int neighborX, int neighborY) {
-  //   if (neighborX>=mapWidth || neighborY>=mapWidth || neighborX<0 || neighborY<0) {
-  //     return true;
-  //   } else {
-  //     Directions direction = getDirectionFromDelta(neighborX-tileX, neighborY-tileY);
-  //     return tile.isValidNeighbor(neighbor, direction);
-  //   }
-  // }
 
   isSameLocation(firstLocation, secondLocation) {
-    const compareLocations = (otherLocation) => {
+    const compareLocations = otherLocation => {
       return firstLocation[0] === otherLocation[0] && firstLocation[1] === otherLocation[1]
     }
 
