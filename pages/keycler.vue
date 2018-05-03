@@ -144,7 +144,10 @@ import Information from '~/components/Keycler/Information'
 
 // TEST
 import Decimal from 'decimal.js'
-import tileSetImage from '~/tiles/apesmiths/tiles_smallest.png'
+import tileSetImage from '~/tiles/apesmiths/tiles_classic.png'
+// import tileSetImage from '~/tiles/apesmiths/tiles_smallest.png'
+// import tileSetImage from '~/tiles/apesmiths/tiles_small.png'
+// import tileSetImage from '~/tiles/apesmiths/tiles.png'
 
 function storageAvailable(type) {
   try {
@@ -397,8 +400,8 @@ export default {
                 1,
                 1
               ).data
-              const likelyhoodProbability = Decimal.pow(255 - likelyhoodPixel[0], 1)
-              // const likelyhoodProbability = new Decimal(`${1 - likelyhoodPixel[0] / 255}`)
+              const likelyhoodProbability = Math.pow(255 - likelyhoodPixel[0], 1)
+              // const likelyhoodProbability = 1 - likelyhoodPixel[0] / 255
 
               const tile = {
                 uid: tileUids.generate(),
@@ -429,33 +432,33 @@ export default {
       }
 
       // // Make Tile Neighbors
-      // _each(tiles, (tile, key) => {
-      //   const mapToString = edge => edge.toString()
-      //   const tileEdges = tile.matrix.edges(mapToString)
+      _each(tiles, (tile, key) => {
+        const mapToString = edge => edge.toString()
+        const tileEdges = tile.matrix.edges(mapToString)
 
-      //   tile.neighbors = [[], [], [], []]
+        tile.neighbors = [[], [], [], []]
 
-      //   _each(tiles, (subTile, subKey) => {
-      //     const subTileEdges = subTile.matrix.edges(mapToString)
+        _each(tiles, (subTile, subKey) => {
+          const subTileEdges = subTile.matrix.edges(mapToString)
 
-      //     if (tileEdges[0] === subTileEdges[2]) {
-      //       tile.neighbors[0].push(subKey)
-      //     }
+          if (tileEdges[0] === subTileEdges[2]) {
+            tile.neighbors[0].push(subKey)
+          }
 
-      //     if (tileEdges[1] === subTileEdges[3]) {
-      //       tile.neighbors[1].push(subKey)
-      //     }
+          if (tileEdges[1] === subTileEdges[3]) {
+            tile.neighbors[1].push(subKey)
+          }
 
-      //     if (tileEdges[2] === subTileEdges[0]) {
-      //       tile.neighbors[2].push(subKey)
-      //     }
+          if (tileEdges[2] === subTileEdges[0]) {
+            tile.neighbors[2].push(subKey)
+          }
 
-      //     if (tileEdges[3] === subTileEdges[1]) {
-      //       tile.neighbors[3].push(subKey)
-      //     }
-      //   })
-      // })
-      // console.log('donezo edges')
+          if (tileEdges[3] === subTileEdges[1]) {
+            tile.neighbors[3].push(subKey)
+          }
+        })
+      })
+      console.log('donezo edges')
 
       const tileSet = new Tilesettolo(tiles, orderedTiles)
       // const map = new Mapperotta(112, 84, tileSet)
@@ -463,34 +466,40 @@ export default {
 
       const localStorageAvailable = storageAvailable('localStorage')
 
-      // let oldSpheres = false
-      // if (localStorageAvailable) {
-      //   const fromStorage = window.localStorage.getItem('spheres')
+      // // let oldSpheres = false
+      // // if (localStorageAvailable) {
+      // //   const fromStorage = window.localStorage.getItem('spheres')
 
-      //   oldSpheres = fromStorage ? JSON.parse(fromStorage) : false
-      // }
+      // //   oldSpheres = fromStorage ? JSON.parse(fromStorage) : false
+      // // }
 
-      let tileSetDistributionSpheres
-      // if (!oldSpheres) {
-        tileSetDistributionSpheres = map.tileSet.ordered.map((tileUid, index, ordered) => {
-          const tile = map.tileSet.get(tileUid)
+      // let tileSetDistributionSpheres
+      // // if (!oldSpheres) {
+      //   tileSetDistributionSpheres = map.tileSet.ordered.map((tileUid, index, ordered) => {
+      //     const tile = map.tileSet.get(tileUid)
 
-          console.log(`Sphere: ${index + 1} of ${ordered.length}...`)
-          return new Distribolla(5, 5, map.tileSet, tile)
-        })
+      //     console.log(`Sphere: ${index + 1} of ${ordered.length}...`)
+      //     const distribolla = new Distribolla(5, 5, map.tileSet, tile)
 
-      //   if (localStorageAvailable) {
-      //     const exportedSpheres = tileSetDistributionSpheres.map(sphere => sphere.export())
+      //     console.log(distribolla)
+      //     stop()
 
-      //     window.localStorage.setItem('spheres', JSON.stringify(exportedSpheres))
-      //   }
-      // } else {
-      //   tileSetDistributionSpheres = oldSpheres.map(
-      //     exportedSphere => Distribolla.import(exportedSphere, tileSet)
-      //   )
-      // }
+      //     return distribolla
+      //   })
 
-      map.distributeSet() // Pre-distribution
+      // //   if (localStorageAvailable) {
+      // //     const exportedSpheres = tileSetDistributionSpheres.map(sphere => sphere.export())
+
+      // //     window.localStorage.setItem('spheres', JSON.stringify(exportedSpheres))
+      // //   }
+      // // } else {
+      // //   tileSetDistributionSpheres = oldSpheres.map(
+      // //     exportedSphere => Distribolla.import(exportedSphere, tileSet)
+      // //   )
+      // // }
+
+      // map.distributeSet() // Pre-distribution
+
 
       // Canvas
       const testCanvas = document.createElement('canvas')
@@ -510,118 +519,10 @@ export default {
 
       document.body.appendChild(testCanvas)
 
-      // Initial Prints
-      const printTile = (location, tileUid) => {
-        const tile = tileSet.get(tileUid)
-        const dataConcatenation = tile.matrix.buffer.reduce((aggregator, array) => {
-          return [...aggregator, ...array]
-        }, [])
 
-        const imageData = new ImageData(
-          Uint8ClampedArray.from(dataConcatenation),
-          tile.matrix.columns,
-          tile.matrix.rows
-        )
-
-        testContext.putImageData(imageData, location[0] * 3, location[1] * 3)
-      }
-
-      const mapLocations = map.sequentialBuffer
-      const initialLocations = _sampleSize(mapLocations, (1 / 300 * map.columns * map.rows) >> 0)
-
-      initialLocations.forEach(location => {
-        const tileIndex = map.placeTile(location, tileSetDistributionSpheres)
-
-        if (_isNumber(tileIndex) && tileIndex >= 0) {
-          printTile(location, tileIndex)
-          console.log(location, map.orderedCreation.length)
-        }
-      })
-
-      const generation = () => {
-        if (map.orderedCreation.length >= map.columns * map.rows) {
-          return
-        }
-
-        const lowestEntropyLocation = map.lowestEntropy()
-        const tileIndex = map.placeTile(lowestEntropyLocation, tileSetDistributionSpheres)
-
-        if (_isNumber(tileIndex) && tileIndex >= 0) {
-          printTile(lowestEntropyLocation, tileIndex)
-          console.log(lowestEntropyLocation, map.orderedCreation.length)
-        }
-
-        setTimeout(generation, 1)
-      }
-
-      requestAnimationFrame(generation)
-
-      return
-
-      // const mapLocations = map.sequentialBuffer
-      // const initialLocations = _sampleSize(mapLocations, (1 / 300 * map.columns * map.rows) >> 0)
-
-      // const orderedCreation = []
-
-      // const getOppositeIndex = neighborIndex => {
-      //   return (neighborIndex + 2) % 4
-      // }
-
-      // let plannedLocations = [].concat(initialLocations)
-
-      // const neighborIntercept = neighborLocations => {
-      //   const mappedNeighbors = neighborLocations.map((neighborLocation, neighborIndex) => {
-      //     if (neighborLocation) {
-      //       const neighborContent = map.get(neighborLocation)
-      //       const oppositeIndex = getOppositeIndex(neighborIndex)
-
-      //       if (_isString(neighborContent)) {
-      //         return tileSet.tiles[neighborContent].neighbors[oppositeIndex]
-      //       } else {
-      //         plannedLocations.push(neighborLocation)
-      //       }
-      //     }
-
-      //     return null
-      //   })
-
-      //   const withoutEmptyNeighbors = _reject(mappedNeighbors, _isEmpty)
-      //   const intersectedNeighbors = _intersection(...withoutEmptyNeighbors)
-
-      //   return intersectedNeighbors
-      // }
-
-      // while (plannedLocations.length) {
-      //   const activeLocation = plannedLocations.shift()
-      //   const activeContent = map.get(activeLocation)
-
-      //   if (!_isString(activeContent)) {
-      //     const neighborLocations = map.getNeighborLocations(activeLocation)
-      //     const withoutEmptyNeighborLocations = _reject(neighborLocations, _isEmpty)
-
-      //     const intersectedNeighbors = neighborIntercept(neighborLocations)
-
-      //     let tilePick
-      //     if (intersectedNeighbors.length) {
-      //       tilePick = tileSet.pick(intersectedNeighbors)
-      //     } else {
-      //       tilePick = tileSet.pick()
-      //     }
-
-      //     map.set(activeLocation, tilePick.uid)
-      //     orderedCreation.push(activeLocation)
-      //   }
-      // }
-
-      // const printage = (index = 0) => () => {
-      //   if (index >= orderedCreation.length) {
-      //     return
-      //   }
-
-      //   const location = orderedCreation[index]
-      //   const tileUid = map.get(location)
-      //   const tile = tileSet.tiles[tileUid]
-
+      // // Initial Prints
+      // const printTile = (location, tileUid) => {
+      //   const tile = tileSet.get(tileUid)
       //   const dataConcatenation = tile.matrix.buffer.reduce((aggregator, array) => {
       //     return [...aggregator, ...array]
       //   }, [])
@@ -633,12 +534,123 @@ export default {
       //   )
 
       //   testContext.putImageData(imageData, location[0] * 3, location[1] * 3)
-
-      //   // requestAnimationFrame(printage(index + 1))
-      //   setTimeout(printage(index + 1), 1)
       // }
-      // requestAnimationFrame(printage())
+
+      // const mapLocations = map.sequentialBuffer
+      // const initialLocations = _sampleSize(mapLocations, (1 / 300 * map.columns * map.rows) >> 0)
+
+      // initialLocations.forEach(location => {
+      //   const tileIndex = map.placeTile(location, tileSetDistributionSpheres)
+
+      //   if (_isNumber(tileIndex) && tileIndex >= 0) {
+      //     printTile(location, tileIndex)
+      //     // console.log(location, map.orderedCreation.length)
+      //   }
+      // })
+
+      // const generation = () => {
+      //   if (map.orderedCreation.length >= map.columns * map.rows) {
+      //     return
+      //   }
+
+      //   const lowestEntropyLocation = map.lowestEntropy()
+      //   const tileIndex = map.placeTile(lowestEntropyLocation, tileSetDistributionSpheres)
+
+      //   if (_isNumber(tileIndex) && tileIndex >= 0) {
+      //     printTile(lowestEntropyLocation, tileIndex)
+      //     // console.log(lowestEntropyLocation, map.orderedCreation.length)
+      //   }
+
+      //   setTimeout(generation, 1)
+      // }
+
+      // requestAnimationFrame(generation)
+      // return
+
+
+
+      const mapLocations = map.sequentialBuffer
+      const initialLocations = _sampleSize(mapLocations, 1)
+
+      const orderedCreation = []
+
+      const getOppositeIndex = neighborIndex => {
+        return (neighborIndex + 2) % 4
+      }
+
+      let plannedLocations = [].concat(initialLocations)
+
+      const neighborIntercept = neighborLocations => {
+        const mappedNeighbors = neighborLocations.map((neighborLocation, neighborIndex) => {
+          if (neighborLocation) {
+            const neighborContent = map.get(neighborLocation)
+            const oppositeIndex = getOppositeIndex(neighborIndex)
+
+            if (_isString(neighborContent)) {
+              return tileSet.tiles[neighborContent].neighbors[oppositeIndex]
+            } else {
+              plannedLocations.push(neighborLocation)
+            }
+          }
+
+          return null
+        })
+
+        const withoutEmptyNeighbors = _reject(mappedNeighbors, _isEmpty)
+        const intersectedNeighbors = _intersection(...withoutEmptyNeighbors)
+
+        return intersectedNeighbors
+      }
+
+      while (plannedLocations.length) {
+        const activeLocation = plannedLocations.shift()
+        const activeContent = map.get(activeLocation)
+
+        if (!_isString(activeContent)) {
+          const neighborLocations = map.getNeighborLocations(activeLocation)
+          const withoutEmptyNeighborLocations = _reject(neighborLocations, _isEmpty)
+
+          const intersectedNeighbors = neighborIntercept(neighborLocations)
+
+          let tilePick
+          if (intersectedNeighbors.length) {
+            tilePick = tileSet.pick(intersectedNeighbors)
+          } else {
+            tilePick = tileSet.pick()
+          }
+
+          map.set(activeLocation, tilePick.uid)
+          orderedCreation.push(activeLocation)
+        }
+      }
+
+      const printage = (index = 0) => () => {
+        if (index >= orderedCreation.length) {
+          return
+        }
+
+        const location = orderedCreation[index]
+        const tileUid = map.get(location)
+        const tile = tileSet.tiles[tileUid]
+
+        const dataConcatenation = tile.matrix.buffer.reduce((aggregator, array) => {
+          return [...aggregator, ...array]
+        }, [])
+
+        const imageData = new ImageData(
+          Uint8ClampedArray.from(dataConcatenation),
+          tile.matrix.columns,
+          tile.matrix.rows
+        )
+
+        testContext.putImageData(imageData, location[0] * 3, location[1] * 3)
+
+        // requestAnimationFrame(printage(index + 1))
+        setTimeout(printage(index + 1), 1)
+      }
+      requestAnimationFrame(printage())
     }
+
     img.src = tileSetImage
   },
   beforeDestroy() {

@@ -5,6 +5,10 @@ import { indexOf as _indexOf, isArray as _isArray, reduce as _reduce } from 'lod
 import Mapperotta from './map'
 import Distribuzia from './distribution'
 
+const stop = require('lodash-es').after(8, () => {
+  throw Error('stop')
+})
+
 class Distribolla extends Mapperotta {
   constructor(fwidth, fheight, ftileSet, fcenterTile = false, skipConstruction = false) {
     super(fwidth, fheight, ftileSet)
@@ -20,11 +24,11 @@ class Distribolla extends Mapperotta {
       Math.round(this.rows / 2),
     ])
     sphereWalkedBufferLocation.forEach((location, index) => {
-      const distribution = new Distribuzia(new Decimal('0.00000000000000000001'), this.tileSet.length)
+      const distribution = new Distribuzia(0.0000001, this.tileSet.length)
 
       if (index === 0) {
         const tileOrderedIndex = _indexOf(this.tileSet.ordered, this.centerTile.uid)
-        distribution.setProbability(tileOrderedIndex, new Decimal(1))
+        distribution.setProbability(tileOrderedIndex, 1)
       } else {
         const neighborLocations = this.getNeighborLocations(location)
 
@@ -40,7 +44,9 @@ class Distribolla extends Mapperotta {
         })
       }
 
-      this.set(location, distribution.normalize())
+      distribution.normalize()
+
+      this.set(location, distribution)
     })
   }
 
@@ -51,19 +57,11 @@ class Distribolla extends Mapperotta {
       const probability = _reduce(this.tileSet.ordered, (probability, fromTileUid, fromTileIndex) => {
         const fromTile = this.tileSet.get(fromTileUid)
 
-        const validity = toTile.matrix.isValidNeighbor(fromTile, [
-          fromLocation[0] - toLocation[0],
-          fromLocation[1] - toLocation[1],
-        ])
-          ? new Decimal(1)
-          : new Decimal(0)
+        const validity = this.isValidNeighbor(fromTile, fromLocation, toTile, toLocation) ? 1 : 0
+        const fromTileProbability = this.get(fromLocation).getProbability(fromTileIndex)
 
-        return probability.plus(
-          this.get(fromLocation)
-            .getProbability(fromTileIndex)
-            .times(validity)
-        )
-      }, new Decimal(0))
+        return probability + fromTileProbability * validity
+      }, 0)
 
       return probability
     })
@@ -75,7 +73,7 @@ class Distribolla extends Mapperotta {
     const tileIndex = _indexOf(this.tileSet.ordered, this.centerTile.uid)
 
     return [this.columns, this.rows, tileIndex, this.buffer.map(distribution => {
-      return distribution.toStringArray()
+      return distribution.toArray()
     })]
   }
 

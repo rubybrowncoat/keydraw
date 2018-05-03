@@ -1,6 +1,4 @@
-import Decimal from 'decimal.js'
-
-import { findIndex as _findIndex, isNumber as _isNumber, map as _map, reduce as _reduce, size as _size } from 'lodash-es'
+import { findIndex as _findIndex, isNumber as _isNumber, map as _map, random as _random, reduce as _reduce, size as _size } from 'lodash-es'
 
 const Tilesettolo = (function () {
   const maker = function(ftiles, fordered) {
@@ -17,7 +15,7 @@ const Tilesettolo = (function () {
     }
 
     tileSet.getTotalProbability = function() {
-      return _reduce(this.tiles, (sum, tile) => sum.plus(Decimal.exp(tile.likelyhood)), new Decimal(0))
+      return _reduce(this.tiles, (sum, tile) => sum + Math.exp(tile.likelyhood), 0)
     }
 
     tileSet.getOrderedProbabilities = function() {
@@ -34,16 +32,16 @@ const Tilesettolo = (function () {
       return _map(this.ordered, tileUid => {
         const tile = this.tiles[tileUid]
 
-        return tile.likelyhood.minus(Decimal.ln(totalProbability))
+        return tile.likelyhood - Math.log(totalProbability)
       })
     }
 
     tileSet.makeDistribution = function(ordered) {
       return ordered.reduce((distribution, uid) => {
         const tile = this.tiles[uid]
-        const previousAggregate = distribution[distribution.length - 1] || new Decimal(0)
+        const previousAggregate = distribution[distribution.length - 1] || 0
 
-        distribution.push(previousAggregate.plus(tile.likelyhood))
+        distribution.push(previousAggregate + tile.likelyhood)
 
         return distribution
       }, [])
@@ -59,10 +57,10 @@ const Tilesettolo = (function () {
       }
 
       if (distribution.length) {
-        const randomPick = Decimal.random().times(distribution[distribution.length - 1])
+        const randomPick = _random(distribution[distribution.length - 1])
 
-        const foundIndex = _findIndex(distribution, (aggregate, index, collection) => {
-          return randomPick.lte(aggregate) && randomPick.gt(collection[index - 1] || 0)
+        const foundIndex = _findIndex(distribution, (aggregated, index, collection) => {
+          return randomPick <= aggregated && (index === 0 || randomPick > collection[index - 1])
         })
 
         if (foundIndex > -1) {

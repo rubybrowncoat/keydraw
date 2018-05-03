@@ -1,8 +1,6 @@
-import Decimal from 'decimal.js'
+import { isArray as _isArray, map as _map, random as _random, reduce as _reduce } from 'lodash-es'
 
-import { isArray as _isArray, map as _map, reduce as _reduce } from 'lodash-es'
-
-const ENTROPY = new Decimal('-348273498')
+const ENTROPY = -348273498
 
 class Distribuzia {
   constructor(funiformity, flength = 0, normalized = false) {
@@ -13,10 +11,10 @@ class Distribuzia {
 
     if (_isArray(funiformity)) {
       this.length = funiformity.length
-      this.ordered = funiformity.map(probability => Decimal.ln(probability))
+      this.ordered = funiformity.map(probability => Math.log(probability))
     } else {
       if (this.length) {
-        this.ordered = new Array(this.length).fill(Decimal.ln(funiformity))
+        this.ordered = new Array(this.length).fill(Math.log(funiformity))
       }
     }
 
@@ -27,8 +25,11 @@ class Distribuzia {
 
   add(distribution) {
     const addedOrdered = []
+
     for (let iterator = 0; iterator < distribution.length; iterator += 1) {
-      addedOrdered[iterator] = Decimal.ln(Decimal.exp(distribution.ordered[iterator]).plus(Decimal.exp(this.ordered[iterator])))
+      addedOrdered[iterator] = Math.log(
+        Math.exp(distribution.ordered[iterator]) + Math.exp(this.ordered[iterator])
+      )
     }
 
     this.ordered = addedOrdered
@@ -40,8 +41,9 @@ class Distribuzia {
 
   multiply(distribution) {
     const multipliedOrdered = []
+
     for (let iterator = 0; iterator < distribution.length; iterator += 1) {
-      multipliedOrdered[iterator] = distribution.ordered[iterator].plus(this.ordered[iterator])
+      multipliedOrdered[iterator] = distribution.ordered[iterator] + this.ordered[iterator]
     }
 
     this.ordered = multipliedOrdered
@@ -53,8 +55,9 @@ class Distribuzia {
 
   normalize() {
     const totalProbability = this.getTotalProbability()
+
     if (totalProbability > 0) {
-      const normalizedOrdered = _map(this.ordered, probability => probability.minus(Decimal.ln(totalProbability)))
+      const normalizedOrdered = _map(this.ordered, probability => probability - Math.log(totalProbability))
 
       this.ordered = normalizedOrdered
 
@@ -67,17 +70,17 @@ class Distribuzia {
   getTotalProbability() {
     return _reduce(
       this.ordered,
-      (sum, probability) => sum.plus(Decimal.exp(probability)),
-      new Decimal(0)
+      (sum, probability) => sum + Math.exp(probability),
+      0
     )
   }
 
   getProbability(index) {
-    return Decimal.exp(this.ordered[index])
+    return Math.exp(this.ordered[index])
   }
 
   setProbability(index, probability) {
-    const value = Decimal.ln(probability)
+    const value = Math.log(probability)
 
     this.ordered[index] = value
 
@@ -87,23 +90,23 @@ class Distribuzia {
   }
 
   weightedSelection() {
-    let random = Decimal.random()
+    let random = _random(true)
 
     for (let iterator = 0; iterator < this.length; iterator += 1) {
       const tileProbability = this.getProbability(iterator)
 
-      random = random.minus(tileProbability)
+      random = random - tileProbability
 
-      if (random.lte(0)) {
+      if (random <= 0) {
         return iterator
       }
     }
 
-    return 0
+    return false
   }
 
   entropy() {
-    if (!this.cachedEntropy.equals(ENTROPY)) {
+    if (!this.cachedEntropy == ENTROPY) {
       return this.cachedEntropy
     }
 
@@ -112,12 +115,12 @@ class Distribuzia {
 
   calculateEntropy() {
     const entropy = this.ordered.reduce((aggregate, probability) => {
-      if (!probability.isZero()) {
-        return aggregate.plus(probability.times(Decimal.exp(probability)))
-      }
+      // if (probability != 0) {
+        return aggregate + probability * Math.exp(probability)
+      // }
 
       return aggregate
-    }, new Decimal(0))
+    }, 0)
 
     this.cachedEntropy = entropy
 
@@ -129,11 +132,11 @@ class Distribuzia {
   }
 
   clone() {
-    return new Distribuzia(_map(this.ordered, probability => probability.exp()))
+    return new Distribuzia(_map(this.ordered, probability => Math.exp(probability)))
   }
 
-  toStringArray() {
-    return this.ordered.map(decimal => decimal.exp().toString())
+  toArray() {
+    return this.ordered.map(probability => Math.exp(probability))
   }
 }
 

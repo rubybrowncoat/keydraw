@@ -1,5 +1,3 @@
-import Decimal from 'decimal.js'
-
 import {
   findIndex as _findIndex,
   isFunction as _isFunction,
@@ -43,8 +41,9 @@ class Mapperotta {
       const tileSetProbabilities = this.tileSet.ordered.map(tileUid => {
         const tile = this.tileSet.get(tileUid)
 
-        return Decimal.max(new Decimal(1), tile.likelyhood).dividedBy(255)
+        return Math.max(1, tile.likelyhood) / 255
       })
+
       this.initialNormalizedDistribution = new Distribuzia(tileSetProbabilities, tileSetProbabilities.length, true)
 
       this.tileSetDistributions = new Mapperotta(this.columns, this.rows, this.tileSet)
@@ -55,13 +54,13 @@ class Mapperotta {
   lowestEntropy() {
     const mapLocations = this.sequentialBuffer
 
-    let lowest = new Decimal('10113034')
+    let lowest = 10113034
     let bestLocation = false
 
     mapLocations.forEach(location => {
       const locationEntropy = this.tileSetDistributions.get(location).entropy()
 
-      if (locationEntropy.lt(lowest) && !this.get(location)) {
+      if (locationEntropy < lowest && !this.get(location)) {
         lowest = locationEntropy
         bestLocation = location
       }
@@ -182,7 +181,7 @@ class Mapperotta {
     ) {
       return true
     } else {
-      return sourceTile.isValidNeighbor(neighborTile, [
+      return sourceTile.matrix.isValidNeighbor(neighborTile.matrix, [
         neighborX - sourceX,
         neighborY - sourceY,
       ])

@@ -81,14 +81,14 @@ const Matriciotta = (function () {
       return maker(rotatedBuffer, this.rows, this.columns).clockwise(steps - 1)
     }
 
-    matrix.isValidNeighbor = function(neighborTile, [edgeHorizontal, edgeVertical]) {
-      const selfEdge = this.edge(edgeHorizontal, edgeVertical)
-      const neighborEdge = this.edge(-edgeHorizontal, -edgeVertical)
+    matrix.isValidNeighbor = function(neighborMatrix, [edgeHorizontal, edgeVertical]) {
+      const selfEdge = this.edge([edgeHorizontal, edgeVertical])
+      const neighborEdge = neighborMatrix.edge([-edgeHorizontal, -edgeVertical])
 
-      return selfEdge.toString() === neighborEdge.toString()
+      return selfEdge.toString() == neighborEdge.toString()
     }
 
-    matrix.edge = function(horizontal, vertical) {
+    matrix.edge = function([horizontal, vertical]) {
       if (horizontal) {
         const horizontalEdge = this.buffer.filter(
           (_, index) => index % this.columns == ( 1 / 2 + horizontal / 2 ) * ( this.columns - 1 )
@@ -108,10 +108,10 @@ const Matriciotta = (function () {
 
     matrix.edges = function(mapFunction) {
       const edges = [
-        this.edge(0, -1),
-        this.edge(1, 0),
-        this.edge(0, 1),
-        this.edge(-1, 0),
+        this.edge([0, -1]),
+        this.edge([1, 0]),
+        this.edge([0, 1]),
+        this.edge([-1, 0]),
       ]
 
       if (_isFunction(mapFunction)) {
