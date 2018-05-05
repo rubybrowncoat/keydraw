@@ -1,3 +1,5 @@
+import { chunk as _chunk, every as _every } from 'lodash-es'
+
 import UidGenerator from '~/libs/uid'
 const tileUids = UidGenerator('tile-')
 
@@ -51,42 +53,59 @@ class Tilesettolo {
           this.tileSize
         ).data
 
+        const processedTile = _chunk(tilePixels, 4)
+
         const isWhite = tilePixels.every((pixel, index, array) => pixel === 255)
 
         if (!isWhite) {
-          const preventionPixel = setContext.getImageData(xPosition + 1, yPosition + 3, 1, 1)
-            .data
+          const preventionPixel = setContext.getImageData(xPosition + 3, yPosition, 1, 1).data
           const prevented =
-            preventionPixel.toString() === new Uint8ClampedArray([250, 5, 5, 255]).toString()
+            preventionPixel.toString() !=
+            new Uint8ClampedArray([255, 255, 255, 255]).toString()
 
           if (!prevented) {
-            const blackCheck = new Uint8ClampedArray([5, 5, 5, 255]).toString()
+            const edges = this.edges(processedTile)
+            const [rightEdge, topEdge, leftEdge, bottomEdge] = edges
 
-            const symmetry =
-              setContext.getImageData(xPosition + 3, yPosition, 1, 1).data.toString() ==
-              blackCheck
-                ? 'I'
-                : setContext.getImageData(xPosition + 3, yPosition + 1, 1, 1).data.toString() ==
-                  blackCheck
-                  ? 'L'
-                  : setContext.getImageData(xPosition + 3, yPosition + 2, 1, 1).data.toString() ==
-                    blackCheck
-                    ? 'T'
-                    : setContext
-                        .getImageData(xPosition + 3, yPosition + 3, 1, 1)
-                        .data.toString() == blackCheck
-                      ? 'S'
-                      : 'X'
+            let symmetry = 'F'
+            if (this.edgeCompare(...edges)) {
+              symmetry = 'X'
+            } else if (
+              this.edgeCompare(leftEdge, rightEdge) &&
+              this.edgeCompare(topEdge, bottomEdge)
+            ) {
+              symmetry = 'I'
+            } else if (
+              this.edgeCompare(leftEdge, rightEdge) ||
+              this.edgeCompare(topEdge, bottomEdge)
+            ) {
+              symmetry = 'T'
+            } else if (
+              this.edgeCompareReversed(leftEdge, bottomEdge) &&
+              this.edgeCompareReversed(leftEdge, rightEdge)
+            ) {
+              symmetry = 'S'
+            } else if (
+              this.edgeCompareReversed(leftEdge, bottomEdge) ||
+              this.edgeCompareReversed(rightEdge, topEdge)
+            ) {
+              symmetry = 'L'
+            }
 
-            const likelyhoodPixel = setContext.getImageData(xPosition, yPosition + 3, 1, 1)
+            const likelihoodPixels = setContext.getImageData(xPosition, yPosition + 3, 4, 1)
               .data
-            const likelyhoodProbability = 1 - likelyhoodPixel[0] / 255
+            const binaryWeight = _chunk(likelihoodPixels, 4).map(
+              pixel => pixel.every(rgba => rgba === 255) ? 0 : 1
+            ).join('')
+            const intWeight = parseInt(binaryWeight, 2)
+            const likelihoodProbability = ( intWeight - 0 ) * ( ( 1 - 0.01 ) / ( 15 - 0 ) ) + 0.01
 
             const tile = {
               name: tileUids.generate(),
               bitmap: tilePixels,
+              processed: processedTile,
               symmetry,
-              weight: likelyhoodProbability,
+              weight: likelihoodProbability,
             }
 
             this.tiles.push(tile)
@@ -95,6 +114,50 @@ class Tilesettolo {
         }
       }
     }
+  }
+
+  edge([horizontal, vertical], tile) {
+    if (horizontal) {
+      const horizontalEdge = tile.filter(
+        (_, index) => index % this.tileSize == (1 / 2 + horizontal / 2) * (this.tileSize - 1)
+      )
+
+      return horizontalEdge
+    }
+
+    if (vertical) {
+      const verticalEdge = tile.filter(
+        (_, index) =>
+          index < this.tileSize ** ((vertical + 3) / 2) &&
+          index >= 1 / 2 * this.tileSize * (this.tileSize - 1) * (vertical + 1)
+      )
+
+      return verticalEdge
+    }
+  }
+
+  edges(tile) {
+    return [
+      this.edge([1, 0], tile),
+      this.edge([0, -1], tile),
+      this.edge([-1, 0], tile),
+      this.edge([0, 1], tile),
+    ]
+  }
+
+  edgeCompare(head, ...checks) {
+    const control = head.toString()
+
+    return _every(checks, check => {
+      console.log(check.toString(), control, check.toString() == control)
+      return check.toString() == control
+    })
+  }
+
+  edgeCompareReversed(firstEdge, secondEdge) {
+    secondEdge.reverse()
+
+    return firstEdge.toString() == secondEdge.toString()
   }
 }
 

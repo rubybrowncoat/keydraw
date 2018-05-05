@@ -60,10 +60,7 @@ class Observanto {
     this.initialize()
   }
 
-  edge(direction, tile) {
-    const horizontal = direction[0]
-    const vertical = direction[1]
-
+  edge([horizontal, vertical], tile) {
     if (horizontal) {
       const horizontalEdge = tile.filter(
         (_, index) => index % this.tilesize == (1 / 2 + horizontal / 2) * (this.tilesize - 1)
@@ -131,7 +128,6 @@ class Observanto {
 
   initialize() {
     let funcA
-    let funcB
     let cardinality
 
     let action = []
@@ -141,43 +137,20 @@ class Observanto {
 
     _each(this.tileset.tiles, tile => {
       switch (tile.symmetry) {
-        case 'I': {
-          cardinality = 2
-          funcA = function(i) {
-            return 1 - i
-          }
-          funcB = function(i) {
-            return i
-          }
-          break
-        }
-        case 'L': {
-          cardinality = 4
-          funcA = function(i) {
-            return (i + 1) % 4
-          }
-          funcB = function(i) {
-            return i % 2 == 0 ? i + 1 : i - 1
-          }
-          break
-        }
-        case 'T': {
-          cardinality = 4
-          funcA = function(i) {
-            return (i + 1) % 4
-          }
-          funcB = function(i) {
-            return i % 2 == 0 ? i : 4 - i
-          }
-          break
-        }
+        case 'I':
         case 'S': {
           cardinality = 2
           funcA = function(i) {
             return 1 - i
           }
-          funcB = function(i) {
-            return 1 - i
+          break
+        }
+        case 'F':
+        case 'L':
+        case 'T': {
+          cardinality = 4
+          funcA = function(i) {
+            return (i + 1) % 4
           }
           break
         }
@@ -185,9 +158,6 @@ class Observanto {
         default: {
           cardinality = 1
           funcA = function(i) {
-            return i
-          }
-          funcB = function(i) {
             return i
           }
           break
@@ -207,10 +177,6 @@ class Observanto {
           this.actuated + funcA(cardinalityIterator),
           this.actuated + funcA(funcA(cardinalityIterator)),
           this.actuated + funcA(funcA(funcA(cardinalityIterator))),
-          this.actuated + funcB(cardinalityIterator),
-          this.actuated + funcB(funcA(cardinalityIterator)),
-          this.actuated + funcB(funcA(funcA(cardinalityIterator))),
-          this.actuated + funcB(funcA(funcA(funcA(cardinalityIterator)))),
         ]
 
         action.push(items)
@@ -218,14 +184,7 @@ class Observanto {
         this.stationary.push(tile.weight || 1)
       }
 
-      const bitmap = tile.bitmap
-      const processedTile = bitmap.reduce(
-        (aggregator, value, index, array) =>
-          !(index % 4) ? aggregator.concat([array.slice(index, index + 4)]) : aggregator,
-        []
-      )
-
-      this.actuatedTiles.push(processedTile)
+      this.actuatedTiles.push(tile.processed)
 
       for (
         let cardinalityIterator = 1;
@@ -311,32 +270,15 @@ class Observanto {
       const rightDirection = action[rightFirstOccurrence][rightAlternateIndex]
       const upDirection = action[rightDirection][1]
 
-      // console.log(left, leftFirstOccurrence + leftAlternateIndex, right, rightFirstOccurrence + rightAlternateIndex)
-
-      // console.log('right-left')
-      // console.log(rightDirection, leftDirection)
-      // console.log(action[rightDirection][6], action[leftDirection][6])
-
-      // console.log(action[rightDirection][4], action[leftDirection][4])
-      // console.log(action[rightDirection][2], action[leftDirection][2])
-
-      // console.log('up-down')
-      // console.log(upDirection, downDirection)
-      // console.log(action[upDirection][6], action[downDirection][6])
-
-      // console.log(action[upDirection][4], action[downDirection][4])
-      // console.log(action[upDirection][2], action[downDirection][2])
-      // debugger
-
       this.propagator[0][rightDirection][leftDirection] = true
-      this.propagator[0][action[rightDirection][6]][action[leftDirection][6]] = true
-      this.propagator[0][action[leftDirection][4]][action[rightDirection][4]] = true
-      this.propagator[0][action[leftDirection][2]][action[rightDirection][2]] = true
+      // this.propagator[0][action[rightDirection][6]][action[leftDirection][6]] = true
+      // this.propagator[0][action[leftDirection][4]][action[rightDirection][4]] = true
+      // this.propagator[0][action[leftDirection][2]][action[rightDirection][2]] = true
 
       this.propagator[1][upDirection][downDirection] = true
-      this.propagator[1][action[downDirection][6]][action[upDirection][6]] = true
-      this.propagator[1][action[upDirection][4]][action[downDirection][4]] = true
-      this.propagator[1][action[downDirection][2]][action[upDirection][2]] = true
+      // this.propagator[1][action[downDirection][6]][action[upDirection][6]] = true
+      // this.propagator[1][action[upDirection][4]][action[downDirection][4]] = true
+      // this.propagator[1][action[downDirection][2]][action[upDirection][2]] = true
     })
 
     for (let actuatedIterator = 0; actuatedIterator < this.actuated; actuatedIterator += 1) {
