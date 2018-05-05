@@ -3,6 +3,7 @@
     hide: hidden,
   }">
     <div
+      ref="grid"
       class="display-grid"
       :style="{
         backgroundSize: `${limitedKeySize}px ${limitedKeySize}px`,

@@ -3,7 +3,7 @@
   white #fff,
   black #000,
   red #f00,
-  green #0f0,  
+  green #0f0,
   blue #00f,
   cyan #0ff,
   yellow #ff0,
@@ -20,7 +20,7 @@
   white #fff,
   black #333333,
   red #FF3B3B,
-  green #00BD46,  
+  green #00BD46,
   blue #3D5EC1,
   cyan #00E0FF,
   yellow #FFD758,
@@ -37,7 +37,7 @@
   white #000,
   black #fff,
   red #0ff,
-  green #f0f,  
+  green #f0f,
   blue #ff0,
   cyan #f00,
   yellow #00f,
@@ -54,7 +54,7 @@
   white #fff url('../tiles/zoo/white.png'),
   black #000 url('../tiles/zoo/black.png'),
   red #f00 url('../tiles/zoo/red.png'),
-  green #0f0 url('../tiles/zoo/green.png'),  
+  green #0f0 url('../tiles/zoo/green.png'),
   blue #00f url('../tiles/zoo/blue.png'),
   cyan #0ff url('../tiles/zoo/cyan.png'),
   yellow #ff0 url('../tiles/zoo/yellow.png'),
@@ -71,7 +71,7 @@
   white linear-gradient(45deg, #fff, #888),
   black linear-gradient(45deg, #000, #333),
   red linear-gradient(45deg, #f00, #811),
-  green linear-gradient(45deg, #0f0, #181),  
+  green linear-gradient(45deg, #0f0, #181),
   blue linear-gradient(45deg, #00f, #118),
   cyan linear-gradient(45deg, #0ff, #188),
   yellow linear-gradient(45deg, #ff0, #881),
@@ -111,7 +111,7 @@
     background-image: linear-gradient(to right, transparent calc(50%-1px), #000 50%, transparent 0), linear-gradient(to bottom, transparent calc(50%-1px), #000 50%, transparent 0) !important;
 
     border-color: transparent !important;
-  } 
+  }
 
   & .active-key {
     border-radius: 100% !important;
@@ -123,7 +123,7 @@
     background-color: rgba(0, 0, 0, 0.1);
     span {
       text-shadow:
-      -1px -1px 0 #dab15b,  
+      -1px -1px 0 #dab15b,
       1px -1px 0 #dab15b,
       -1px 1px 0 #dab15b,
       1px 1px 0 #dab15b;
@@ -159,6 +159,25 @@ go #dab15b #FFFFFF #000000 transparent;
       }
     }
 
+    .map-canvas {
+      background-color: nth($color, 2);
+
+      position: absolute;
+      top: 83px;
+      left: 50%;
+
+      transform: translateX(-50%);
+      z-index: 3333;
+
+      image-rendering: optimizeSpeed;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: -o-crisp-edges;
+      image-rendering: pixelated;
+
+      -ms-interpolation-mode: nearest-neighbor;
+    }
+
     & .display-grid {
       background-image: linear-gradient(to right, nth($color, 4) 1px, transparent 1px), linear-gradient(to bottom, nth($color, 4) 1px, transparent 1px);
       border-color: nth($color, 4);
@@ -179,7 +198,7 @@ go #dab15b #FFFFFF #000000 transparent;
     & .action-bar {
       background-color: nth($color, 2);
       box-shadow: 0 -4px nth($color, 4);
-      border-color: nth($color, 4);   
+      border-color: nth($color, 4);
     }
 
     & .menuItem {
