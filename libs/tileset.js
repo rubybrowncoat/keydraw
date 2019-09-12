@@ -1,4 +1,7 @@
-import { chunk as _chunk, every as _every } from 'lodash-es'
+import {
+  chunk as _chunk,
+  every as _every
+} from 'lodash-es'
 
 import UidGenerator from '~/libs/uid'
 const tileUids = UidGenerator('tile-')
@@ -29,17 +32,15 @@ class Tilesettolo {
 
     setContext.putImageData(setData, 0, 0)
 
+    console.log('tileSize', this.tileSize)
+
     // Make Tileset
     let tileNumber = 0
     for (
-      let widthIterator = 0;
-      widthIterator < this.width / this.occupancy;
-      widthIterator += 1
+      let widthIterator = 0; widthIterator < this.width / this.occupancy; widthIterator += 1
     ) {
       for (
-        let heightIterator = 0;
-        heightIterator < this.height / this.occupancy;
-        heightIterator += 1
+        let heightIterator = 0; heightIterator < this.height / this.occupancy; heightIterator += 1
       ) {
         tileNumber += 1
 
@@ -58,7 +59,7 @@ class Tilesettolo {
         const isWhite = tilePixels.every((pixel, index, array) => pixel === 255)
 
         if (!isWhite) {
-          const preventionPixel = setContext.getImageData(xPosition + 3, yPosition, 1, 1).data
+          const preventionPixel = setContext.getImageData(xPosition + this.tileSize, yPosition, 1, 1).data
           const prevented =
             preventionPixel.toString() !=
             new Uint8ClampedArray([255, 255, 255, 255]).toString()
@@ -92,13 +93,13 @@ class Tilesettolo {
               symmetry = 'L'
             }
 
-            const likelihoodPixels = setContext.getImageData(xPosition, yPosition + 3, 4, 1)
+            const likelihoodPixels = setContext.getImageData(xPosition, yPosition + this.tileSize, this.tileSize + 1, 1)
               .data
             const binaryWeight = _chunk(likelihoodPixels, 4).map(
               pixel => pixel.every(rgba => rgba === 255) ? 0 : 1
             ).join('')
             const intWeight = parseInt(binaryWeight, 2)
-            const likelihoodProbability = ( intWeight - 0 ) * ( ( 1 - 0.01 ) / ( 15 - 0 ) ) + 0.01
+            const likelihoodProbability = intWeight * ((1 - 0.01) / ((this.tileSize + 1) ** 2 - 1)) + 0.01
 
             const tile = {
               name: tileUids.generate(),
@@ -128,8 +129,8 @@ class Tilesettolo {
     if (vertical) {
       const verticalEdge = tile.filter(
         (_, index) =>
-          index < this.tileSize ** ((vertical + 3) / 2) &&
-          index >= 1 / 2 * this.tileSize * (this.tileSize - 1) * (vertical + 1)
+        index < this.tileSize ** ((vertical + 3) / 2) &&
+        index >= 1 / 2 * this.tileSize * (this.tileSize - 1) * (vertical + 1)
       )
 
       return verticalEdge
@@ -149,7 +150,6 @@ class Tilesettolo {
     const control = head.toString()
 
     return _every(checks, check => {
-      console.log(check.toString(), control, check.toString() == control)
       return check.toString() == control
     })
   }

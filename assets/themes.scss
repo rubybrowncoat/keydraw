@@ -108,7 +108,7 @@
   }
 
   & .display-grid {
-    background-image: linear-gradient(to right, transparent calc(50%-1px), #000 50%, transparent 0), linear-gradient(to bottom, transparent calc(50%-1px), #000 50%, transparent 0) !important;
+    background-image: linear-gradient(to right, transparent calc(50% - 1px), #000 50%, transparent 0), linear-gradient(to bottom, transparent calc(50% - 1px), #000 50%, transparent 0) !important;
 
     border-color: transparent !important;
   }
@@ -116,7 +116,7 @@
   & .active-key {
     border-radius: 100% !important;
   }
-  & [class*='key-'] {
+  & [class*="key-"] {
     border-radius: 100% !important;
     border-bottom-width: 1px !important;
     border-right-width: 1px !important;
@@ -134,10 +134,8 @@
   }
 }
 
-$base-colors:
-
 /* name primary secondary tertiary keyboard */
-
+$base-colors:
 dark #444444 #FFFFFF #555555 rgba(255, 255, 255, 0.05),
 pastel #FFFFE5 #9B9B58 #DBDBB0 rgba(186, 186, 126, 0.1),
 invert #BBBBBB #000000 #AAAAAA rgba(0, 0, 0, 0.05),

@@ -78,8 +78,10 @@ export default {
 
       'exportSize',
       'exportActives',
+      'exportBuffer',
     ]),
     ...mapGetters('keytsh', ['keytshCollapsed']),
+    ...mapGetters('map', ['tileSize', 'mapWidth', 'mapHeight']),
 
     keyboardLeft() {
       return this.keyboardPosition[0]
@@ -101,6 +103,7 @@ export default {
       'toggleActive',
     ]),
     ...mapActions('keytsh', ['toggleKeytshCollapse']),
+    ...mapActions('map', ['increaseTileSize', 'decreaseTileSize']),
 
     toggleGrid(keyboardIndex) {
       const gridLeft = this.keyboardLeft + keyboardIndex % this.keyboardWidth
@@ -251,36 +254,18 @@ export default {
             break
           }
           case '=': {
-            const tileSize = 3
-            const occupancy = tileSize + 1
+            const occupancy = this.tileSize + 1
 
-            const width = this.gridWidth - this.gridWidth % occupancy
-            const height = this.gridHeight - this.gridHeight % occupancy
-
-            const buffer = _reduce(
-              this.actives,
-              (buffer, active) => {
-                const top = +active.top
-                const left = +active.left
-
-                const index = (top * width + left) * 4
-                const color = _find(colors, ['name', active.status])
-                console.log(active, color, index)
-
-                buffer.set(color.buffer, index)
-
-                return buffer
-              },
-              new Uint8ClampedArray(width * height * 4).fill(255)
+            const tileSet = new Tilesettolo(
+              this.exportBuffer,
+              this.tileSize,
+              this.mapWidth,
+              this.mapHeight
             )
-
-            const tileSet = new Tilesettolo(buffer, 3, width, height)
             const generator = new Observanto(this.gridWidth, this.gridHeight, tileSet)
 
-            // debugger
-
-            const tiledWidth = this.gridWidth * tileSize
-            const tiledHeight = this.gridHeight * tileSize
+            const tiledWidth = this.gridWidth * this.tileSize
+            const tiledHeight = this.gridHeight * this.tileSize
 
             const grid = this.$refs.base.$refs.grid
             const map = this.$refs.map
@@ -290,7 +275,7 @@ export default {
             map.height = tiledHeight
 
             context.fillStyle = map.style.backgroundColor
-            context.fillRect(0, 0, tiledWidth, tiledHeight)
+            // context.fillRect(0, 0, tiledWidth, tiledHeight)
 
             context.imageSmoothingEnabled = false
             context.webkitImageSmoothingEnabled = false
@@ -347,11 +332,21 @@ export default {
 
             break
           }
-          case '€': {
-            // Euro Symbol
-            this.$router.push('/keycler')
+          case '[': {
+            this.decreaseTileSize()
+
             break
           }
+          case ']': {
+            this.increaseTileSize()
+
+            break
+          }
+          // case '€': {
+          //   // Euro Symbol
+          //   this.$router.push('/keycler')
+          //   break
+          // }
           default: {
             // KEYS
             if (!this.hidden) {

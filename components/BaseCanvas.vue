@@ -12,8 +12,7 @@
       }"
     >
       <div
-        v-for="(active, key) in actives"
-        v-if="active.top < gridHeight && active.left < gridWidth"
+        v-for="(active, key) in gridActives"
         :key="key"
         :class="[ 'active-key', active.status ]"
         :style="{
@@ -145,7 +144,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 
-import { throttle as _throttle } from 'lodash-es'
+import { throttle as _throttle, filter as _filter } from 'lodash-es'
 
 import keyboard from '../data/keyboard'
 
@@ -176,6 +175,10 @@ export default {
     limitedKeySize() {
       return Math.min(Math.floor(( this.windowWidth - 50 ) / this.gridWidth), this.keySize)
     },
+
+    gridActives() {
+      return _filter(this.actives, active => active.top < this.gridHeight && active.left < this.gridWidth)
+    }
   },
   methods: {
     keyResize: _throttle(() => {

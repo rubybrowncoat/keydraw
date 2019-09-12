@@ -35,18 +35,29 @@ export default {
   },
   computed: {
     ...mapGetters('theme', ['currentTheme']),
+    ...mapGetters('keytsh', ['keytshCollapsed']),
   },
   methods: {
     ...mapActions('theme', ['setTheme']),
     ...mapActions('grid', ['setSize', 'setActives']),
+    ...mapActions('keytsh', ['toggleKeytshCollapse']),
 
     keyOperation(evt) {
-      evt.preventDefault()
+      if (this.keytshCollapsed) {
+        evt.preventDefault()
+
+        switch (evt.key) {
+          case 'Backspace': {
+            // LEFT ARROW
+            this.$router.push('/')
+            break
+          }
+        }
+      }
 
       switch (evt.key) {
-        case 'Backspace': {
-          // LEFT ARROW
-          this.$router.push('/')
+        case '!': {
+          this.toggleKeytshCollapse()
           break
         }
       }

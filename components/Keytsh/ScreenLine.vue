@@ -59,7 +59,9 @@ export default {
       return this.isLine ? this.composition[1] : {}
     },
     classes() {
-      return classNames('screenline', ...(this.options.styles || {}))
+      const styles = this.isLine && this.options.styles ? this.options.styles : []
+
+      return classNames('screenline', ...styles)
     }
   },
 }

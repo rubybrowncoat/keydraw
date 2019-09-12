@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import {
+  find as _find,
   findIndex as _findIndex,
   map as _map,
   memoize as _memoize,
@@ -26,30 +27,48 @@ export const state = () => ({
 })
 
 export const actions = {
-  incrementWidth({ commit, state }) {
+  incrementWidth({
+    commit,
+    state
+  }) {
     if (state.size[0] < state.maxSize[0]) {
-    commit('incrementWidth')
-   }
+      commit('incrementWidth')
+    }
   },
-  decrementWidth({ commit, state }) {
+  decrementWidth({
+    commit,
+    state
+  }) {
     if (state.size[0] > 1) {
       commit('decrementWidth')
     }
   },
 
-  incrementHeight({ commit, state }) {
+  incrementHeight({
+    commit,
+    state
+  }) {
     if (state.size[1] < state.maxSize[1]) {
-    commit('incrementHeight')
+      commit('incrementHeight')
     }
   },
-  decrementHeight({ commit, state }) {
+  decrementHeight({
+    commit,
+    state
+  }) {
     if (state.size[1] > 1) {
       commit('decrementHeight')
     }
   },
 
-  toggleActive({ state, commit }, payload) {
-    const { position, name } = payload
+  toggleActive({
+    state,
+    commit
+  }, payload) {
+    const {
+      position,
+      name
+    } = payload
     const currentPosition = state.actives[position]
 
     if (!currentPosition) {
@@ -60,8 +79,14 @@ export const actions = {
       commit('removeActive', position)
     }
   },
-  setShared({ state, commit }, payload) {
-    const { position, status } = payload
+  setShared({
+    state,
+    commit
+  }, payload) {
+    const {
+      position,
+      status
+    } = payload
     const currentPosition = state.actives[position]
 
     const color = colors[status]
@@ -77,8 +102,16 @@ export const actions = {
       commit('removeActive', position)
     }
   },
-  toggleShared({ state, commit}, payload) {
-    const { left, top, url, name } = payload
+  toggleShared({
+    state,
+    commit
+  }, payload) {
+    const {
+      left,
+      top,
+      url,
+      name
+    } = payload
 
     const position = `${left}x${top}`
     const mutationPayload = {
@@ -107,16 +140,23 @@ export const actions = {
       url,
     })
   },
-  clearActives({ commit }) {
+  clearActives({
+    commit
+  }) {
     commit('clearActives')
   },
 
-  setSize({ commit }, payload) {
+  setSize({
+    commit
+  }, payload) {
     const newSize = _map(payload.split('-'), size => parseInt(size))
 
     commit('setSize', newSize)
   },
-  setActives({ commit, getters }, payload) {
+  setActives({
+    commit,
+    getters
+  }, payload) {
     const newActives = _reduce(
       payload.replace(
         /\:(.)(\d+)\:/g,
@@ -143,12 +183,13 @@ export const actions = {
         }
 
         return result
-      },
-      {}
+      }, {}
     )
     commit('setActives', newActives)
   },
-  setCommuneActives({ commit }, payload) {
+  setCommuneActives({
+    commit
+  }, payload) {
     const newActives = _reduce(
       payload,
       (result, active) => {
@@ -167,8 +208,7 @@ export const actions = {
         }
 
         return result
-      },
-      {}
+      }, {}
     )
 
     commit('setActives', newActives)
@@ -180,7 +220,7 @@ export const getters = {
     return state.keyboardWidth
   },
   keyboardHeight(state) {
-    return ~~( keyboard.length / state.keyboardWidth )
+    return ~~(keyboard.length / state.keyboardWidth)
   },
 
   gridWidth(state) {
@@ -215,6 +255,30 @@ export const getters = {
 
     return 'a#' + activesString
   },
+  exportBuffer(state, getters, _, rootGetters) {
+    const findColor = _memoize(color => _find(colors, ['name', color]))
+
+    const width = rootGetters['map/mapWidth']
+    const height = rootGetters['map/mapHeight']
+
+    const buffer = _reduce(
+      getters.actives,
+      (buffer, active) => {
+        const top = parseInt(active.top)
+        const left = parseInt(active.left)
+
+        const index = ((top * width) + left) * 4
+        const color = findColor(active.status)
+
+        buffer.set(color.buffer, index)
+
+        return buffer
+      },
+      new Uint8ClampedArray(width * height * 4).fill(255)
+    )
+
+    return buffer
+  }
 }
 
 export const mutations = {
@@ -232,7 +296,10 @@ export const mutations = {
     Vue.set(state.size, 1, state.size[1] - 1)
   },
 
-  addActive(state, { position, name }) {
+  addActive(state, {
+    position,
+    name
+  }) {
     const [left, top] = position.split('x')
 
     Vue.set(state.actives, position, {
@@ -241,7 +308,10 @@ export const mutations = {
       status: name,
     })
   },
-  replaceActive(state, { position, name }) {
+  replaceActive(state, {
+    position,
+    name
+  }) {
     const [left, top] = position.split('x')
     const newActives = {
       ...state.actives,
