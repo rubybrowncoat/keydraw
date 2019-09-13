@@ -50,7 +50,18 @@ export default {
           case 'Backspace': {
             // LEFT ARROW
             this.$router.push('/')
+
             break
+          }
+
+          case '@': {
+            try {
+              this.$copyText(window.location.href).then(() => {
+                alert('Artefact URL copied to clipboard.')
+              })
+            } catch (e) {
+              console.error(e)
+            }
           }
         }
       }

@@ -148,6 +148,15 @@ export default {
           this.$router.push('/')
           break
         }
+        case '@': {
+          try {
+            this.$copyText(window.location.href).then(() => {
+              alert('Commune URL copied to clipboard.')
+            })
+          } catch (e) {
+            console.error(e)
+          }
+        }
         default: {
           // KEYS
           if (!this.hidden) {

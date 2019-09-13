@@ -26,6 +26,8 @@ module.exports = {
   },
 
   modules: [
+    'nuxt-clipboard2',
+
     '@nuxtjs/dotenv',
     // '@nuxtjs/webpackmonitor',
     '@nuxtjs/axios',

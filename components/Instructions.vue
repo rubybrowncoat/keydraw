@@ -5,9 +5,9 @@
       <span class="txtLabel" v-if="commune">commune</span>
       <span class="txtLabel" v-else-if="artefact">artefact</span>
     </span>
-    <div class="menu active" v-if="!artefact">
+    <div class="menu active">
       <!-- MOVE -->
-      <span class="menuItem">
+      <span class="menuItem" v-if="!artefact">
         <span class="label">
           <fa :icon="['fas', 'arrows-alt']" />
         </span>
@@ -15,7 +15,7 @@
       </span>
 
       <!-- TOGGLE -->
-      <span class="menuItem">
+      <span class="menuItem" v-if="!artefact">
         <span class="label">
           <fa :icon="['fas', 'keyboard']" />
         </span>
@@ -23,14 +23,15 @@
       </span>
 
       <!-- CLEAR -->
-      <span class="menuItem" v-if="!commune">
+      <span class="menuItem" v-if="!commune && !artefact">
         <span class="label">
           &#9003;
         </span>
         CLEAR
       </span>
+
       <!-- COLOR -->
-      <span class="menuItem">
+      <span class="menuItem" v-if="!artefact">
         <span class="label">
           <fa :icon="['fas', 'space-shuttle']" />
         </span>
@@ -38,7 +39,7 @@
       </span>
 
       <!-- SIZE -->
-      <span :class="['menuItem', {lock: commune}]">
+      <span :class="['menuItem', {lock: commune}]" v-if="!artefact">
         <span class="label" v-if="commune">
           <fa :icon="['fas', 'lock']" />
         </span>
@@ -49,7 +50,7 @@
       </span>
 
       <!-- THEME-->
-      <span :class="['menuItem', {lock: commune}]">
+      <span :class="['menuItem', {lock: commune}]" v-if="!artefact">
         <span class="label" v-if="commune">
           <fa :icon="['fas', 'lock']" />
         </span>
@@ -58,9 +59,14 @@
         </span>
         THEME <span class="txtLabel">{{currentTheme}}</span>
       </span>
-    </div>
 
-    <div class="menu" v-show="artefact">
+      <!-- COPY -->
+      <span class="menuItem" v-if="commune || artefact">
+        <span class="label">
+          <fa :icon="['fas', 'at']" />
+        </span>
+        URL
+      </span>
     </div>
 
     <span class="copyright">
@@ -108,7 +114,7 @@ export default {
   computed: {
     ...mapGetters('color', ['currentName']),
     ...mapGetters('theme', ['currentTheme']),
-    
+
     ...mapGetters('grid', [
       'keyboardWidth',
       'keyboardHeight',
