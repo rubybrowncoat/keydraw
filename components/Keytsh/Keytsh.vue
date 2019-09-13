@@ -46,10 +46,10 @@
 
     font-family: 'VT323';
 
-    height: 30px;
+    height: 33px;
     font-size: 22px;
 
-    padding: 3px 7px;
+    padding: 5px 10px;
 
     background-color: rgb(249, 249, 245);
     border-radius: 5px;
