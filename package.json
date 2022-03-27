@@ -47,7 +47,7 @@
     "circular-json": "^0.5.9",
     "classnames": "^2.2.6",
     "decimal.js": "^10.2.0",
-    "lodash-es": "^4.17.15",
+    "lodash-es": "^4.17.21",
     "npm": "^6.11.3",
     "nuxt": "^2.9.2",
     "nuxt-clipboard2": "^0.2.1",
